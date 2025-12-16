@@ -1,11 +1,15 @@
 import Header from "@/components/Header";
+import HeroBanner from "@/components/HeroBanner";
 
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       <Header />
       
-      {/* Placeholder content to demonstrate sticky header */}
+      {/* Hero Banner */}
+      <HeroBanner />
+      
+      {/* Main content */}
       <main className="container mx-auto px-4 py-12">
         <div className="max-w-3xl mx-auto text-center space-y-6">
           <h1 className="text-4xl md:text-5xl font-display font-semibold text-foreground">
