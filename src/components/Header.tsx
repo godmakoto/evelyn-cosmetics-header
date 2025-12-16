@@ -135,7 +135,7 @@ const Header = () => {
               <button onClick={() => setIsCartOpen(true)} className="cart-button">
                 <span className="text-sm font-medium text-foreground">Bs {finalTotal.toFixed(1)}</span>
                 <div className="relative">
-                  <ShoppingCart className="w-5 h-5 md:w-6 md:h-6" />
+                  <ShoppingCart className="w-5 h-5 md:w-7 md:h-7" />
                   {itemCount > 0 && <span className="cart-badge">{itemCount}</span>}
                 </div>
               </button>
