@@ -1,8 +1,11 @@
 import Header from "@/components/Header";
 import HeroBanner from "@/components/HeroBanner";
 import { ProductCarousel } from "@/components/ProductCarousel";
+import { BestSellersCarousel } from "@/components/BestSellersCarousel";
+
 const Index = () => {
-  return <div className="min-h-screen bg-background">
+  return (
+    <div className="min-h-screen bg-background">
       <Header />
       
       {/* Hero Banner */}
@@ -11,8 +14,12 @@ const Index = () => {
       {/* Product Carousel */}
       <ProductCarousel />
       
-      {/* Main content */}
+      {/* Best Sellers Carousel */}
+      <BestSellersCarousel />
       
-    </div>;
+      {/* Main content */}
+    </div>
+  );
 };
+
 export default Index;
