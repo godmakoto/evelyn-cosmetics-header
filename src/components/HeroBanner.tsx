@@ -102,7 +102,7 @@ const HeroBanner = () => {
                 </div>
 
                 {/* Text Content */}
-                <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12 lg:px-16">
+                <div className="relative z-10 w-full max-w-7xl mx-auto px-16 md:px-20 lg:px-24">
                   <div className="max-w-lg">
                     <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-semibold text-foreground mb-3 md:mb-4">
                       {slide.headline}
@@ -139,7 +139,7 @@ const HeroBanner = () => {
           <button
             onClick={scrollPrev}
             className={cn(
-              "absolute left-4 md:left-6 top-1/2 -translate-y-1/2 z-20",
+              "absolute left-3 md:left-4 lg:left-6 top-1/2 -translate-y-1/2 z-20",
               "w-10 h-10 md:w-12 md:h-12",
               "flex items-center justify-center",
               "rounded-full",
@@ -156,7 +156,7 @@ const HeroBanner = () => {
           <button
             onClick={scrollNext}
             className={cn(
-              "absolute right-4 md:right-6 top-1/2 -translate-y-1/2 z-20",
+              "absolute right-3 md:right-4 lg:right-6 top-1/2 -translate-y-1/2 z-20",
               "w-10 h-10 md:w-12 md:h-12",
               "flex items-center justify-center",
               "rounded-full",
