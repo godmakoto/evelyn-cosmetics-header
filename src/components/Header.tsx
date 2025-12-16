@@ -95,23 +95,23 @@ const Header = () => {
                 >
                   <Menu className="w-6 h-6" />
                 </button>
-                <a href="/" className="flex items-baseline gap-1">
-                  <span className="text-xl font-semibold tracking-tight text-foreground">
+                <a href="/" className="flex flex-col leading-tight">
+                  <span className="text-xl font-elegant tracking-wide text-foreground">
                     Evelyn
                   </span>
-                  <span className="text-xs font-normal text-muted-foreground">
-                    Cosmetics
+                  <span className="text-[0.6rem] font-normal text-muted-foreground tracking-widest uppercase">
+                    cosmetics
                   </span>
                 </a>
               </div>
 
               {/* Desktop: Logo */}
-              <a href="/" className="hidden md:flex items-baseline gap-1.5 group">
-                <span className="text-2xl font-semibold tracking-tight text-foreground transition-colors group-hover:text-foreground/80">
+              <a href="/" className="hidden md:flex flex-col leading-tight group">
+                <span className="text-3xl font-elegant tracking-wide text-foreground transition-colors group-hover:text-foreground/80">
                   Evelyn
                 </span>
-                <span className="text-sm font-normal text-muted-foreground tracking-wide">
-                  Cosmetics
+                <span className="text-[0.65rem] font-normal text-muted-foreground tracking-widest uppercase">
+                  cosmetics
                 </span>
               </a>
 

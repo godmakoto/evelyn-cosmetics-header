@@ -37,10 +37,18 @@ interface MobileMenuProps {
 }
 
 const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
-  const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
+  const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
+  const [expandedSubcategory, setExpandedSubcategory] = useState<string | null>(null);
 
-  const toggleCategory = (categoryName: string) => {
-    setExpandedCategory((prev) => (prev === categoryName ? null : categoryName));
+  const toggleCategories = () => {
+    setIsCategoriesOpen((prev) => !prev);
+    if (isCategoriesOpen) {
+      setExpandedSubcategory(null);
+    }
+  };
+
+  const toggleSubcategory = (categoryName: string) => {
+    setExpandedSubcategory((prev) => (prev === categoryName ? null : categoryName));
   };
 
   return (
@@ -48,8 +56,10 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
       <SheetContent side="left" className="w-[300px] sm:w-[350px] p-0">
         <SheetHeader className="px-6 py-4 border-b border-border">
           <SheetTitle className="text-left">
-            <span className="text-xl font-semibold tracking-tight">Evelyn</span>
-            <span className="text-sm font-normal text-muted-foreground ml-1">Cosmetics</span>
+            <a href="/" className="flex flex-col leading-tight">
+              <span className="text-2xl font-elegant tracking-wide text-foreground">Evelyn</span>
+              <span className="text-xs font-normal text-muted-foreground tracking-widest uppercase" style={{ fontSize: '0.65rem' }}>cosmetics</span>
+            </a>
           </SheetTitle>
         </SheetHeader>
 
@@ -57,36 +67,36 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
           {/* Categorías Dropdown */}
           <div className="px-4">
             <button
-              onClick={() => toggleCategory("categorias")}
+              onClick={toggleCategories}
               className="w-full flex items-center justify-between px-3 py-3 text-sm font-semibold text-foreground hover:bg-secondary rounded-lg transition-colors"
             >
               Categorías
               <ChevronDown
                 className={cn(
                   "w-4 h-4 transition-transform",
-                  expandedCategory === "categorias" && "rotate-180"
+                  isCategoriesOpen && "rotate-180"
                 )}
               />
             </button>
 
-            {expandedCategory === "categorias" && (
+            {isCategoriesOpen && (
               <div className="mt-1 ml-3 space-y-1">
                 {categories.map((category) => (
                   <div key={category.name}>
                     <button
-                      onClick={() => toggleCategory(category.name)}
+                      onClick={() => toggleSubcategory(category.name)}
                       className="w-full flex items-center justify-between px-3 py-2.5 text-sm text-foreground/80 hover:text-foreground hover:bg-secondary/50 rounded-lg transition-colors"
                     >
                       {category.name}
                       <ChevronRight
                         className={cn(
                           "w-4 h-4 transition-transform",
-                          expandedCategory === category.name && "rotate-90"
+                          expandedSubcategory === category.name && "rotate-90"
                         )}
                       />
                     </button>
 
-                    {expandedCategory === category.name && (
+                    {expandedSubcategory === category.name && (
                       <div className="ml-4 mt-1 space-y-1">
                         {category.subcategories.map((sub) => (
                           <a
