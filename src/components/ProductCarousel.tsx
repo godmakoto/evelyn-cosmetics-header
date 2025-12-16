@@ -150,14 +150,14 @@ export const ProductCarousel = () => {
           <div className="overflow-hidden" ref={emblaRef}>
             <div className="flex">
               {products.map(product => <div key={product.id} className={cn("flex-shrink-0", isMobile ? "w-[72%] px-2" : "w-1/2 md:w-1/3 lg:w-[30%] xl:w-[28%] px-3")}>
-                  <div className={cn("bg-background border border-border rounded-xl h-full flex flex-col", isMobile ? "p-4" : "p-5 lg:p-6")}>
+                  <div className="bg-background border border-border rounded-xl h-full flex flex-col overflow-hidden">
                     {/* Product Image */}
-                    <div className={cn("overflow-hidden rounded-lg bg-secondary mb-4", isMobile ? "aspect-square" : "aspect-[4/5] lg:aspect-[3/4]")}>
+                    <div className={cn("overflow-hidden bg-secondary", isMobile ? "aspect-square" : "aspect-[4/5] lg:aspect-[3/4]")}>
                       <img src={product.image} alt={product.name} className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
                     </div>
 
                     {/* Product Info */}
-                    <div className="flex-1 flex flex-col">
+                    <div className={cn("flex-1 flex flex-col", isMobile ? "p-4 pt-3" : "p-5 pt-4 lg:p-6 lg:pt-4")}>
                       {/* Brand */}
                       {product.brand && <span className="text-xs text-muted-foreground mb-1">
                           {product.brand}
