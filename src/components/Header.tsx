@@ -30,20 +30,45 @@ const categories = [
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
   const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const dropdownRef = useRef<HTMLLIElement>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const lastScrollY = useRef(0);
 
   const { finalTotal, itemCount, setIsCartOpen } = useCart();
 
+  // Smart scroll behavior: hide on scroll down, show on scroll up
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
+      const currentScrollY = window.scrollY;
+      const scrollThreshold = 10;
+      
+      // Update scrolled state for shadow/styling
+      setIsScrolled(currentScrollY > scrollThreshold);
+      
+      // Don't hide header if near top of page
+      if (currentScrollY < 50) {
+        setIsHeaderVisible(true);
+        lastScrollY.current = currentScrollY;
+        return;
+      }
+      
+      // Detect scroll direction
+      const isScrollingDown = currentScrollY > lastScrollY.current;
+      const scrollDelta = Math.abs(currentScrollY - lastScrollY.current);
+      
+      // Only trigger if scroll delta is significant (prevents micro-movements)
+      if (scrollDelta > 5) {
+        setIsHeaderVisible(!isScrollingDown);
+        lastScrollY.current = currentScrollY;
+      }
     };
-    window.addEventListener("scroll", handleScroll);
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -78,8 +103,9 @@ const Header = () => {
     <>
       <header
         className={cn(
-          "sticky top-0 z-50 w-full transition-all duration-300",
-          isScrolled ? "header-scrolled" : "header-default"
+          "fixed top-0 left-0 right-0 z-50 w-full transition-transform duration-300 ease-in-out",
+          isScrolled ? "header-scrolled" : "header-default",
+          isHeaderVisible ? "translate-y-0" : "-translate-y-full"
         )}
       >
         {/* Main Header */}
@@ -260,6 +286,9 @@ const Header = () => {
           </div>
         </nav>
       </header>
+
+      {/* Spacer to prevent content from hiding behind fixed header */}
+      <div className="h-[calc(4rem+3rem)] md:h-[calc(5rem+3rem)]" />
 
       {/* Mobile Menu Drawer */}
       <MobileMenu isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)} />
