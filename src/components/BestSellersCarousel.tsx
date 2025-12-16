@@ -146,7 +146,7 @@ export const BestSellersCarousel = () => {
   };
 
   return (
-    <section className="py-12 md:py-16 bg-background">
+    <section className="py-6 md:py-8 bg-background">
       <div className="max-w-7xl mx-auto px-4 md:px-6">
         <h2 className="md:text-4xl lg:text-5xl font-display font-semibold text-foreground text-center mb-8 md:mb-12 text-3xl">
           Mas Vendidos
