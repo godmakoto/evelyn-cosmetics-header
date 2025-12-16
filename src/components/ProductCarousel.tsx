@@ -171,10 +171,10 @@ export const ProductCarousel = () => {
                       {/* Prices */}
                       <div className="flex items-center gap-2 mb-4 mt-auto">
                         <span className="text-lg font-semibold text-foreground">
-                          Bs {product.price}
+                          Bs {product.price.toFixed(1)}
                         </span>
                         {product.originalPrice && product.originalPrice > product.price && <span className="text-sm text-muted-foreground line-through">
-                            Bs {product.originalPrice}
+                            Bs {product.originalPrice.toFixed(1)}
                           </span>}
                       </div>
 

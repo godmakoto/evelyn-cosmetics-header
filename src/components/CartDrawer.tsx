@@ -63,15 +63,15 @@ const CartDrawer = () => {
                       {item.discountedPrice ? (
                         <>
                           <span className="text-sm font-semibold text-foreground">
-                            Bs {item.discountedPrice.toFixed(2)}
+                            Bs {item.discountedPrice.toFixed(1)}
                           </span>
                           <span className="text-xs text-muted-foreground line-through">
-                            Bs {item.originalPrice.toFixed(2)}
+                            Bs {item.originalPrice.toFixed(1)}
                           </span>
                         </>
                       ) : (
                         <span className="text-sm font-semibold text-foreground">
-                          Bs {item.originalPrice.toFixed(2)}
+                          Bs {item.originalPrice.toFixed(1)}
                         </span>
                       )}
                     </div>
@@ -114,7 +114,7 @@ const CartDrawer = () => {
               {/* Subtotal */}
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Subtotal</span>
-                <span className="font-medium">Bs {subtotal.toFixed(2)}</span>
+                <span className="font-medium">Bs {subtotal.toFixed(1)}</span>
               </div>
 
               {/* Discount */}
@@ -122,7 +122,7 @@ const CartDrawer = () => {
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Descuento total</span>
                   <span className="font-medium text-green-600">
-                    -Bs {totalDiscount.toFixed(2)}
+                    -Bs {totalDiscount.toFixed(1)}
                   </span>
                 </div>
               )}
@@ -133,7 +133,7 @@ const CartDrawer = () => {
               <div className="flex justify-between items-center">
                 <span className="text-base font-semibold">Total final</span>
                 <span className="text-xl font-bold">
-                  Bs {finalTotal.toFixed(2)}
+                  Bs {finalTotal.toFixed(1)}
                 </span>
               </div>
 
