@@ -149,7 +149,7 @@ export const ProductCarousel = () => {
           {/* Carousel */}
           <div className="overflow-hidden" ref={emblaRef}>
             <div className="flex">
-              {products.map(product => <div key={product.id} className={cn("flex-shrink-0", isMobile ? "w-[72%] px-2" : "w-1/2 md:w-1/3 lg:w-[30%] xl:w-[28%] px-3")}>
+              {products.map(product => <div key={product.id} className={cn("flex-shrink-0", isMobile ? "w-[72%] px-2" : "w-1/2 md:w-1/3 lg:w-[30%] xl:w-[28%] px-1.5")}>
                   <div className="bg-background border border-border rounded-xl h-full flex flex-col overflow-hidden">
                     {/* Product Image */}
                     <div className={cn("overflow-hidden bg-secondary", isMobile ? "aspect-square" : "aspect-[4/5] lg:aspect-[3/4]")}>
