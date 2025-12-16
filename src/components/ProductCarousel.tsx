@@ -80,10 +80,22 @@ const products: Product[] = [
 
 export const ProductCarousel = () => {
   const isMobile = useIsMobile();
+  const [isTablet, setIsTablet] = useState(false);
   const { items, addItem, setIsCartOpen } = useCart();
   const [addedProducts, setAddedProducts] = useState<Set<string>>(new Set());
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
+
+  // Detect tablet (768px - 1024px)
+  useEffect(() => {
+    const checkTablet = () => {
+      const width = window.innerWidth;
+      setIsTablet(width >= 768 && width < 1024);
+    };
+    checkTablet();
+    window.addEventListener("resize", checkTablet);
+    return () => window.removeEventListener("resize", checkTablet);
+  }, []);
 
   const [emblaRef, emblaApi] = useEmblaCarousel({
     loop: true,
@@ -139,9 +151,12 @@ export const ProductCarousel = () => {
         </h2>
 
         {/* Carousel Container */}
-        <div className="relative px-0 md:px-14">
-          {/* Navigation Arrows - Desktop Only */}
-          {!isMobile && (
+        <div className={cn(
+          "relative",
+          isMobile || isTablet ? "px-0" : "px-14"
+        )}>
+          {/* Navigation Arrows - Desktop Only (hide on mobile and tablet) */}
+          {!isMobile && !isTablet && (
             <>
               <button
                 onClick={scrollPrev}
@@ -168,15 +183,18 @@ export const ProductCarousel = () => {
                   key={product.id}
                   className={cn(
                     "flex-shrink-0",
-                    isMobile ? "w-[72%] px-2" : "w-1/2 md:w-1/3 lg:w-1/4 px-3"
+                    isMobile ? "w-[72%] px-2" : "w-1/2 md:w-1/3 lg:w-[30%] xl:w-[28%] px-3"
                   )}
                 >
                   <div className={cn(
-                    "bg-background border border-border rounded-lg h-full flex flex-col",
-                    isMobile ? "p-4" : "p-5 md:p-6"
+                    "bg-background border border-border rounded-xl h-full flex flex-col",
+                    isMobile ? "p-4" : "p-5 lg:p-6"
                   )}>
                     {/* Product Image */}
-                    <div className="aspect-square mb-4 overflow-hidden rounded-md bg-secondary">
+                    <div className={cn(
+                      "overflow-hidden rounded-lg bg-secondary mb-4",
+                      isMobile ? "aspect-square" : "aspect-[4/5] lg:aspect-[3/4]"
+                    )}>
                       <img
                         src={product.image}
                         alt={product.name}
@@ -247,7 +265,7 @@ export const ProductCarousel = () => {
 
         {/* Ver más Button */}
         <div className="flex justify-center mt-8">
-          <Button variant="outline" className="px-8">
+          <Button className="px-8 rounded-full bg-foreground text-background hover:bg-foreground/90">
             Ver más
           </Button>
         </div>
