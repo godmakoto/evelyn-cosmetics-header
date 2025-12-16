@@ -15,53 +15,53 @@ interface Product {
 }
 const products: Product[] = [{
   id: "1",
-  name: "Crema Hidratante Facial",
+  name: "Bond Intense Repair Óleo bifasico - Nutre y realza la vitalidad del cabello, Controla el frizz, Protección térmica, Blindaje Anti-humedad - 110ml",
   brand: "Nivea",
   image: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=400&h=400&fit=crop",
   price: 85,
   originalPrice: 100
 }, {
   id: "2",
-  name: "Sérum Vitamina C",
+  name: "Sebium Gel Moussant Actif - Gel limpiador facial - Con Ácido salicílico, Ácido glicólico y Gluconato de Zinc - Limpia, purifica y reduce el tamaño de los poros - 532g",
   brand: "La Roche-Posay",
   image: "https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?w=400&h=400&fit=crop",
   price: 180
 }, {
   id: "3",
-  name: "Protector Solar SPF 50",
+  name: "Photoderm Cover Touch FPS50+ Protector solar facial Anti-brillo y toque seco - Piel mixta y grasa - TONO DORADO - Cobertura alta - 40ml",
   brand: "Eucerin",
   image: "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=400&h=400&fit=crop",
   price: 120,
   originalPrice: 150
 }, {
   id: "4",
-  name: "Agua Micelar",
+  name: "Pigmentbio Foaming cream Facial y corporal - Limpiador despigmentante crema-espuma - Limpia y exfolia suavemente, reduce manchas oscuras - 200ml",
   brand: "Bioderma",
   image: "https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=400&h=400&fit=crop",
   price: 95
 }, {
   id: "5",
-  name: "Crema Contorno de Ojos",
+  name: "Crema Contorno de Ojos Anti-edad Intensiva - Con Retinol y Péptidos - Reduce ojeras, bolsas y líneas de expresión - Hidratación 24h - 15ml",
   brand: "Vichy",
   image: "https://images.unsplash.com/photo-1570194065650-d99fb4b38b15?w=400&h=400&fit=crop",
   price: 200,
   originalPrice: 250
 }, {
   id: "6",
-  name: "Limpiador Facial Espuma",
+  name: "Hydrating Cleanser Limpiador Facial Espuma - Con Ceramidas y Ácido Hialurónico - Limpia sin resecar, restaura la barrera cutánea - 473ml",
   brand: "CeraVe",
   image: "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=400&h=400&fit=crop",
   price: 75
 }, {
   id: "7",
-  name: "Mascarilla Hidratante",
+  name: "Hydro Boost Mascarilla Hidratante Nocturna - Con Ácido Hialurónico - Hidratación intensa durante la noche, despierta con piel suave - 50ml",
   brand: "Neutrogena",
   image: "https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=400&h=400&fit=crop",
   price: 45,
   originalPrice: 55
 }, {
   id: "8",
-  name: "Aceite Facial Nutritivo",
+  name: "100% Organic Cold-Pressed Rose Hip Seed Oil - Aceite facial nutritivo y regenerador - Reduce cicatrices, manchas y líneas finas - 30ml",
   brand: "The Ordinary",
   image: "https://images.unsplash.com/photo-1617897903246-719242758050?w=400&h=400&fit=crop",
   price: 160
