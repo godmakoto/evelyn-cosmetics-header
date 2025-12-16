@@ -197,7 +197,7 @@ export const ProductCarousel = () => {
 
         {/* Ver más Button */}
         <div className="flex justify-center mt-8">
-          <Button className="px-8 rounded-full bg-foreground text-background hover:bg-foreground/90">
+          <Button className="px-8 lg:px-16 rounded-full bg-foreground text-background hover:bg-foreground/90">
             Ver más
           </Button>
         </div>
