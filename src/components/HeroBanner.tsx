@@ -102,7 +102,7 @@ const HeroBanner = () => {
                 </div>
 
                 {/* Text Content */}
-                <div className="relative z-10 w-full max-w-7xl mx-auto px-16 md:px-20 lg:px-24">
+                <div className="relative z-10 w-full max-w-7xl mx-auto px-4 md:px-20 lg:px-24">
                   <div className="max-w-lg">
                     <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-semibold text-foreground mb-3 md:mb-4">
                       {slide.headline}
