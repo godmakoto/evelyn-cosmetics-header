@@ -11,11 +11,11 @@ const Index = () => {
       {/* Hero Banner */}
       <HeroBanner />
       
-      {/* Product Carousel */}
-      <ProductCarousel />
-      
       {/* Best Sellers Carousel */}
       <BestSellersCarousel />
+      
+      {/* Product Carousel */}
+      <ProductCarousel />
       
       {/* Main content */}
     </div>
