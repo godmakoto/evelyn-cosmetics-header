@@ -127,7 +127,7 @@ export const ProductCarousel = () => {
   const isInCart = (productId: string) => {
     return addedProducts.has(productId) || items.some(item => item.id === productId);
   };
-  return <section className="py-12 md:py-16 bg-background">
+  return <section className="py-6 md:py-8 bg-background">
       <div className="max-w-7xl mx-auto px-4 md:px-6">
         {/* Section Title */}
         <h2 className="md:text-4xl lg:text-5xl font-display font-semibold text-foreground text-center mb-8 md:mb-12 text-3xl">
