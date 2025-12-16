@@ -1,5 +1,6 @@
 import Header from "@/components/Header";
 import HeroBanner from "@/components/HeroBanner";
+import { ProductCarousel } from "@/components/ProductCarousel";
 
 const Index = () => {
   return (
@@ -8,6 +9,9 @@ const Index = () => {
       
       {/* Hero Banner */}
       <HeroBanner />
+      
+      {/* Product Carousel */}
+      <ProductCarousel />
       
       {/* Main content */}
       <main className="container mx-auto px-4 py-12">
