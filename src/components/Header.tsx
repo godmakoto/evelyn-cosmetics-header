@@ -136,7 +136,7 @@ const Header = () => {
                 onClick={() => setIsCartOpen(true)}
                 className="cart-button"
               >
-                <span className="cart-total">Bs {finalTotal.toFixed(2)}</span>
+                <span className="text-sm font-medium text-foreground">Bs {finalTotal.toFixed(2)}</span>
                 <div className="relative">
                   <ShoppingCart className="w-5 h-5 md:w-6 md:h-6" />
                   {itemCount > 0 && (
@@ -149,7 +149,7 @@ const Header = () => {
         </div>
 
         {/* Mobile Search */}
-        <div className="md:hidden px-4 pb-3 bg-background">
+        <div className="md:hidden px-4 py-3 bg-secondary">
           <div className="search-container">
             <input
               type="text"
