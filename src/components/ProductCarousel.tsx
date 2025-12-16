@@ -1,9 +1,10 @@
 import { useState, useEffect, useCallback } from "react";
 import useEmblaCarousel from "embla-carousel-react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/contexts/CartContext";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { cn } from "@/lib/utils";
 
 interface Product {
   id: string;
@@ -133,7 +134,7 @@ export const ProductCarousel = () => {
     <section className="py-12 md:py-16 bg-background">
       <div className="max-w-7xl mx-auto px-4 md:px-6">
         {/* Section Title */}
-        <h2 className="text-2xl md:text-3xl font-display font-semibold text-foreground text-center mb-8 md:mb-10">
+        <h2 className="text-2xl md:text-4xl lg:text-5xl font-display font-semibold text-foreground text-center mb-8 md:mb-12">
           Productos Destacados
         </h2>
 
@@ -165,11 +166,15 @@ export const ProductCarousel = () => {
               {products.map((product) => (
                 <div
                   key={product.id}
-                  className={`flex-shrink-0 px-2 ${
-                    isMobile ? "w-[72%]" : "w-1/2 md:w-1/3 lg:w-1/4"
-                  }`}
+                  className={cn(
+                    "flex-shrink-0",
+                    isMobile ? "w-[72%] px-2" : "w-1/2 md:w-1/3 lg:w-1/4 px-3"
+                  )}
                 >
-                  <div className="bg-background border border-border rounded-lg p-4 h-full flex flex-col">
+                  <div className={cn(
+                    "bg-background border border-border rounded-lg h-full flex flex-col",
+                    isMobile ? "p-4" : "p-5 md:p-6"
+                  )}>
                     {/* Product Image */}
                     <div className="aspect-square mb-4 overflow-hidden rounded-md bg-secondary">
                       <img
@@ -208,9 +213,10 @@ export const ProductCarousel = () => {
                       {/* Add Button */}
                       <Button
                         variant={isInCart(product.id) ? "outline" : "default"}
-                        className="w-full"
+                        className="w-full rounded-full gap-2"
                         onClick={() => handleAddToCart(product)}
                       >
+                        <ShoppingBag className="w-4 h-4" />
                         {isInCart(product.id) ? "Ver carrito" : "Agregar"}
                       </Button>
                     </div>
@@ -221,16 +227,18 @@ export const ProductCarousel = () => {
           </div>
 
           {/* Navigation Dots */}
-          <div className="flex justify-center gap-2 mt-6">
+          <div className="flex justify-center gap-2 mt-8">
             {scrollSnaps.map((_, index) => (
               <button
                 key={index}
                 onClick={() => scrollTo(index)}
-                className={`w-2 h-2 rounded-full transition-colors ${
+                className={cn(
+                  "h-2 md:h-2.5 rounded-full",
+                  "transition-all duration-300",
                   index === selectedIndex
-                    ? "bg-foreground"
-                    : "bg-border hover:bg-muted-foreground"
-                }`}
+                    ? "bg-foreground w-6 md:w-8"
+                    : "w-2 md:w-2.5 bg-border hover:bg-muted-foreground"
+                )}
                 aria-label={`Ir al slide ${index + 1}`}
               />
             ))}
