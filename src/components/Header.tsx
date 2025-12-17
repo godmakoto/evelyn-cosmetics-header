@@ -150,7 +150,7 @@ const Header = () => {
         </div>
 
         {/* Mobile Search */}
-        <div className="md:hidden px-4 py-3 bg-[hsl(0,0%,12%)]">
+        <div className="md:hidden px-4 py-3 bg-[hsl(0,0%,85%)]">
           <div className="search-container">
             <input type="text" placeholder="¿Qué estás buscando?" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="search-input" />
             <button className="search-button">
