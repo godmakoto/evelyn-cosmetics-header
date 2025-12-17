@@ -125,7 +125,7 @@ const Header = () => {
               </div>
 
               {/* Cart Button */}
-              <button onClick={() => setIsCartOpen(true)} className="cart-button ml-auto mr-2 md:ml-0 md:mr-0">
+              <button onClick={() => setIsCartOpen(true)} className="cart-button ml-auto mr-8 md:ml-0 md:mr-0">
                 <span className="text-sm font-medium text-foreground">Bs {finalTotal.toFixed(1)}</span>
                 <div className="relative">
                   <ShoppingCart className="w-6 h-6 md:w-7 md:h-7" />
