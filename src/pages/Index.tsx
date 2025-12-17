@@ -12,11 +12,11 @@ const Index = () => {
       {/* Hero Banner */}
       <HeroBanner />
       
-      {/* Categories Carousel */}
-      <CategoriesCarousel />
-      
       {/* Best Sellers Carousel */}
       <BestSellersCarousel />
+      
+      {/* Categories Carousel */}
+      <CategoriesCarousel />
       
       {/* Product Carousel */}
       <ProductCarousel />
