@@ -4,22 +4,15 @@ import { cn } from "@/lib/utils";
 import { useCart } from "@/contexts/CartContext";
 import CartDrawer from "./CartDrawer";
 import MobileMenu from "./MobileMenu";
-const categories = [{
-  name: "Cuidado Facial",
-  subcategories: ["Limpiadores", "Hidratantes", "Serums", "Contorno de Ojos", "Protección Solar"]
-}, {
-  name: "Cuidado Corporal",
-  subcategories: ["Cremas Corporales", "Exfoliantes", "Aceites", "Tratamientos"]
-}, {
-  name: "Maquillaje",
-  subcategories: ["Rostro", "Ojos", "Labios", "Accesorios"]
-}, {
-  name: "Cabello",
-  subcategories: ["Shampoo", "Acondicionador", "Tratamientos", "Styling"]
-}, {
-  name: "Dermocosmética",
-  subcategories: ["Anti-edad", "Acné", "Manchas", "Sensibilidad"]
-}];
+const categories = [
+  { name: "Serums", subcategories: [] },
+  { name: "Protectores Solares", subcategories: [] },
+  { name: "Hidratantes", subcategories: [] },
+  { name: "Sprays", subcategories: [] },
+  { name: "Tónicos y Esencias", subcategories: [] },
+  { name: "Coreano", subcategories: [] },
+  { name: "Limpiadores", subcategories: [] }
+];
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);

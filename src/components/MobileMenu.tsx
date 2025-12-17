@@ -9,26 +9,13 @@ import {
 import { cn } from "@/lib/utils";
 
 const categories = [
-  {
-    name: "Cuidado Facial",
-    subcategories: ["Limpiadores", "Hidratantes", "Serums", "Contorno de Ojos", "Protección Solar"],
-  },
-  {
-    name: "Cuidado Corporal",
-    subcategories: ["Cremas Corporales", "Exfoliantes", "Aceites", "Tratamientos"],
-  },
-  {
-    name: "Maquillaje",
-    subcategories: ["Rostro", "Ojos", "Labios", "Accesorios"],
-  },
-  {
-    name: "Cabello",
-    subcategories: ["Shampoo", "Acondicionador", "Tratamientos", "Styling"],
-  },
-  {
-    name: "Dermocosmética",
-    subcategories: ["Anti-edad", "Acné", "Manchas", "Sensibilidad"],
-  },
+  { name: "Serums", subcategories: [] },
+  { name: "Protectores Solares", subcategories: [] },
+  { name: "Hidratantes", subcategories: [] },
+  { name: "Sprays", subcategories: [] },
+  { name: "Tónicos y Esencias", subcategories: [] },
+  { name: "Coreano", subcategories: [] },
+  { name: "Limpiadores", subcategories: [] }
 ];
 
 interface MobileMenuProps {
@@ -88,45 +75,57 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
               <div className="ml-3 space-y-0.5">
                 {categories.map((category) => (
                   <div key={category.name}>
-                    <button
-                      onClick={() => toggleSubcategory(category.name)}
-                      className={cn(
-                        "w-full flex items-center justify-between px-3 py-2.5 text-sm font-medium text-foreground rounded-lg transition-all duration-200",
-                        expandedSubcategory === category.name 
-                          ? "bg-secondary/70" 
-                          : "hover:bg-secondary/40"
-                      )}
-                    >
-                      {category.name}
-                      <ChevronRight
-                        className={cn(
-                          "w-4 h-4 text-muted-foreground transition-transform duration-200",
-                          expandedSubcategory === category.name && "rotate-90"
-                        )}
-                      />
-                    </button>
+                    {category.subcategories.length > 0 ? (
+                      <>
+                        <button
+                          onClick={() => toggleSubcategory(category.name)}
+                          className={cn(
+                            "w-full flex items-center justify-between px-3 py-2.5 text-sm font-medium text-foreground rounded-lg transition-all duration-200",
+                            expandedSubcategory === category.name 
+                              ? "bg-secondary/70" 
+                              : "hover:bg-secondary/40"
+                          )}
+                        >
+                          {category.name}
+                          <ChevronRight
+                            className={cn(
+                              "w-4 h-4 text-muted-foreground transition-transform duration-200",
+                              expandedSubcategory === category.name && "rotate-90"
+                            )}
+                          />
+                        </button>
 
-                    <div
-                      className={cn(
-                        "overflow-hidden transition-all duration-250 ease-in-out",
-                        expandedSubcategory === category.name 
-                          ? "max-h-[500px] opacity-100 mt-0.5" 
-                          : "max-h-0 opacity-0"
-                      )}
-                    >
-                      <div className="ml-4 pl-3 border-l border-border/50 space-y-0.5">
-                        {category.subcategories.map((sub) => (
-                          <a
-                            key={sub}
-                            href="#"
-                            className="block px-3 py-2 text-xs text-muted-foreground hover:text-foreground hover:bg-secondary/30 rounded-lg transition-all duration-200"
-                            onClick={onClose}
-                          >
-                            {sub}
-                          </a>
-                        ))}
-                      </div>
-                    </div>
+                        <div
+                          className={cn(
+                            "overflow-hidden transition-all duration-250 ease-in-out",
+                            expandedSubcategory === category.name 
+                              ? "max-h-[500px] opacity-100 mt-0.5" 
+                              : "max-h-0 opacity-0"
+                          )}
+                        >
+                          <div className="ml-4 pl-3 border-l border-border/50 space-y-0.5">
+                            {category.subcategories.map((sub) => (
+                              <a
+                                key={sub}
+                                href="#"
+                                className="block px-3 py-2 text-xs text-muted-foreground hover:text-foreground hover:bg-secondary/30 rounded-lg transition-all duration-200"
+                                onClick={onClose}
+                              >
+                                {sub}
+                              </a>
+                            ))}
+                          </div>
+                        </div>
+                      </>
+                    ) : (
+                      <a
+                        href={`#${category.name.toLowerCase().replace(/\s+/g, '-').replace(/ó/g, 'o')}`}
+                        className="block px-3 py-2.5 text-sm font-medium text-foreground hover:bg-secondary/40 rounded-lg transition-all duration-200"
+                        onClick={onClose}
+                      >
+                        {category.name}
+                      </a>
+                    )}
                   </div>
                 ))}
               </div>
