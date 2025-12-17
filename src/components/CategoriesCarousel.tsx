@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import useEmblaCarousel from "embla-carousel-react";
+import Autoplay from "embla-carousel-autoplay";
 import { ChevronLeft, ChevronRight, Droplet, Sun, Droplets, SprayCan, Beaker, Heart, Sparkles } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
@@ -75,7 +76,7 @@ export const CategoriesCarousel = () => {
     align: "start",
     slidesToScroll: 1,
     containScroll: false
-  });
+  }, [Autoplay({ delay: 3000, stopOnInteraction: false })]);
 
   const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
   const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
