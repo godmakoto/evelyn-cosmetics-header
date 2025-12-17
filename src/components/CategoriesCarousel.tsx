@@ -76,7 +76,7 @@ export const CategoriesCarousel = () => {
     align: "start",
     slidesToScroll: 1,
     containScroll: false
-  }, [Autoplay({ delay: 3000, stopOnInteraction: false })]);
+  }, [Autoplay({ delay: 2000, stopOnInteraction: false })]);
 
   const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
   const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
