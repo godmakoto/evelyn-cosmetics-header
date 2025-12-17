@@ -85,20 +85,20 @@ export const BrandsCarousel = () => {
 
         {/* Carousel Container */}
         <div className="relative overflow-hidden" onMouseEnter={handleInteractionStart} onMouseLeave={handleInteractionEnd} onTouchStart={handleInteractionStart} onTouchEnd={handleInteractionEnd}>
-          {/* Navigation Arrows */}
+          {/* Navigation Arrows - Desktop only */}
           <button
             onClick={scrollLeft}
-            className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-white/80 hover:bg-white shadow-sm transition-all duration-300 hover:scale-110"
+            className="hidden lg:block absolute left-4 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-white/80 hover:bg-white shadow-sm transition-all duration-300 hover:scale-110"
             aria-label="Scroll left"
           >
-            <ChevronLeft className="w-4 h-4 md:w-5 md:h-5 text-[#2a2a2a]" />
+            <ChevronLeft className="w-5 h-5 text-[#2a2a2a]" />
           </button>
           <button
             onClick={scrollRight}
-            className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-white/80 hover:bg-white shadow-sm transition-all duration-300 hover:scale-110"
+            className="hidden lg:block absolute right-4 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-white/80 hover:bg-white shadow-sm transition-all duration-300 hover:scale-110"
             aria-label="Scroll right"
           >
-            <ChevronRight className="w-4 h-4 md:w-5 md:h-5 text-[#2a2a2a]" />
+            <ChevronRight className="w-5 h-5 text-[#2a2a2a]" />
           </button>
 
           {/* Fade Effects */}
