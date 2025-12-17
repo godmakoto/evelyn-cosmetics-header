@@ -183,10 +183,7 @@ export const BestSellersCarousel = () => {
                   )}
                 >
                   <div className="bg-background border border-border rounded-xl h-full flex flex-col overflow-hidden">
-                    <div className={cn(
-                      "overflow-hidden bg-secondary",
-                      isMobile ? "aspect-square" : "aspect-[4/5] lg:aspect-[3/4]"
-                    )}>
+                    <div className="overflow-hidden bg-secondary aspect-square">
                       <img
                         src={product.image}
                         alt={product.name}
