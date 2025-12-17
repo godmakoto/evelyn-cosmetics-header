@@ -4,6 +4,7 @@ import { CategoriesCarousel } from "@/components/CategoriesCarousel";
 import { ProductCarousel } from "@/components/ProductCarousel";
 import { BestSellersCarousel } from "@/components/BestSellersCarousel";
 import { BrandsCarousel } from "@/components/BrandsCarousel";
+import Footer from "@/components/Footer";
 
 const Index = () => {
   return (
@@ -25,7 +26,8 @@ const Index = () => {
       {/* Brands Carousel */}
       <BrandsCarousel />
       
-      {/* Main content */}
+      {/* Footer */}
+      <Footer />
     </div>
   );
 };
