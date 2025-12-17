@@ -131,81 +131,113 @@
 
 /* Header Styles */
 @layer components {
-  /* Main Header */
+  /* Main Header - Dark theme for contrast */
   .header-default {
-    @apply bg-background border-b border-border;
+    background-color: hsl(0 0% 8%);
+    @apply border-b border-border/20;
   }
 
   .header-scrolled {
-    @apply backdrop-blur-md border-b border-border shadow-sm;
-    background-color: hsl(var(--background) / 0.98);
+    background-color: hsl(0 0% 6% / 0.98);
+    @apply backdrop-blur-md border-b border-border/20 shadow-lg;
   }
 
   .header-main {
-    @apply bg-background;
+    background-color: hsl(0 0% 8%);
   }
 
-  /* Logo */
+  /* Logo - Light text on dark background */
   .logo-icon {
     @apply transition-transform duration-300 group-hover:scale-105;
   }
 
   .logo-text {
     font-family: var(--font-display);
-    @apply text-2xl font-semibold text-foreground leading-none tracking-tight;
+    @apply text-2xl font-semibold leading-none tracking-tight;
+    color: hsl(0 0% 100%);
   }
 
   .logo-subtext {
     font-family: var(--font-body);
-    @apply text-[10px] font-medium text-muted-foreground tracking-[0.25em] uppercase;
+    @apply text-[10px] font-medium tracking-[0.25em] uppercase;
+    color: hsl(0 0% 65%);
   }
 
-  /* Search */
+  /* Search - Subtle dark input */
   .search-container {
     @apply relative flex items-center w-full;
   }
 
   .search-input {
     @apply w-full h-11 pl-5 pr-14 rounded-full text-sm
-           bg-secondary border border-border
-           placeholder:text-muted-foreground
-           focus:outline-none focus:ring-2 focus:ring-primary/10 focus:border-primary/30
-           transition-all duration-200;
+           border transition-all duration-200;
+    background-color: hsl(0 0% 15%);
+    border-color: hsl(0 0% 25%);
+    color: hsl(0 0% 95%);
     font-family: var(--font-body);
+  }
+
+  .search-input::placeholder {
+    color: hsl(0 0% 55%);
+  }
+
+  .search-input:focus {
+    outline: none;
+    border-color: hsl(0 0% 40%);
+    box-shadow: 0 0 0 2px hsl(0 0% 30% / 0.3);
   }
 
   .search-button {
     @apply absolute right-1.5 h-8 w-8 flex items-center justify-center
-           bg-primary text-primary-foreground rounded-full
-           hover:bg-primary/90 transition-colors duration-200;
+           rounded-full transition-colors duration-200;
+    background-color: hsl(0 0% 100%);
+    color: hsl(0 0% 8%);
   }
 
-  /* Cart */
+  .search-button:hover {
+    background-color: hsl(0 0% 90%);
+  }
+
+  /* Cart - Light elements on dark */
   .cart-button {
     @apply flex items-center gap-3 px-4 py-2 rounded-full
-           hover:bg-secondary transition-colors duration-200;
+           transition-colors duration-200;
+    color: hsl(0 0% 100%);
+  }
+
+  .cart-button:hover {
+    background-color: hsl(0 0% 18%);
   }
 
   .cart-badge {
     @apply absolute -top-1 -right-1 w-4 h-4 flex items-center justify-center
-           bg-primary text-primary-foreground text-[10px] font-medium rounded-full;
+           text-[10px] font-medium rounded-full;
+    background-color: hsl(0 0% 100%);
+    color: hsl(0 0% 8%);
   }
 
   .cart-total {
-    @apply text-sm font-medium text-foreground hidden sm:block;
+    @apply text-sm font-medium hidden sm:block;
+    color: hsl(0 0% 100%);
     font-family: var(--font-body);
   }
 
-  /* Navigation Bar */
+  /* Navigation Bar - Slightly lighter than header */
   .nav-bar {
-    @apply bg-secondary/50 border-b border-border;
+    background-color: hsl(0 0% 12%);
+    @apply border-b border-border/10;
   }
 
   .nav-item {
-    @apply flex items-center gap-1.5 px-5 py-3.5 text-sm font-medium text-foreground/80
-           hover:text-foreground hover:bg-secondary rounded-lg
-           transition-all duration-200;
+    @apply flex items-center gap-1.5 px-5 py-3.5 text-sm font-medium
+           rounded-lg transition-all duration-200;
+    color: hsl(0 0% 75%);
     font-family: var(--font-body);
+  }
+
+  .nav-item:hover {
+    color: hsl(0 0% 100%);
+    background-color: hsl(0 0% 18%);
   }
 
   .nav-item-categories {
@@ -213,13 +245,16 @@
   }
 
   .nav-item-active {
-    @apply text-foreground bg-secondary;
+    color: hsl(0 0% 100%);
+    background-color: hsl(0 0% 20%);
   }
 
-  /* Mega Menu */
+  /* Mega Menu - Light dropdown for contrast */
   .mega-menu {
-    @apply absolute top-full left-0 mt-1 bg-background rounded-xl border border-border
+    @apply absolute top-full left-0 mt-1 rounded-xl border
            shadow-lg overflow-hidden z-50 min-w-[500px];
+    background-color: hsl(0 0% 100%);
+    border-color: hsl(0 0% 90%);
     box-shadow: var(--dropdown-shadow);
     transition: var(--transition-smooth);
   }
@@ -234,22 +269,33 @@
 
   /* Categories List */
   .categories-list {
-    @apply w-52 py-2 bg-secondary/30 border-r border-border;
+    @apply w-52 py-2 border-r;
+    background-color: hsl(0 0% 97%);
+    border-color: hsl(0 0% 92%);
   }
 
   .category-item {
-    @apply w-full flex items-center justify-between px-5 py-3 text-sm text-foreground/80
-           hover:text-foreground hover:bg-secondary transition-colors duration-150;
+    @apply w-full flex items-center justify-between px-5 py-3 text-sm
+           transition-colors duration-150;
+    color: hsl(0 0% 35%);
     font-family: var(--font-body);
   }
 
+  .category-item:hover {
+    color: hsl(0 0% 10%);
+    background-color: hsl(0 0% 93%);
+  }
+
   .category-item-active {
-    @apply text-foreground bg-secondary font-medium;
+    @apply font-medium;
+    color: hsl(0 0% 10%);
+    background-color: hsl(0 0% 93%);
   }
 
   /* Subcategories Panel */
   .subcategories-panel {
-    @apply flex-1 min-w-[280px] p-5 bg-background;
+    @apply flex-1 min-w-[280px] p-5;
+    background-color: hsl(0 0% 100%);
   }
 
   .subcategories-list {
@@ -257,17 +303,26 @@
   }
 
   .subcategories-title {
-    @apply text-lg font-semibold text-foreground mb-4 pb-2 border-b border-border;
+    @apply text-lg font-semibold mb-4 pb-2 border-b;
+    color: hsl(0 0% 10%);
+    border-color: hsl(0 0% 92%);
     font-family: var(--font-display);
   }
 
   .subcategory-item {
-    @apply block px-3 py-2 text-sm text-foreground/70 rounded-lg
-           hover:text-foreground hover:bg-secondary transition-colors duration-150;
+    @apply block px-3 py-2 text-sm rounded-lg
+           transition-colors duration-150;
+    color: hsl(0 0% 45%);
     font-family: var(--font-body);
   }
 
+  .subcategory-item:hover {
+    color: hsl(0 0% 10%);
+    background-color: hsl(0 0% 96%);
+  }
+
   .subcategories-placeholder {
-    @apply flex items-center justify-center h-full text-muted-foreground text-sm;
+    @apply flex items-center justify-center h-full text-sm;
+    color: hsl(0 0% 55%);
   }
 }
