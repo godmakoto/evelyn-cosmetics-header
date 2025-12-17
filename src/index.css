@@ -190,12 +190,12 @@
   .search-button {
     @apply absolute right-1.5 h-8 w-8 flex items-center justify-center
            rounded-full transition-colors duration-200;
-    background-color: hsl(0 0% 100%);
-    color: hsl(0 0% 8%);
+    background-color: hsl(0 0% 0%);
+    color: hsl(0 0% 100%);
   }
 
   .search-button:hover {
-    background-color: hsl(0 0% 90%);
+    background-color: hsl(0 0% 15%);
   }
 
   /* Cart - Light elements on dark */
