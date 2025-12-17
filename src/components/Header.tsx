@@ -150,7 +150,7 @@ const Header = () => {
         </div>
 
         {/* Mobile Search */}
-        <div className="md:hidden px-4 py-3 bg-muted-foreground">
+        <div className="md:hidden px-4 py-3 bg-[hsl(0,0%,12%)]">
           <div className="search-container">
             <input type="text" placeholder="¿Qué estás buscando?" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="search-input" />
             <button className="search-button">
@@ -174,7 +174,7 @@ const Header = () => {
                 <div className={cn("mega-menu", isCategoriesOpen ? "mega-menu-open" : "mega-menu-closed")}>
                   <div className="flex">
                     {/* Categories List */}
-                    <div className="categories-list">
+                    <div className="categories-list bg-accent">
                       {categories.map(category => <button key={category.name} className={cn("category-item", activeCategory === category.name && "category-item-active")} onMouseEnter={() => handleCategoryHover(category.name)}>
                           {category.name}
                           <ChevronDown className="w-4 h-4 -rotate-90" />
