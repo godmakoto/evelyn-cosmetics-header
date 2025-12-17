@@ -91,14 +91,14 @@ const Header = () => {
             <div className="flex items-center justify-between h-16 md:h-20">
               {/* Mobile: Hamburger + Logo */}
               <div className="flex items-center gap-3 md:hidden">
-                <button onClick={() => setIsMobileMenuOpen(true)} className="p-2 -ml-2 hover:bg-secondary rounded-lg transition-colors" aria-label="Abrir menú">
+                <button onClick={() => setIsMobileMenuOpen(true)} className="p-2 -ml-2 hover:bg-white/10 rounded-lg transition-colors text-white" aria-label="Abrir menú">
                   <Menu className="w-6 h-6" />
                 </button>
                 <a href="/" className="flex flex-col leading-tight">
-                  <span className="text-xl font-elegant tracking-wide text-foreground">
+                  <span className="text-xl font-elegant tracking-wide text-white">
                     Evelyn
                   </span>
-                  <span className="text-[0.6rem] font-normal text-muted-foreground tracking-widest uppercase">
+                  <span className="text-[0.6rem] font-normal text-gray-400 tracking-widest uppercase">
                     cosmetics
                   </span>
                 </a>
@@ -106,10 +106,10 @@ const Header = () => {
 
               {/* Desktop: Logo */}
               <a href="/" className="hidden md:flex flex-col leading-tight group">
-                <span className="text-3xl font-elegant tracking-wide text-foreground transition-colors group-hover:text-foreground/80">
+                <span className="text-3xl font-elegant tracking-wide text-white transition-colors group-hover:text-gray-200">
                   Evelyn
                 </span>
-                <span className="text-[0.65rem] font-normal text-muted-foreground tracking-widest uppercase">
+                <span className="text-[0.65rem] font-normal text-gray-400 tracking-widest uppercase">
                   cosmetics
                 </span>
               </a>
@@ -126,8 +126,8 @@ const Header = () => {
 
               {/* Cart Button */}
               <button onClick={() => setIsCartOpen(true)} className="cart-button ml-auto md:ml-0">
-                <span className="text-sm font-medium text-foreground">Bs {finalTotal.toFixed(1)}</span>
-                <div className="relative">
+                <span className="text-sm font-medium text-white">Bs {finalTotal.toFixed(1)}</span>
+                <div className="relative text-white">
                   <ShoppingCart className="w-6 h-6 md:w-7 md:h-7" />
                   {itemCount > 0 && <span className="cart-badge">{itemCount}</span>}
                 </div>
@@ -137,9 +137,9 @@ const Header = () => {
         </div>
 
         {/* Mobile Search */}
-        <div className="md:hidden px-4 py-3 bg-secondary">
-          <div className="search-container bg-secondary">
-            <input type="text" placeholder="¿Qué estás buscando?" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="search-input bg-background" />
+        <div className="md:hidden px-4 py-3 bg-[hsl(0,0%,12%)]">
+          <div className="search-container">
+            <input type="text" placeholder="¿Qué estás buscando?" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="search-input" />
             <button className="search-button">
               <Search className="w-5 h-5" />
             </button>
