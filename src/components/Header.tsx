@@ -4,15 +4,28 @@ import { cn } from "@/lib/utils";
 import { useCart } from "@/contexts/CartContext";
 import CartDrawer from "./CartDrawer";
 import MobileMenu from "./MobileMenu";
-const categories = [
-  { name: "Serums", subcategories: [] },
-  { name: "Protectores Solares", subcategories: [] },
-  { name: "Hidratantes", subcategories: [] },
-  { name: "Sprays", subcategories: [] },
-  { name: "Tónicos y Esencias", subcategories: [] },
-  { name: "Coreano", subcategories: [] },
-  { name: "Limpiadores", subcategories: [] }
-];
+const categories = [{
+  name: "Serums",
+  subcategories: []
+}, {
+  name: "Protectores Solares",
+  subcategories: []
+}, {
+  name: "Hidratantes",
+  subcategories: []
+}, {
+  name: "Sprays",
+  subcategories: []
+}, {
+  name: "Tónicos y Esencias",
+  subcategories: []
+}, {
+  name: "Coreano",
+  subcategories: []
+}, {
+  name: "Limpiadores",
+  subcategories: []
+}];
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
@@ -137,7 +150,7 @@ const Header = () => {
         </div>
 
         {/* Mobile Search */}
-        <div className="md:hidden px-4 py-3 bg-[hsl(0,0%,12%)]">
+        <div className="md:hidden px-4 py-3 bg-muted-foreground">
           <div className="search-container">
             <input type="text" placeholder="¿Qué estás buscando?" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="search-input" />
             <button className="search-button">
