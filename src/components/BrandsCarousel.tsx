@@ -9,14 +9,20 @@ export const BrandsCarousel = () => {
   const [position, setPosition] = useState(0);
   const animationRef = useRef<number>();
   const resumeTimeoutRef = useRef<NodeJS.Timeout>();
+  
+  // Touch/drag state
+  const isDragging = useRef(false);
+  const startX = useRef(0);
+  const startPosition = useRef(0);
 
   // Duplicate brands 4 times for infinite scroll
   const duplicatedBrands = [...brands, ...brands, ...brands, ...brands];
+
   useEffect(() => {
     const speed = 0.5; // pixels per frame
 
     const animate = () => {
-      if (!isPaused) {
+      if (!isPaused && !isDragging.current) {
         setPosition(prev => {
           const trackWidth = trackRef.current?.scrollWidth || 0;
           const singleSetWidth = trackWidth / 4;
@@ -38,6 +44,7 @@ export const BrandsCarousel = () => {
       }
     };
   }, [isPaused]);
+
   const handleInteractionStart = () => {
     setIsPaused(true);
     if (resumeTimeoutRef.current) {
@@ -66,6 +73,53 @@ export const BrandsCarousel = () => {
     handleInteractionEnd();
   };
 
+  // Touch handlers for swipe
+  const handleTouchStart = (e: React.TouchEvent) => {
+    isDragging.current = true;
+    startX.current = e.touches[0].clientX;
+    startPosition.current = position;
+    handleInteractionStart();
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!isDragging.current) return;
+    const currentX = e.touches[0].clientX;
+    const diff = currentX - startX.current;
+    setPosition(startPosition.current + diff);
+  };
+
+  const handleTouchEnd = () => {
+    isDragging.current = false;
+    handleInteractionEnd();
+  };
+
+  // Mouse handlers for drag (desktop fallback)
+  const handleMouseDown = (e: React.MouseEvent) => {
+    isDragging.current = true;
+    startX.current = e.clientX;
+    startPosition.current = position;
+    handleInteractionStart();
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging.current) return;
+    const currentX = e.clientX;
+    const diff = currentX - startX.current;
+    setPosition(startPosition.current + diff);
+  };
+
+  const handleMouseUp = () => {
+    isDragging.current = false;
+    handleInteractionEnd();
+  };
+
+  const handleMouseLeave = () => {
+    if (isDragging.current) {
+      isDragging.current = false;
+    }
+    handleInteractionEnd();
+  };
+
   useEffect(() => {
     return () => {
       if (resumeTimeoutRef.current) {
@@ -84,7 +138,17 @@ export const BrandsCarousel = () => {
         </div>
 
         {/* Carousel Container */}
-        <div className="relative overflow-hidden" onMouseEnter={handleInteractionStart} onMouseLeave={handleInteractionEnd} onTouchStart={handleInteractionStart} onTouchEnd={handleInteractionEnd}>
+        <div 
+          className="relative overflow-hidden cursor-grab active:cursor-grabbing" 
+          onMouseEnter={handleInteractionStart} 
+          onMouseLeave={handleMouseLeave}
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUp}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+        >
           {/* Navigation Arrows - Desktop only */}
           <button
             onClick={scrollLeft}
