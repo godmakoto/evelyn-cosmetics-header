@@ -134,12 +134,11 @@
   /* Main Header - Dark theme for contrast */
   .header-default {
     background-color: hsl(0 0% 8%);
-    @apply border-b border-border/20;
   }
 
   .header-scrolled {
     background-color: hsl(0 0% 6% / 0.98);
-    @apply backdrop-blur-md border-b border-border/20 shadow-lg;
+    @apply backdrop-blur-md shadow-lg;
   }
 
   .header-main {
