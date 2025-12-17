@@ -3,6 +3,7 @@ import HeroBanner from "@/components/HeroBanner";
 import { CategoriesCarousel } from "@/components/CategoriesCarousel";
 import { ProductCarousel } from "@/components/ProductCarousel";
 import { BestSellersCarousel } from "@/components/BestSellersCarousel";
+import { BrandsCarousel } from "@/components/BrandsCarousel";
 
 const Index = () => {
   return (
@@ -20,6 +21,9 @@ const Index = () => {
       
       {/* Product Carousel */}
       <ProductCarousel />
+      
+      {/* Brands Carousel */}
+      <BrandsCarousel />
       
       {/* Main content */}
     </div>
