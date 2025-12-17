@@ -225,7 +225,7 @@
   /* Navigation Bar - Light gray */
   .nav-bar {
     background-color: hsl(0 0% 85%);
-    @apply border-b border-border/10;
+    @apply shadow-md;
   }
 
   .nav-item {
