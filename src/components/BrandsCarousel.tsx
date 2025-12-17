@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+
 const brands = ["EUCERIN", "ISDIN", "LA ROCHE-POSAY", "NEUTROGENA", "NIVEA", "L'ORÉAL", "GARNIER", "BIODERMA", "CERAVE", "VICHY", "BYPHASSE", "REVOX"];
 export const BrandsCarousel = () => {
   const trackRef = useRef<HTMLDivElement>(null);
@@ -42,6 +44,7 @@ export const BrandsCarousel = () => {
       clearTimeout(resumeTimeoutRef.current);
     }
   };
+
   const handleInteractionEnd = () => {
     if (resumeTimeoutRef.current) {
       clearTimeout(resumeTimeoutRef.current);
@@ -50,6 +53,19 @@ export const BrandsCarousel = () => {
       setIsPaused(false);
     }, 3000);
   };
+
+  const scrollLeft = () => {
+    handleInteractionStart();
+    setPosition(prev => prev + 200);
+    handleInteractionEnd();
+  };
+
+  const scrollRight = () => {
+    handleInteractionStart();
+    setPosition(prev => prev - 200);
+    handleInteractionEnd();
+  };
+
   useEffect(() => {
     return () => {
       if (resumeTimeoutRef.current) {
@@ -69,6 +85,22 @@ export const BrandsCarousel = () => {
 
         {/* Carousel Container */}
         <div className="relative overflow-hidden" onMouseEnter={handleInteractionStart} onMouseLeave={handleInteractionEnd} onTouchStart={handleInteractionStart} onTouchEnd={handleInteractionEnd}>
+          {/* Navigation Arrows */}
+          <button
+            onClick={scrollLeft}
+            className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-white/80 hover:bg-white shadow-sm transition-all duration-300 hover:scale-110"
+            aria-label="Scroll left"
+          >
+            <ChevronLeft className="w-4 h-4 md:w-5 md:h-5 text-[#2a2a2a]" />
+          </button>
+          <button
+            onClick={scrollRight}
+            className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-white/80 hover:bg-white shadow-sm transition-all duration-300 hover:scale-110"
+            aria-label="Scroll right"
+          >
+            <ChevronRight className="w-4 h-4 md:w-5 md:h-5 text-[#2a2a2a]" />
+          </button>
+
           {/* Fade Effects */}
           <div className="absolute left-0 top-0 bottom-0 w-[50px] md:w-[100px] lg:w-[150px] bg-gradient-to-r from-[#f8f8f8] to-transparent z-10 pointer-events-none" />
           <div className="absolute right-0 top-0 bottom-0 w-[50px] md:w-[100px] lg:w-[150px] bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
