@@ -222,22 +222,22 @@
     font-family: var(--font-body);
   }
 
-  /* Navigation Bar - Lighter gray */
+  /* Navigation Bar - Light gray */
   .nav-bar {
-    background-color: hsl(0 0% 40%);
+    background-color: hsl(0 0% 85%);
     @apply border-b border-border/10;
   }
 
   .nav-item {
     @apply flex items-center gap-1.5 px-5 py-3.5 text-sm font-medium
            rounded-lg transition-all duration-200;
-    color: hsl(0 0% 75%);
+    color: hsl(0 0% 30%);
     font-family: var(--font-body);
   }
 
   .nav-item:hover {
-    color: hsl(0 0% 100%);
-    background-color: hsl(0 0% 18%);
+    color: hsl(0 0% 10%);
+    background-color: hsl(0 0% 75%);
   }
 
   .nav-item-categories {
@@ -245,8 +245,8 @@
   }
 
   .nav-item-active {
-    color: hsl(0 0% 100%);
-    background-color: hsl(0 0% 20%);
+    color: hsl(0 0% 10%);
+    background-color: hsl(0 0% 75%);
   }
 
   /* Mega Menu - Light dropdown for contrast */
