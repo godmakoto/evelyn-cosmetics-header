@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import useEmblaCarousel from "embla-carousel-react";
-import { ChevronLeft, ChevronRight, Sparkles, Hand, Palette, Scissors, FlaskConical } from "lucide-react";
+import { ChevronLeft, ChevronRight, Droplet, Sun, Droplets, SprayCan, Beaker, Heart, Sparkles } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 
@@ -13,34 +13,46 @@ interface Category {
 
 const categories: Category[] = [
   {
-    id: "facial",
-    name: "Cuidado Facial",
+    id: "serums",
+    name: "Serums",
+    icon: <Droplet className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
+    href: "#serums"
+  },
+  {
+    id: "protectores-solares",
+    name: "Protectores Solares",
+    icon: <Sun className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
+    href: "#protectores-solares"
+  },
+  {
+    id: "hidratantes",
+    name: "Hidratantes",
+    icon: <Droplets className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
+    href: "#hidratantes"
+  },
+  {
+    id: "sprays",
+    name: "Sprays",
+    icon: <SprayCan className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
+    href: "#sprays"
+  },
+  {
+    id: "tonicos-esencias",
+    name: "Tónicos y Esencias",
+    icon: <Beaker className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
+    href: "#tonicos-esencias"
+  },
+  {
+    id: "coreano",
+    name: "Coreano",
+    icon: <Heart className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
+    href: "#coreano"
+  },
+  {
+    id: "limpiadores",
+    name: "Limpiadores",
     icon: <Sparkles className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
-    href: "#cuidado-facial"
-  },
-  {
-    id: "corporal",
-    name: "Cuidado Corporal",
-    icon: <Hand className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
-    href: "#cuidado-corporal"
-  },
-  {
-    id: "maquillaje",
-    name: "Maquillaje",
-    icon: <Palette className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
-    href: "#maquillaje"
-  },
-  {
-    id: "cabello",
-    name: "Cabello",
-    icon: <Scissors className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
-    href: "#cabello"
-  },
-  {
-    id: "dermocosmetica",
-    name: "Dermocosmética",
-    icon: <FlaskConical className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
-    href: "#dermocosmetica"
+    href: "#limpiadores"
   }
 ];
 
