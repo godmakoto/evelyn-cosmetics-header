@@ -1,10 +1,11 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { Search, ShoppingCart, ChevronDown, Menu } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useCart } from "@/contexts/CartContext";
 import CartDrawer from "./CartDrawer";
 import MobileMenu from "./MobileMenu";
+
 const categories = [{
   name: "Serums",
   subcategories: []
@@ -27,17 +28,44 @@ const categories = [{
   name: "Limpiadores",
   subcategories: []
 }];
+
+// ========== CONFIGURACIÓN AJUSTABLE ==========
+// Umbral de scroll antes de cambiar dirección (evita flicker)
+const SCROLL_THRESHOLD = 8;
+// Duración de la animación en ms
+const ANIMATION_DURATION = 220;
+// Punto donde siempre se muestra el header
+const TOP_THRESHOLD = 10;
+// ==============================================
+
 const Header = () => {
   const [headerHeight, setHeaderHeight] = useState(0);
+  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
   const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  
   const headerRef = useRef<HTMLElement | null>(null);
   const dropdownRef = useRef<HTMLLIElement>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const lastScrollY = useRef(0);
+  const ticking = useRef(false);
+  
   const { finalTotal, itemCount, setIsCartOpen } = useCart();
 
+  // Detectar preferencia de reducción de movimiento
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setPrefersReducedMotion(mediaQuery.matches);
+    
+    const handler = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches);
+    mediaQuery.addEventListener('change', handler);
+    return () => mediaQuery.removeEventListener('change', handler);
+  }, []);
+
+  // Medir altura del header
   useEffect(() => {
     const el = headerRef.current;
     if (!el) return;
@@ -50,6 +78,45 @@ const Header = () => {
     ro.observe(el);
     return () => ro.disconnect();
   }, []);
+
+  // Lógica de scroll tipo Facebook
+  const handleScroll = useCallback(() => {
+    const currentScrollY = window.scrollY;
+    
+    // Si estamos cerca del top, siempre mostrar
+    if (currentScrollY <= TOP_THRESHOLD) {
+      setIsHeaderVisible(true);
+      lastScrollY.current = currentScrollY;
+      ticking.current = false;
+      return;
+    }
+    
+    const scrollDelta = currentScrollY - lastScrollY.current;
+    
+    // Solo actuar si superamos el umbral (evita flicker)
+    if (Math.abs(scrollDelta) >= SCROLL_THRESHOLD) {
+      // Scroll hacia abajo = ocultar, hacia arriba = mostrar
+      setIsHeaderVisible(scrollDelta < 0);
+      lastScrollY.current = currentScrollY;
+    }
+    
+    ticking.current = false;
+  }, []);
+
+  useEffect(() => {
+    const onScroll = () => {
+      if (!ticking.current) {
+        requestAnimationFrame(handleScroll);
+        ticking.current = true;
+      }
+    };
+    
+    lastScrollY.current = window.scrollY;
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [handleScroll]);
+
+  // Click outside para cerrar dropdown
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -60,23 +127,31 @@ const Header = () => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
   const handleCategoriesEnter = () => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
     setIsCategoriesOpen(true);
   };
+
   const handleCategoriesLeave = () => {
     timeoutRef.current = setTimeout(() => {
       setIsCategoriesOpen(false);
       setActiveCategory(null);
     }, 150);
   };
+
   const handleCategoryHover = (categoryName: string) => {
     setActiveCategory(categoryName);
   };
+
   return <>
       <header
         ref={headerRef}
-        className="relative z-50 w-full"
+        className="fixed top-0 left-0 right-0 z-[9999] w-full"
+        style={{
+          transform: isHeaderVisible ? 'translateY(0)' : 'translateY(-100%)',
+          transition: prefersReducedMotion ? 'none' : `transform ${ANIMATION_DURATION}ms ease`,
+        }}
       >
         {/* Main Header */}
         <div className="header-main">
@@ -198,6 +273,8 @@ const Header = () => {
         </nav>
       </header>
 
+      {/* Spacer para evitar que el contenido quede tapado por el header fixed */}
+      <div aria-hidden style={{ height: headerHeight }} />
 
       {/* Mobile Menu Drawer */}
       <MobileMenu isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)} />
