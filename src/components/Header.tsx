@@ -64,26 +64,25 @@ const Header = () => {
 
   useEffect(() => {
     const sentinel = sentinelRef.current;
-    if (!sentinel || typeof IntersectionObserver === "undefined") return;
+    if (!sentinel || typeof IntersectionObserver === "undefined" || !headerHeight) return;
 
     const io = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          // Header is still in the normal flow area
+          // Sentinel visible = header should be in normal flow
           setIsFixed(false);
           setIsHeaderVisible(false);
         } else {
-          // Header is out of view; enable fixed mode (starts hidden)
+          // Sentinel not visible = switch to fixed mode, hidden by default
           setIsFixed(true);
-          setIsHeaderVisible(false);
         }
       },
-      { threshold: 0 }
+      { threshold: 0, rootMargin: `-${headerHeight}px 0px 0px 0px` }
     );
 
     io.observe(sentinel);
     return () => io.disconnect();
-  }, []);
+  }, [headerHeight]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -128,13 +127,16 @@ const Header = () => {
     setActiveCategory(categoryName);
   };
   return <>
+      {/* Sentinel at very top - triggers when scrolled past header height */}
+      <div ref={sentinelRef} aria-hidden className="absolute top-0 left-0 h-px w-full pointer-events-none" />
+      
       <header
         ref={headerRef}
         className={cn(
           "z-50 w-full transition-transform duration-300 ease-in-out",
-          isFixed ? "fixed top-0 left-0 right-0" : "relative",
+          isFixed ? "fixed top-0 left-0 right-0 -translate-y-full" : "relative",
           isScrolled ? "header-scrolled" : "header-default",
-          isFixed && (isHeaderVisible ? "translate-y-0" : "-translate-y-full")
+          isFixed && isHeaderVisible && "!translate-y-0"
         )}
       >
         {/* Main Header */}
@@ -252,9 +254,8 @@ const Header = () => {
         </nav>
       </header>
 
-      {/* Placeholder + sentinel: keeps layout stable and tells us when header left the viewport */}
-      <div aria-hidden style={{ height: isFixed ? headerHeight : 0 }} />
-      <div ref={sentinelRef} aria-hidden className="h-px w-full" />
+      {/* Placeholder: keeps layout stable when header is fixed */}
+      {isFixed && <div aria-hidden style={{ height: headerHeight }} />}
 
       {/* Mobile Menu Drawer */}
       <MobileMenu isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)} />
