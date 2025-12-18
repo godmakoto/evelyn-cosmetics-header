@@ -42,7 +42,7 @@ const FilterSection = ({
   onClear,
 }: FilterSectionProps) => {
   const [isFixed, setIsFixed] = useState(false);
-  const [isVisible, setIsVisible] = useState(true);
+  const [isVisible, setIsVisible] = useState(false);
   const lastScrollY = useRef(0);
   const filterRef = useRef<HTMLDivElement | null>(null);
 
@@ -51,23 +51,21 @@ const FilterSection = ({
       const currentScrollY = window.scrollY;
       const headerHeight = 200;
       const isScrollingUp = currentScrollY < lastScrollY.current;
+      const scrollDelta = Math.abs(currentScrollY - lastScrollY.current);
 
       if (currentScrollY < headerHeight) {
+        // Above header: relative position, always visible
         setIsFixed(false);
         setIsVisible(true);
       } else {
-        const wasAboveThreshold = lastScrollY.current < headerHeight;
-        
-        // If just crossed threshold going down, start hidden
-        if (wasAboveThreshold && !isScrollingUp) {
-          setIsFixed(true);
+        // Below header: fixed position
+        setIsFixed(true);
+        // Only show when scrolling up with significant movement
+        if (scrollDelta > 5) {
+          setIsVisible(isScrollingUp);
+        } else if (!isVisible && !isScrollingUp) {
+          // Ensure stays hidden when scrolling down
           setIsVisible(false);
-        } else {
-          setIsFixed(true);
-          const scrollDelta = Math.abs(currentScrollY - lastScrollY.current);
-          if (scrollDelta > 5) {
-            setIsVisible(isScrollingUp);
-          }
         }
       }
       lastScrollY.current = currentScrollY;
