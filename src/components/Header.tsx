@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Search, ShoppingCart, ChevronDown, Menu } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useCart } from "@/contexts/CartContext";
@@ -107,25 +108,25 @@ const Header = () => {
                 <button onClick={() => setIsMobileMenuOpen(true)} className="p-2 -ml-2 hover:bg-white/10 rounded-lg transition-colors text-white" aria-label="Abrir menú">
                   <Menu className="w-6 h-6" />
                 </button>
-                <a href="/" className="flex flex-col leading-tight">
+                <Link to="/" className="flex flex-col leading-tight">
                   <span className="text-xl font-elegant tracking-wide text-white">
                     Evelyn
                   </span>
                   <span className="text-[0.6rem] font-normal text-gray-400 tracking-widest uppercase">
                     cosmetics
                   </span>
-                </a>
+                </Link>
               </div>
 
               {/* Desktop: Logo */}
-              <a href="/" className="hidden md:flex flex-col leading-tight group">
+              <Link to="/" className="hidden md:flex flex-col leading-tight group">
                 <span className="text-3xl font-elegant tracking-wide text-white transition-colors group-hover:text-gray-200">
                   Evelyn
                 </span>
                 <span className="text-[0.65rem] font-normal text-gray-400 tracking-widest uppercase">
                   cosmetics
                 </span>
-              </a>
+              </Link>
 
               {/* Desktop: Search Bar */}
               <div className="hidden md:flex flex-1 max-w-xl mx-8">
@@ -199,9 +200,9 @@ const Header = () => {
 
               {/* Other Nav Items */}
               <li>
-                <a href="#" className="nav-item">
+                <Link to="/tienda" className="nav-item">
                   Tienda
-                </a>
+                </Link>
               </li>
               <li>
                 <a href="#" className="nav-item">
