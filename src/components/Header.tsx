@@ -39,7 +39,6 @@ const TOP_THRESHOLD = 10;
 // ==============================================
 
 const Header = () => {
-  const [headerHeight, setHeaderHeight] = useState(0);
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
   const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
@@ -65,19 +64,6 @@ const Header = () => {
     return () => mediaQuery.removeEventListener('change', handler);
   }, []);
 
-  // Medir altura del header
-  useEffect(() => {
-    const el = headerRef.current;
-    if (!el) return;
-
-    const update = () => setHeaderHeight(el.offsetHeight);
-    update();
-
-    if (typeof ResizeObserver === "undefined") return;
-    const ro = new ResizeObserver(update);
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, []);
 
   // Lógica de scroll tipo Facebook
   const handleScroll = useCallback(() => {
@@ -147,10 +133,10 @@ const Header = () => {
   return <>
       <header
         ref={headerRef}
-        className="fixed top-0 left-0 right-0 z-[9999] w-full"
+        className="sticky top-0 z-[9999] w-full will-change-transform"
         style={{
           transform: isHeaderVisible ? 'translateY(0)' : 'translateY(-100%)',
-          transition: prefersReducedMotion ? 'none' : `transform ${ANIMATION_DURATION}ms ease`,
+          transition: prefersReducedMotion ? 'none' : `transform ${ANIMATION_DURATION}ms cubic-bezier(0.4, 0, 0.2, 1)`,
         }}
       >
         {/* Main Header */}
@@ -272,9 +258,6 @@ const Header = () => {
           </div>
         </nav>
       </header>
-
-      {/* Spacer para evitar que el contenido quede tapado por el header fixed */}
-      <div aria-hidden style={{ height: headerHeight }} />
 
       {/* Mobile Menu Drawer */}
       <MobileMenu isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)} />
