@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import {
   Sheet,
@@ -43,10 +44,10 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
       <SheetContent side="left" className="w-[300px] sm:w-[350px] p-0">
         <SheetHeader className="px-6 py-4 border-b border-border">
           <SheetTitle className="text-left">
-            <a href="/" className="flex flex-col leading-tight">
+            <Link to="/" className="flex flex-col leading-tight" onClick={onClose}>
               <span className="text-2xl font-elegant tracking-wide text-foreground">Evelyn</span>
               <span className="text-xs font-normal text-muted-foreground tracking-widest uppercase" style={{ fontSize: '0.65rem' }}>cosmetics</span>
-            </a>
+            </Link>
           </SheetTitle>
         </SheetHeader>
 
@@ -134,13 +135,13 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
 
           {/* Other Nav Items */}
           <div className="mt-2 px-4 space-y-1">
-            <a
-              href="#"
+            <Link
+              to="/tienda"
               className="block px-3 py-3 text-sm font-medium text-foreground hover:bg-secondary rounded-lg transition-colors"
               onClick={onClose}
             >
               Tienda
-            </a>
+            </Link>
             <a
               href="#"
               className="block px-3 py-3 text-sm font-medium text-foreground hover:bg-secondary rounded-lg transition-colors"
