@@ -64,6 +64,33 @@ const Header = () => {
     return () => mediaQuery.removeEventListener('change', handler);
   }, []);
 
+  // Medir y exponer altura del header como CSS variable
+  useEffect(() => {
+    const updateHeaderHeight = () => {
+      if (headerRef.current) {
+        const height = headerRef.current.getBoundingClientRect().height;
+        document.documentElement.style.setProperty('--header-height', `${height}px`);
+      }
+    };
+
+    // Medir inicialmente
+    updateHeaderHeight();
+
+    // Remedir en resize
+    window.addEventListener('resize', updateHeaderHeight);
+    
+    // Observer para cambios de layout (breakpoints, contenido dinámico)
+    const resizeObserver = new ResizeObserver(updateHeaderHeight);
+    if (headerRef.current) {
+      resizeObserver.observe(headerRef.current);
+    }
+
+    return () => {
+      window.removeEventListener('resize', updateHeaderHeight);
+      resizeObserver.disconnect();
+    };
+  }, []);
+
 
   // Lógica de scroll tipo Facebook
   const handleScroll = useCallback(() => {
