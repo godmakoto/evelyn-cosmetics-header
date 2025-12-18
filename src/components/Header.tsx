@@ -31,7 +31,7 @@ const Header = () => {
   const location = useLocation();
   const isTiendaPage = location.pathname.startsWith("/tienda");
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
+  const [isHeaderVisible, setIsHeaderVisible] = useState(!isTiendaPage);
   const [isTiendaFixed, setIsTiendaFixed] = useState(false);
   const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
@@ -52,25 +52,22 @@ const Header = () => {
       setIsScrolled(currentScrollY > scrollThreshold);
 
       if (isTiendaPage) {
-        // Tienda: Show fixed header when scrolling up after passing header
         const isScrollingUp = currentScrollY < lastScrollY.current;
+        const scrollDelta = Math.abs(currentScrollY - lastScrollY.current);
         
         if (currentScrollY < headerHeight) {
+          // Above header: relative position, always visible
           setIsTiendaFixed(false);
           setIsHeaderVisible(true);
         } else {
-          const wasAboveThreshold = lastScrollY.current < headerHeight;
-          
-          // If just crossed threshold going down, start hidden
-          if (wasAboveThreshold && !isScrollingUp) {
-            setIsTiendaFixed(true);
+          // Below header: fixed position
+          setIsTiendaFixed(true);
+          // Only show when scrolling up with significant movement
+          if (scrollDelta > 5) {
+            setIsHeaderVisible(isScrollingUp);
+          } else if (!isHeaderVisible && !isScrollingUp) {
+            // Ensure stays hidden when scrolling down
             setIsHeaderVisible(false);
-          } else {
-            setIsTiendaFixed(true);
-            const scrollDelta = Math.abs(currentScrollY - lastScrollY.current);
-            if (scrollDelta > 5) {
-              setIsHeaderVisible(isScrollingUp);
-            }
           }
         }
         lastScrollY.current = currentScrollY;
