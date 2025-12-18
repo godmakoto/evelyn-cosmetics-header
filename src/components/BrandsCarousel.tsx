@@ -183,20 +183,20 @@ export const BrandsCarousel = () => {
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
         >
-          {/* Navigation Arrows - Desktop only (dark style for contrast) */}
+          {/* Navigation Arrows - Desktop only */}
           <button
             onClick={scrollLeft}
-            className="hidden lg:block absolute left-4 top-1/2 -translate-y-1/2 z-20 p-2.5 rounded-full bg-[#1a1a1a] hover:bg-black border border-[#333] shadow-md transition-all duration-300 hover:scale-110"
+            className="hidden lg:block absolute left-4 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-white/80 hover:bg-white shadow-sm transition-all duration-300 hover:scale-110"
             aria-label="Scroll left"
           >
-            <ChevronLeft className="w-5 h-5 text-white" />
+            <ChevronLeft className="w-5 h-5 text-[#2a2a2a]" />
           </button>
           <button
             onClick={scrollRight}
-            className="hidden lg:block absolute right-4 top-1/2 -translate-y-1/2 z-20 p-2.5 rounded-full bg-[#1a1a1a] hover:bg-black border border-[#333] shadow-md transition-all duration-300 hover:scale-110"
+            className="hidden lg:block absolute right-4 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-white/80 hover:bg-white shadow-sm transition-all duration-300 hover:scale-110"
             aria-label="Scroll right"
           >
-            <ChevronRight className="w-5 h-5 text-white" />
+            <ChevronRight className="w-5 h-5 text-[#2a2a2a]" />
           </button>
 
           {/* Fade Effects */}
