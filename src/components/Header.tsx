@@ -52,18 +52,19 @@ const Header = () => {
 
       setIsScrolled(currentScrollY > scrollThreshold);
 
-      if (currentScrollY < headerHeight) {
-        // Header still in view: relative positioning
+      if (currentScrollY <= headerHeight) {
+        // Header in view area: relative positioning, no fixed mode
         setIsFixed(false);
-        setIsHeaderVisible(true);
+        setIsHeaderVisible(false); // Not relevant when relative
       } else {
-        // Header scrolled out: switch to fixed mode
-        setIsFixed(true);
-        if (scrollDelta > 5) {
-          setIsHeaderVisible(isScrollingUp);
-        }
-        if (!isScrollingUp) {
+        // Header scrolled out: fixed mode
+        if (!isFixed) {
+          // Just became fixed - start hidden
+          setIsFixed(true);
           setIsHeaderVisible(false);
+        } else if (scrollDelta > 5) {
+          // Already fixed - show/hide based on scroll direction
+          setIsHeaderVisible(isScrollingUp);
         }
       }
 
@@ -72,7 +73,7 @@ const Header = () => {
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [isFixed]);
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -226,8 +227,8 @@ const Header = () => {
         </nav>
       </header>
 
-      {/* Spacer to prevent content jump when header becomes fixed */}
-      {isFixed && <div className="h-[calc(4rem+3rem)] md:h-[calc(5rem+3rem)]" />}
+      {/* Spacer only when header is fixed AND visible */}
+      {isFixed && isHeaderVisible && <div className="h-[calc(4rem+3rem)] md:h-[calc(5rem+3rem)]" />}
 
       {/* Mobile Menu Drawer */}
       <MobileMenu isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)} />
