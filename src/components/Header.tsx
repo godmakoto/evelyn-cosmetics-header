@@ -133,7 +133,7 @@ const Header = () => {
   return <>
       <header
         ref={headerRef}
-        className="sticky top-0 z-[9999] w-full will-change-transform"
+        className="fixed top-0 left-0 right-0 z-[9999] w-full will-change-transform"
         style={{
           transform: isHeaderVisible ? 'translateY(0)' : 'translateY(-100%)',
           transition: prefersReducedMotion ? 'none' : `transform ${ANIMATION_DURATION}ms cubic-bezier(0.4, 0, 0.2, 1)`,
