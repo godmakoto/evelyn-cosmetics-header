@@ -135,13 +135,6 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
 
           {/* Other Nav Items */}
           <div className="mt-2 px-4 space-y-1">
-            <Link
-              to="/tienda"
-              className="block px-3 py-3 text-sm font-medium text-foreground hover:bg-secondary rounded-lg transition-colors"
-              onClick={onClose}
-            >
-              Tienda
-            </Link>
             <a
               href="#"
               className="block px-3 py-3 text-sm font-medium text-foreground hover:bg-secondary rounded-lg transition-colors"

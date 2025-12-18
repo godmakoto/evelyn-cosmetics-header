@@ -31,49 +31,79 @@ const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isFixed, setIsFixed] = useState(false);
   const [isHeaderVisible, setIsHeaderVisible] = useState(false);
+  const [headerHeight, setHeaderHeight] = useState(0);
   const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const headerRef = useRef<HTMLElement | null>(null);
+  const sentinelRef = useRef<HTMLDivElement | null>(null);
+  const isFixedRef = useRef(false);
   const dropdownRef = useRef<HTMLLIElement>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const lastScrollY = useRef(0);
   const { finalTotal, itemCount, setIsCartOpen } = useCart();
 
-  // Smart scroll behavior: relative at start, fixed with show/hide after scrolling past header
+  // Smart scroll behavior: start in-flow; when header leaves viewport, switch to fixed and reveal on scroll up
+  useEffect(() => {
+    isFixedRef.current = isFixed;
+  }, [isFixed]);
+
+  useEffect(() => {
+    const el = headerRef.current;
+    if (!el) return;
+
+    const update = () => setHeaderHeight(el.offsetHeight);
+    update();
+
+    if (typeof ResizeObserver === "undefined") return;
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const sentinel = sentinelRef.current;
+    if (!sentinel || typeof IntersectionObserver === "undefined") return;
+
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          // Header is still in the normal flow area
+          setIsFixed(false);
+          setIsHeaderVisible(false);
+        } else {
+          // Header is out of view; enable fixed mode (starts hidden)
+          setIsFixed(true);
+          setIsHeaderVisible(false);
+        }
+      },
+      { threshold: 0 }
+    );
+
+    io.observe(sentinel);
+    return () => io.disconnect();
+  }, []);
+
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-      const scrollThreshold = 10;
-      const headerHeight = headerRef.current?.offsetHeight ?? 200;
-      const isScrollingUp = currentScrollY < lastScrollY.current;
-      const scrollDelta = Math.abs(currentScrollY - lastScrollY.current);
+      setIsScrolled(currentScrollY > 10);
 
-      setIsScrolled(currentScrollY > scrollThreshold);
+      if (isFixedRef.current) {
+        const isScrollingUp = currentScrollY < lastScrollY.current;
+        const scrollDelta = Math.abs(currentScrollY - lastScrollY.current);
 
-      if (currentScrollY <= headerHeight) {
-        // Header in view area: relative positioning, no fixed mode
-        setIsFixed(false);
-        setIsHeaderVisible(false); // Not relevant when relative
-      } else {
-        // Header scrolled out: fixed mode
-        if (!isFixed) {
-          // Just became fixed - start hidden
-          setIsFixed(true);
-          setIsHeaderVisible(false);
-        } else if (scrollDelta > 5) {
-          // Already fixed - show/hide based on scroll direction
-          setIsHeaderVisible(isScrollingUp);
-        }
+        if (scrollDelta > 5) setIsHeaderVisible(isScrollingUp);
       }
 
       lastScrollY.current = currentScrollY;
     };
 
+    lastScrollY.current = window.scrollY;
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [isFixed]);
+  }, []);
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -208,11 +238,6 @@ const Header = () => {
 
               {/* Other Nav Items */}
               <li>
-                <Link to="/tienda" className="nav-item">
-                  Tienda
-                </Link>
-              </li>
-              <li>
                 <a href="#" className="nav-item">
                   Blog
                 </a>
@@ -227,8 +252,9 @@ const Header = () => {
         </nav>
       </header>
 
-      {/* Spacer only when header is fixed AND visible */}
-      {isFixed && isHeaderVisible && <div className="h-[calc(4rem+3rem)] md:h-[calc(5rem+3rem)]" />}
+      {/* Placeholder + sentinel: keeps layout stable and tells us when header left the viewport */}
+      <div aria-hidden style={{ height: isFixed ? headerHeight : 0 }} />
+      <div ref={sentinelRef} aria-hidden className="h-px w-full" />
 
       {/* Mobile Menu Drawer */}
       <MobileMenu isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)} />
