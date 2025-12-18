@@ -49,25 +49,23 @@ const FilterSection = ({
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-      const headerHeight = 200;
       const isScrollingUp = currentScrollY < lastScrollY.current;
       const scrollDelta = Math.abs(currentScrollY - lastScrollY.current);
 
-      if (currentScrollY < headerHeight) {
-        // Above header: relative position, always visible
+      const headerEl = document.querySelector("[data-ti-header]") as HTMLElement | null;
+      const headerElHeight = headerEl?.offsetHeight ?? 0;
+      const filterElHeight = filterRef.current?.offsetHeight ?? 0;
+      const activationPoint = Math.max(headerElHeight + filterElHeight, 400);
+
+      if (currentScrollY < activationPoint) {
         setIsFixed(false);
         setIsVisible(true);
       } else {
-        // Below header: fixed position
         setIsFixed(true);
-        // Only show when scrolling up with significant movement
-        if (scrollDelta > 5) {
-          setIsVisible(isScrollingUp);
-        } else if (!isVisible && !isScrollingUp) {
-          // Ensure stays hidden when scrolling down
-          setIsVisible(false);
-        }
+        if (scrollDelta > 5) setIsVisible(isScrollingUp);
+        if (!isScrollingUp) setIsVisible(false);
       }
+
       lastScrollY.current = currentScrollY;
     };
 
@@ -103,6 +101,7 @@ const FilterSection = ({
   return (
       <div
         ref={filterRef}
+        data-ti-filter
         className={cn(
           "bg-[#fafafa] border-b border-[#e0e0e0] px-4 pt-6 pb-4 sm:py-4 transition-transform duration-300 ease-in-out",
           isFixed 
