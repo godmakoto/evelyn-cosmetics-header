@@ -43,7 +43,7 @@ const Header = () => {
     setIsCartOpen
   } = useCart();
 
-  // Smart scroll behavior: hide on scroll down, show on scroll up
+  // Smart scroll behavior: stay visible at start, hide after scrolling further
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
@@ -52,8 +52,8 @@ const Header = () => {
       // Update scrolled state for shadow/styling
       setIsScrolled(currentScrollY > scrollThreshold);
 
-      // Don't hide header if near top of page
-      if (currentScrollY < 50) {
+      // Keep visible until user scrolls past 250px
+      if (currentScrollY < 250) {
         setIsHeaderVisible(true);
         lastScrollY.current = currentScrollY;
         return;
