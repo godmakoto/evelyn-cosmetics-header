@@ -1,10 +1,17 @@
 import { useState, useEffect, useRef } from "react";
 import { X, ChevronDown } from "lucide-react";
 import { brands, categories } from "@/data/products";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+
 interface FilterSectionProps {
   maxPrice: string;
   setMaxPrice: (value: string) => void;
@@ -19,6 +26,7 @@ interface FilterSectionProps {
   activeFilterText: string;
   onClear: () => void;
 }
+
 const FilterSection = ({
   maxPrice,
   setMaxPrice,
@@ -31,7 +39,7 @@ const FilterSection = ({
   sortBy,
   setSortBy,
   activeFilterText,
-  onClear
+  onClear,
 }: FilterSectionProps) => {
   const [isVisible, setIsVisible] = useState(true);
   const lastScrollY = useRef(0);
@@ -58,24 +66,27 @@ const FilterSection = ({
         lastScrollY.current = currentScrollY;
       }
     };
-    window.addEventListener("scroll", handleScroll, {
-      passive: true
-    });
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
   const subcategories = selectedCategory ? categories[selectedCategory] || [] : [];
+
   const handleBrandChange = (value: string) => {
     setSelectedBrand(value === "all" ? "" : value);
     setMaxPrice("");
     setSelectedCategory("");
     setSelectedSubcategory("");
   };
+
   const handleCategoryChange = (value: string) => {
     setSelectedCategory(value === "all" ? "" : value);
     setSelectedBrand("");
     setMaxPrice("");
     setSelectedSubcategory("");
   };
+
   const handlePriceChange = (value: string) => {
     setMaxPrice(value);
     if (value) {
@@ -84,18 +95,45 @@ const FilterSection = ({
       setSelectedSubcategory("");
     }
   };
-  return <>
-      <div className={cn("fixed left-0 right-0 z-40 bg-[#fafafa] border-b border-[#e0e0e0] px-4 pt-6 pb-4 sm:py-4 transition-transform duration-300 ease-in-out", "top-[calc(4rem+3rem)] md:top-[calc(5rem+3rem)]", isVisible ? "translate-y-0" : "-translate-y-[200%]")}>
+
+  return (
+    <>
+      <div
+        className={cn(
+          "fixed left-0 right-0 z-40 bg-[#fafafa] border-b border-[#e0e0e0] px-4 pt-6 pb-4 sm:py-4 transition-transform duration-300 ease-in-out",
+          "top-[calc(4rem+3rem)] md:top-[calc(5rem+3rem)]",
+          isVisible ? "translate-y-0" : "-translate-y-[200%]"
+        )}
+      >
       <div className="max-w-6xl mx-auto">
         {/* Header */}
-        
+        <div className="flex items-center justify-between mb-4 py-1">
+          <h2 className="text-sm font-medium text-[#1a1a1a] uppercase tracking-wide">
+            Filtros
+          </h2>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onClear}
+            className="text-xs text-[#666] hover:text-[#1a1a1a] hover:bg-transparent"
+          >
+            <X className="w-3 h-3 mr-1" />
+            Limpiar
+          </Button>
+        </div>
 
         {/* Filters Grid */}
         <div className="grid grid-cols-2 gap-3 mb-3">
           {/* Price */}
           <div>
             <label className="text-xs text-[#666] mb-1 block">Precio máximo</label>
-            <Input type="number" placeholder="Ej: 200" value={maxPrice} onChange={e => handlePriceChange(e.target.value)} className="h-9 text-sm bg-white border-[#e0e0e0] focus:border-[#999] focus:ring-0" />
+            <Input
+              type="number"
+              placeholder="Ej: 200"
+              value={maxPrice}
+              onChange={(e) => handlePriceChange(e.target.value)}
+              className="h-9 text-sm bg-white border-[#e0e0e0] focus:border-[#999] focus:ring-0"
+            />
           </div>
 
           {/* Brand */}
@@ -107,9 +145,11 @@ const FilterSection = ({
               </SelectTrigger>
               <SelectContent className="bg-white">
                 <SelectItem value="all">Todas las marcas</SelectItem>
-                {brands.map(brand => <SelectItem key={brand} value={brand}>
+                {brands.map((brand) => (
+                  <SelectItem key={brand} value={brand}>
                     {brand}
-                  </SelectItem>)}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>
@@ -124,35 +164,67 @@ const FilterSection = ({
             </SelectTrigger>
             <SelectContent className="bg-white">
               <SelectItem value="all">Todas las categorías</SelectItem>
-              {Object.keys(categories).map(cat => <SelectItem key={cat} value={cat}>
+              {Object.keys(categories).map((cat) => (
+                <SelectItem key={cat} value={cat}>
                   {cat}
-                </SelectItem>)}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </div>
 
         {/* Subcategory - Animated */}
-        <div className={`overflow-hidden transition-all duration-300 ${subcategories.length > 0 ? "max-h-20 opacity-100 mb-3" : "max-h-0 opacity-0"}`}>
+        <div
+          className={`overflow-hidden transition-all duration-300 ${
+            subcategories.length > 0 ? "max-h-20 opacity-100 mb-3" : "max-h-0 opacity-0"
+          }`}
+        >
           <label className="text-xs text-[#666] mb-1 block">Subcategoría</label>
-          <Select value={selectedSubcategory || "all"} onValueChange={v => setSelectedSubcategory(v === "all" ? "" : v)}>
+          <Select
+            value={selectedSubcategory || "all"}
+            onValueChange={(v) => setSelectedSubcategory(v === "all" ? "" : v)}
+          >
             <SelectTrigger className="h-9 text-sm bg-white border-[#e0e0e0] focus:ring-0">
               <SelectValue placeholder="Todas las subcategorías" />
             </SelectTrigger>
             <SelectContent className="bg-white">
               <SelectItem value="all">Todas las subcategorías</SelectItem>
-              {subcategories.map(sub => <SelectItem key={sub} value={sub}>
+              {subcategories.map((sub) => (
+                <SelectItem key={sub} value={sub}>
                   {sub}
-                </SelectItem>)}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </div>
 
         {/* Bottom Row */}
-        
+        <div className="flex items-center justify-between pt-3 border-t border-[#e0e0e0]">
+          <p className="text-xs text-[#666]">
+            Mostrando: <span className="text-[#1a1a1a]">{activeFilterText}</span>
+          </p>
+          <div className="flex items-center gap-2">
+            <span className="text-xs text-[#666]">Ordenar por:</span>
+            <Select value={sortBy} onValueChange={setSortBy}>
+              <SelectTrigger className="h-8 text-xs bg-white border-[#e0e0e0] focus:ring-0 w-[160px]">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent className="bg-white">
+                <SelectItem value="relevance">Relevancia</SelectItem>
+                <SelectItem value="price-asc">Precio menor a mayor</SelectItem>
+                <SelectItem value="price-desc">Precio mayor a menor</SelectItem>
+                <SelectItem value="discount">Mayor descuento</SelectItem>
+                <SelectItem value="name">Nombre A-Z</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
       </div>
     </div>
       {/* Spacer to account for fixed filter section */}
       <div className="h-[350px] sm:h-[280px]" />
-    </>;
+    </>
+  );
 };
+
 export default FilterSection;
