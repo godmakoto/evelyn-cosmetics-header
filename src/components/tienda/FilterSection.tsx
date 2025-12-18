@@ -44,13 +44,13 @@ const FilterSection = ({
   const [isVisible, setIsVisible] = useState(true);
   const lastScrollY = useRef(0);
 
-  // Smart scroll behavior: hide on scroll down, show on scroll up
+  // Smart scroll behavior: stay visible at start, hide after scrolling down further
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
 
-      // Don't hide if near top of page
-      if (currentScrollY < 50) {
+      // Keep visible until user scrolls past 250px
+      if (currentScrollY < 250) {
         setIsVisible(true);
         lastScrollY.current = currentScrollY;
         return;
