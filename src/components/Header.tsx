@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Search, ShoppingCart, ChevronDown, Menu } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useCart } from "@/contexts/CartContext";
@@ -28,16 +28,12 @@ const categories = [{
   subcategories: []
 }];
 const Header = () => {
-  const location = useLocation();
-  const isTiendaPage = location.pathname.startsWith("/tienda");
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isHeaderVisible, setIsHeaderVisible] = useState(!isTiendaPage);
-  const [isTiendaFixed, setIsTiendaFixed] = useState(false);
+  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
   const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const headerRef = useRef<HTMLElement | null>(null);
   const dropdownRef = useRef<HTMLLIElement>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const lastScrollY = useRef(0);
@@ -48,35 +44,9 @@ const Header = () => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
       const scrollThreshold = 10;
-      const headerHeight = 200; // Approximate header + nav height
 
       setIsScrolled(currentScrollY > scrollThreshold);
 
-      if (isTiendaPage) {
-        const isScrollingUp = currentScrollY < lastScrollY.current;
-        const scrollDelta = Math.abs(currentScrollY - lastScrollY.current);
-
-        const filterEl = document.querySelector("[data-ti-filter]") as HTMLElement | null;
-        const headerElHeight = headerRef.current?.offsetHeight ?? 0;
-        const filterElHeight = filterEl?.offsetHeight ?? 0;
-        const activationPoint = Math.max(headerElHeight + filterElHeight, 400);
-
-        if (currentScrollY < activationPoint) {
-          // In flow: header should scroll with content
-          setIsTiendaFixed(false);
-          setIsHeaderVisible(true);
-        } else {
-          // Out of view: switch to fixed mode and only reveal on scroll up
-          setIsTiendaFixed(true);
-          if (scrollDelta > 5) setIsHeaderVisible(isScrollingUp);
-          if (!isScrollingUp) setIsHeaderVisible(false);
-        }
-
-        lastScrollY.current = currentScrollY;
-        return;
-      }
-
-      // Other pages: original behavior
       if (currentScrollY < 400) {
         setIsHeaderVisible(true);
         lastScrollY.current = currentScrollY;
@@ -94,7 +64,7 @@ const Header = () => {
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [isTiendaPage]);
+  }, []);
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -120,15 +90,10 @@ const Header = () => {
   };
   return <>
       <header
-        ref={headerRef}
-        data-ti-header
         className={cn(
-          "z-50 w-full transition-transform duration-300 ease-in-out",
-          isTiendaPage 
-            ? (isTiendaFixed ? "fixed top-0 left-0 right-0" : "relative")
-            : "fixed top-0 left-0 right-0",
+          "fixed top-0 left-0 right-0 z-50 w-full transition-transform duration-300 ease-in-out",
           isScrolled ? "header-scrolled" : "header-default",
-          (isTiendaPage ? isTiendaFixed : true) && (isHeaderVisible ? "translate-y-0" : "-translate-y-full")
+          isHeaderVisible ? "translate-y-0" : "-translate-y-full"
         )}
       >
         {/* Main Header */}
@@ -252,9 +217,7 @@ const Header = () => {
       </header>
 
       {/* Spacer to prevent content from hiding behind fixed header */}
-      {(!isTiendaPage || isTiendaFixed) && (
-        <div className="h-[calc(4rem+3rem)] md:h-[calc(5rem+3rem)]" />
-      )}
+      <div className="h-[calc(4rem+3rem)] md:h-[calc(5rem+3rem)]" />
 
       {/* Mobile Menu Drawer */}
       <MobileMenu isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)} />
