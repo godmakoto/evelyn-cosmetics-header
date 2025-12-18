@@ -37,6 +37,7 @@ const Header = () => {
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const headerRef = useRef<HTMLElement | null>(null);
   const dropdownRef = useRef<HTMLLIElement>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const lastScrollY = useRef(0);
@@ -54,22 +55,23 @@ const Header = () => {
       if (isTiendaPage) {
         const isScrollingUp = currentScrollY < lastScrollY.current;
         const scrollDelta = Math.abs(currentScrollY - lastScrollY.current);
-        
-        if (currentScrollY < headerHeight) {
-          // Above header: relative position, always visible
+
+        const filterEl = document.querySelector("[data-ti-filter]") as HTMLElement | null;
+        const headerElHeight = headerRef.current?.offsetHeight ?? 0;
+        const filterElHeight = filterEl?.offsetHeight ?? 0;
+        const activationPoint = Math.max(headerElHeight + filterElHeight, 400);
+
+        if (currentScrollY < activationPoint) {
+          // In flow: header should scroll with content
           setIsTiendaFixed(false);
           setIsHeaderVisible(true);
         } else {
-          // Below header: fixed position
+          // Out of view: switch to fixed mode and only reveal on scroll up
           setIsTiendaFixed(true);
-          // Only show when scrolling up with significant movement
-          if (scrollDelta > 5) {
-            setIsHeaderVisible(isScrollingUp);
-          } else if (!isHeaderVisible && !isScrollingUp) {
-            // Ensure stays hidden when scrolling down
-            setIsHeaderVisible(false);
-          }
+          if (scrollDelta > 5) setIsHeaderVisible(isScrollingUp);
+          if (!isScrollingUp) setIsHeaderVisible(false);
         }
+
         lastScrollY.current = currentScrollY;
         return;
       }
@@ -118,6 +120,8 @@ const Header = () => {
   };
   return <>
       <header
+        ref={headerRef}
+        data-ti-header
         className={cn(
           "z-50 w-full transition-transform duration-300 ease-in-out",
           isTiendaPage 
