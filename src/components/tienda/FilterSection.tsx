@@ -68,7 +68,7 @@ const FilterSection = ({
     <div className="bg-[#fafafa] border-b border-[#e0e0e0] px-4 py-4">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <div className="flex items-center justify-center gap-4 sm:justify-between mb-4">
+        <div className="flex items-center justify-between mb-4 py-1">
           <h2 className="text-sm font-medium text-[#1a1a1a] uppercase tracking-wide">
             Filtros
           </h2>
