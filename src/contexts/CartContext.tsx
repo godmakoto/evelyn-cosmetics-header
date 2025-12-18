@@ -24,35 +24,8 @@ interface CartContextType {
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
-// Demo products for testing
-const demoItems: CartItem[] = [
-  {
-    id: "1",
-    name: "Sérum Vitamina C",
-    image: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=100&h=100&fit=crop",
-    originalPrice: 120,
-    discountedPrice: 96,
-    quantity: 2,
-  },
-  {
-    id: "2",
-    name: "Crema Hidratante Facial",
-    image: "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=100&h=100&fit=crop",
-    originalPrice: 85,
-    quantity: 1,
-  },
-  {
-    id: "3",
-    name: "Protector Solar SPF 50",
-    image: "https://images.unsplash.com/photo-1556227834-09f1de7a7d14?w=100&h=100&fit=crop",
-    originalPrice: 75,
-    discountedPrice: 60,
-    quantity: 1,
-  },
-];
-
 export const CartProvider = ({ children }: { children: ReactNode }) => {
-  const [items, setItems] = useState<CartItem[]>(demoItems);
+  const [items, setItems] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
 
   const addItem = (newItem: Omit<CartItem, "quantity">) => {
