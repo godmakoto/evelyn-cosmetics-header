@@ -2,8 +2,10 @@ const ProductSkeleton = () => {
   return (
     <div className="flex bg-white rounded-lg overflow-hidden shadow-sm">
       {/* Image skeleton */}
-      <div className="relative w-1/2 aspect-square bg-[#f0f0f0] overflow-hidden">
-        <div className="absolute inset-0 skeleton-shimmer" />
+      <div className="relative w-1/2 bg-[#f0f0f0] overflow-hidden flex-shrink-0">
+        <div className="aspect-square w-full">
+          <div className="absolute inset-0 skeleton-shimmer" />
+        </div>
       </div>
 
       {/* Info skeleton */}

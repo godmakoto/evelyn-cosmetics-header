@@ -84,7 +84,7 @@ const FilterSection = ({
         </div>
 
         {/* Filters Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
+        <div className="grid grid-cols-2 gap-3 mb-3">
           {/* Price */}
           <div>
             <label className="text-xs text-[#666] mb-1 block">Precio máximo</label>
