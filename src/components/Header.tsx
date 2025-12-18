@@ -29,7 +29,7 @@ const categories = [{
 }];
 const Header = () => {
   const location = useLocation();
-  const isTiendaPage = location.pathname === "/tienda";
+  const isTiendaPage = location.pathname.startsWith("/tienda");
   const [isScrolled, setIsScrolled] = useState(false);
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
   const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
@@ -39,26 +39,27 @@ const Header = () => {
   const dropdownRef = useRef<HTMLLIElement>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const lastScrollY = useRef(0);
-  const {
-    finalTotal,
-    itemCount,
-    setIsCartOpen
-  } = useCart();
+  const { finalTotal, itemCount, setIsCartOpen } = useCart();
 
-  // Smart scroll behavior: stay visible at start, hide after scrolling further
+  // Ensure header is visible when entering Tienda
   useEffect(() => {
+    if (isTiendaPage) setIsHeaderVisible(true);
+  }, [isTiendaPage]);
+
+  // Smart scroll behavior (disabled on Tienda)
+  useEffect(() => {
+    if (isTiendaPage) {
+      setIsHeaderVisible(true);
+      setIsScrolled(false);
+      return;
+    }
+
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
       const scrollThreshold = 10;
 
       // Update scrolled state for shadow/styling
       setIsScrolled(currentScrollY > scrollThreshold);
-
-      // On Tienda page, keep header always visible
-      if (isTiendaPage) {
-        setIsHeaderVisible(true);
-        return;
-      }
 
       // Keep visible until user scrolls past the header + filter section height
       if (currentScrollY < 400) {
@@ -77,9 +78,8 @@ const Header = () => {
         lastScrollY.current = currentScrollY;
       }
     };
-    window.addEventListener("scroll", handleScroll, {
-      passive: true
-    });
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, [isTiendaPage]);
   useEffect(() => {
@@ -106,7 +106,13 @@ const Header = () => {
     setActiveCategory(categoryName);
   };
   return <>
-      <header className={cn("fixed top-0 left-0 right-0 z-50 w-full transition-transform duration-300 ease-in-out", isScrolled ? "header-scrolled" : "header-default", isHeaderVisible ? "translate-y-0" : "-translate-y-full")}>
+      <header
+        className={cn(
+          "fixed top-0 left-0 right-0 z-50 w-full transition-transform duration-300 ease-in-out",
+          isScrolled ? "header-scrolled" : "header-default",
+          isTiendaPage ? "translate-y-0" : isHeaderVisible ? "translate-y-0" : "-translate-y-full"
+        )}
+      >
         {/* Main Header */}
         <div className="header-main">
           <div className="container mx-auto px-4 lg:px-8">
