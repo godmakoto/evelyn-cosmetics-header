@@ -7,6 +7,7 @@ export const BrandsCarousel = () => {
   const trackRef = useRef<HTMLDivElement>(null);
   const [isPaused, setIsPaused] = useState(false);
   const [position, setPosition] = useState(0);
+  const [initialOffset, setInitialOffset] = useState(0);
   const animationRef = useRef<number>();
   const resumeTimeoutRef = useRef<NodeJS.Timeout>();
   
@@ -18,6 +19,17 @@ export const BrandsCarousel = () => {
   // Duplicate brands 4 times for infinite scroll
   const duplicatedBrands = [...brands, ...brands, ...brands, ...brands];
 
+  // Calculate initial offset to start in the middle (hide the seam)
+  useEffect(() => {
+    if (trackRef.current) {
+      const trackWidth = trackRef.current.scrollWidth;
+      const singleSetWidth = trackWidth / 4;
+      // Start at the beginning of the second set
+      setInitialOffset(-singleSetWidth);
+      setPosition(-singleSetWidth);
+    }
+  }, []);
+
   useEffect(() => {
     const speed = 0.5; // pixels per frame
 
@@ -28,9 +40,13 @@ export const BrandsCarousel = () => {
           const singleSetWidth = trackWidth / 4;
           const newPosition = prev - speed;
 
-          // Reset position when one full set has scrolled
-          if (Math.abs(newPosition) >= singleSetWidth) {
-            return 0;
+          // Reset position seamlessly when scrolling left (auto-scroll direction)
+          if (Math.abs(newPosition) >= singleSetWidth * 2) {
+            return -singleSetWidth;
+          }
+          // Reset position seamlessly when scrolling right (user interaction)
+          if (newPosition > 0) {
+            return -singleSetWidth;
           }
           return newPosition;
         });
@@ -63,13 +79,31 @@ export const BrandsCarousel = () => {
 
   const scrollLeft = () => {
     handleInteractionStart();
-    setPosition(prev => prev + 200);
+    setPosition(prev => {
+      const trackWidth = trackRef.current?.scrollWidth || 0;
+      const singleSetWidth = trackWidth / 4;
+      const newPos = prev + 200;
+      // Wrap around if going too far right
+      if (newPos > 0) {
+        return -singleSetWidth + (newPos % singleSetWidth);
+      }
+      return newPos;
+    });
     handleInteractionEnd();
   };
 
   const scrollRight = () => {
     handleInteractionStart();
-    setPosition(prev => prev - 200);
+    setPosition(prev => {
+      const trackWidth = trackRef.current?.scrollWidth || 0;
+      const singleSetWidth = trackWidth / 4;
+      const newPos = prev - 200;
+      // Wrap around if going too far left
+      if (Math.abs(newPos) >= singleSetWidth * 2) {
+        return -singleSetWidth;
+      }
+      return newPos;
+    });
     handleInteractionEnd();
   };
 
