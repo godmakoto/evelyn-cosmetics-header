@@ -32,9 +32,9 @@ const ProductCard = ({ product }: ProductCardProps) => {
   return (
     <div className="group flex bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5">
       {/* Image */}
-      <div className="relative w-1/2 bg-[#f5f5f5] aspect-square flex-shrink-0">
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="w-full h-full bg-gradient-to-br from-[#e8e8e8] to-[#d0d0d0]" />
+      <div className="relative w-1/2 bg-[#f5f5f5] flex-shrink-0">
+        <div className="aspect-square w-full">
+          <div className="absolute inset-0 bg-gradient-to-br from-[#e8e8e8] to-[#d0d0d0]" />
         </div>
         {discountPercent > 0 && (
           <div className="absolute top-3 left-3 bg-[#2a2a2a] text-white text-xs font-medium px-2 py-1 rounded">
