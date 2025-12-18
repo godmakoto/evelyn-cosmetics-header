@@ -199,7 +199,7 @@ const FilterSection = ({
         </div>
 
         {/* Bottom Row */}
-        <div className="flex items-center justify-between pt-3 border-t border-[#e0e0e0]">
+        <div className="hidden sm:flex items-center justify-between pt-3 border-t border-[#e0e0e0]">
           <p className="text-xs text-[#666]">
             Mostrando: <span className="text-[#1a1a1a]">{activeFilterText}</span>
           </p>
