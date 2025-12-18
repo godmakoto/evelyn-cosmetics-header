@@ -127,6 +127,7 @@ export const BestSellersCarousel = () => {
   }, [emblaApi, onSelect]);
 
   const handleAddToCart = (product: Product) => {
+    // Si ya agregamos este producto en esta sesión, abrir el carrito
     if (addedProducts.has(product.id)) {
       setIsCartOpen(true);
     } else {
@@ -137,12 +138,14 @@ export const BestSellersCarousel = () => {
         originalPrice: product.originalPrice || product.price,
         discountedPrice: product.originalPrice ? product.price : undefined
       });
+      // Marcar como agregado para cambiar el botón a "Ver carrito"
       setAddedProducts(prev => new Set(prev).add(product.id));
     }
   };
 
-  const isInCart = (productId: string) => {
-    return addedProducts.has(productId) || items.some(item => item.id === productId);
+  // Solo mostrar "Ver carrito" si el usuario agregó el producto en esta sesión
+  const wasAddedByUser = (productId: string) => {
+    return addedProducts.has(productId);
   };
 
   return (
@@ -217,12 +220,12 @@ export const BestSellersCarousel = () => {
                       </div>
 
                       <Button
-                        variant={isInCart(product.id) ? "outline" : "default"}
+                        variant={wasAddedByUser(product.id) ? "outline" : "default"}
                         className="w-full rounded-full gap-2"
                         onClick={() => handleAddToCart(product)}
                       >
                         <ShoppingBag className="w-4 h-4" />
-                        {isInCart(product.id) ? "Ver carrito" : "Agregar"}
+                        {wasAddedByUser(product.id) ? "Ver carrito" : "Agregar"}
                       </Button>
                     </div>
                   </div>
