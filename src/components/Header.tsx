@@ -29,37 +29,45 @@ const categories = [{
 }];
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
+  const [isFixed, setIsFixed] = useState(false);
+  const [isHeaderVisible, setIsHeaderVisible] = useState(false);
   const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const headerRef = useRef<HTMLElement | null>(null);
   const dropdownRef = useRef<HTMLLIElement>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const lastScrollY = useRef(0);
   const { finalTotal, itemCount, setIsCartOpen } = useCart();
 
-  // Smart scroll behavior
+  // Smart scroll behavior: relative at start, fixed with show/hide after scrolling past header
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
       const scrollThreshold = 10;
+      const headerHeight = headerRef.current?.offsetHeight ?? 200;
+      const isScrollingUp = currentScrollY < lastScrollY.current;
+      const scrollDelta = Math.abs(currentScrollY - lastScrollY.current);
 
       setIsScrolled(currentScrollY > scrollThreshold);
 
-      if (currentScrollY < 400) {
+      if (currentScrollY < headerHeight) {
+        // Header still in view: relative positioning
+        setIsFixed(false);
         setIsHeaderVisible(true);
-        lastScrollY.current = currentScrollY;
-        return;
+      } else {
+        // Header scrolled out: switch to fixed mode
+        setIsFixed(true);
+        if (scrollDelta > 5) {
+          setIsHeaderVisible(isScrollingUp);
+        }
+        if (!isScrollingUp) {
+          setIsHeaderVisible(false);
+        }
       }
 
-      const isScrollingDown = currentScrollY > lastScrollY.current;
-      const scrollDelta = Math.abs(currentScrollY - lastScrollY.current);
-
-      if (scrollDelta > 5) {
-        setIsHeaderVisible(!isScrollingDown);
-        lastScrollY.current = currentScrollY;
-      }
+      lastScrollY.current = currentScrollY;
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -90,10 +98,12 @@ const Header = () => {
   };
   return <>
       <header
+        ref={headerRef}
         className={cn(
-          "fixed top-0 left-0 right-0 z-50 w-full transition-transform duration-300 ease-in-out",
+          "z-50 w-full transition-transform duration-300 ease-in-out",
+          isFixed ? "fixed top-0 left-0 right-0" : "relative",
           isScrolled ? "header-scrolled" : "header-default",
-          isHeaderVisible ? "translate-y-0" : "-translate-y-full"
+          isFixed && (isHeaderVisible ? "translate-y-0" : "-translate-y-full")
         )}
       >
         {/* Main Header */}
@@ -216,8 +226,8 @@ const Header = () => {
         </nav>
       </header>
 
-      {/* Spacer to prevent content from hiding behind fixed header */}
-      <div className="h-[calc(4rem+3rem)] md:h-[calc(5rem+3rem)]" />
+      {/* Spacer to prevent content jump when header becomes fixed */}
+      {isFixed && <div className="h-[calc(4rem+3rem)] md:h-[calc(5rem+3rem)]" />}
 
       {/* Mobile Menu Drawer */}
       <MobileMenu isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)} />
