@@ -222,7 +222,7 @@ const FilterSection = ({
       </div>
     </div>
       {/* Spacer to account for fixed filter section */}
-      <div className="h-[280px] sm:h-[220px]" />
+      <div className="h-[320px] sm:h-[260px]" />
     </>
   );
 };
