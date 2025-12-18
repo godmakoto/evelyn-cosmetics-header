@@ -28,26 +28,15 @@ const categories = [{
   subcategories: []
 }];
 const Header = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isFixed, setIsFixed] = useState(false);
-  const [isHeaderVisible, setIsHeaderVisible] = useState(false);
   const [headerHeight, setHeaderHeight] = useState(0);
   const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const headerRef = useRef<HTMLElement | null>(null);
-  const sentinelRef = useRef<HTMLDivElement | null>(null);
-  const isFixedRef = useRef(false);
   const dropdownRef = useRef<HTMLLIElement>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const lastScrollY = useRef(0);
   const { finalTotal, itemCount, setIsCartOpen } = useCart();
-
-  // Smart scroll behavior: start in-flow; when header leaves viewport, switch to fixed and reveal on scroll up
-  useEffect(() => {
-    isFixedRef.current = isFixed;
-  }, [isFixed]);
 
   useEffect(() => {
     const el = headerRef.current;
@@ -60,48 +49,6 @@ const Header = () => {
     const ro = new ResizeObserver(update);
     ro.observe(el);
     return () => ro.disconnect();
-  }, []);
-
-  useEffect(() => {
-    const sentinel = sentinelRef.current;
-    if (!sentinel || typeof IntersectionObserver === "undefined" || !headerHeight) return;
-
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          // Sentinel visible = header should be in normal flow
-          setIsFixed(false);
-          setIsHeaderVisible(false);
-        } else {
-          // Sentinel not visible = switch to fixed mode, hidden by default
-          setIsFixed(true);
-        }
-      },
-      { threshold: 0, rootMargin: `-${headerHeight}px 0px 0px 0px` }
-    );
-
-    io.observe(sentinel);
-    return () => io.disconnect();
-  }, [headerHeight]);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      setIsScrolled(currentScrollY > 10);
-
-      if (isFixedRef.current) {
-        const isScrollingUp = currentScrollY < lastScrollY.current;
-        const scrollDelta = Math.abs(currentScrollY - lastScrollY.current);
-
-        if (scrollDelta > 5) setIsHeaderVisible(isScrollingUp);
-      }
-
-      lastScrollY.current = currentScrollY;
-    };
-
-    lastScrollY.current = window.scrollY;
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -127,17 +74,9 @@ const Header = () => {
     setActiveCategory(categoryName);
   };
   return <>
-      {/* Sentinel at very top - triggers when scrolled past header height */}
-      <div ref={sentinelRef} aria-hidden className="absolute top-0 left-0 h-px w-full pointer-events-none" />
-      
       <header
         ref={headerRef}
-        className={cn(
-          "z-50 w-full transition-transform duration-300 ease-in-out",
-          isFixed ? "fixed top-0 left-0 right-0 -translate-y-full" : "relative",
-          isScrolled ? "header-scrolled" : "header-default",
-          isFixed && isHeaderVisible && "!translate-y-0"
-        )}
+        className="fixed top-0 left-0 right-0 z-50 w-full"
       >
         {/* Main Header */}
         <div className="header-main">
@@ -259,8 +198,8 @@ const Header = () => {
         </nav>
       </header>
 
-      {/* Placeholder: keeps layout stable when header is fixed and visible */}
-      {isFixed && isHeaderVisible && <div aria-hidden style={{ height: headerHeight }} />}
+      {/* Spacer to prevent content from being hidden behind fixed header */}
+      <div aria-hidden style={{ height: headerHeight }} />
 
       {/* Mobile Menu Drawer */}
       <MobileMenu isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)} />
