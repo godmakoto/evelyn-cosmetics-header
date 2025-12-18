@@ -172,7 +172,7 @@ const Tienda = () => {
         />
 
         {/* Products Grid */}
-        <div className="max-w-6xl mx-auto px-4 py-6">
+        <div className="max-w-6xl mx-auto px-4 pt-0 pb-6 sm:py-6">
           {/* Initial loading */}
           {isLoading && displayedProducts.length === 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
