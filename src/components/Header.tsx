@@ -76,7 +76,7 @@ const Header = () => {
   return <>
       <header
         ref={headerRef}
-        className="fixed top-0 left-0 right-0 z-50 w-full"
+        className="relative z-50 w-full"
       >
         {/* Main Header */}
         <div className="header-main">
@@ -198,8 +198,6 @@ const Header = () => {
         </nav>
       </header>
 
-      {/* Spacer to prevent content from being hidden behind fixed header */}
-      <div aria-hidden style={{ height: headerHeight }} />
 
       {/* Mobile Menu Drawer */}
       <MobileMenu isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)} />
