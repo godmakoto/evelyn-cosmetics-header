@@ -154,7 +154,7 @@ const Tienda = () => {
     <div className="min-h-screen flex flex-col bg-white">
       <Header />
       
-      <main className="flex-1 pt-[100px] md:pt-[120px]">
+      <main className="flex-1">
         {/* Filter Section */}
         <FilterSection
           maxPrice={maxPrice}
