@@ -243,7 +243,9 @@ const Header = () => {
       </header>
 
       {/* Spacer to prevent content from hiding behind fixed header */}
-      <div className="h-[calc(4rem+3rem)] md:h-[calc(5rem+3rem)]" />
+      {(!isTiendaPage || isTiendaFixed) && (
+        <div className="h-[calc(4rem+3rem)] md:h-[calc(5rem+3rem)]" />
+      )}
 
       {/* Mobile Menu Drawer */}
       <MobileMenu isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)} />
