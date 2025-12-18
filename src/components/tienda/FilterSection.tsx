@@ -1,3 +1,4 @@
+import { useState, useEffect, useRef } from "react";
 import { X, ChevronDown } from "lucide-react";
 import { brands, categories } from "@/data/products";
 import {
@@ -9,6 +10,7 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 interface FilterSectionProps {
   maxPrice: string;
@@ -39,6 +41,36 @@ const FilterSection = ({
   activeFilterText,
   onClear,
 }: FilterSectionProps) => {
+  const [isVisible, setIsVisible] = useState(true);
+  const lastScrollY = useRef(0);
+
+  // Smart scroll behavior: hide on scroll down, show on scroll up
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+
+      // Don't hide if near top of page
+      if (currentScrollY < 50) {
+        setIsVisible(true);
+        lastScrollY.current = currentScrollY;
+        return;
+      }
+
+      // Detect scroll direction
+      const isScrollingDown = currentScrollY > lastScrollY.current;
+      const scrollDelta = Math.abs(currentScrollY - lastScrollY.current);
+
+      // Only trigger if scroll delta is significant (prevents micro-movements)
+      if (scrollDelta > 5) {
+        setIsVisible(!isScrollingDown);
+        lastScrollY.current = currentScrollY;
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   const subcategories = selectedCategory ? categories[selectedCategory] || [] : [];
 
   const handleBrandChange = (value: string) => {
@@ -65,7 +97,14 @@ const FilterSection = ({
   };
 
   return (
-    <div className="bg-[#fafafa] border-b border-[#e0e0e0] px-4 pt-6 pb-4 sm:py-4">
+    <>
+      <div
+        className={cn(
+          "fixed left-0 right-0 z-40 bg-[#fafafa] border-b border-[#e0e0e0] px-4 pt-6 pb-4 sm:py-4 transition-transform duration-300 ease-in-out",
+          "top-[calc(4rem+3rem)] md:top-[calc(5rem+3rem)]",
+          isVisible ? "translate-y-0" : "-translate-y-[200%]"
+        )}
+      >
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-4 py-1">
@@ -182,6 +221,9 @@ const FilterSection = ({
         </div>
       </div>
     </div>
+      {/* Spacer to account for fixed filter section */}
+      <div className="h-[280px] sm:h-[220px]" />
+    </>
   );
 };
 
