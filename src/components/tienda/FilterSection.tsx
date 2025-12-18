@@ -92,14 +92,9 @@ const FilterSection = ({
   };
 
   return (
-    <>
       <div
         ref={filterRef}
-        className={cn(
-          "fixed left-0 right-0 z-40 bg-[#fafafa] border-b border-[#e0e0e0] px-4 pt-6 pb-4 sm:py-4 transition-transform duration-300 ease-in-out",
-          "top-[calc(4rem+3rem+1rem)] sm:top-[calc(4rem+3rem)] md:top-[calc(5rem+3rem)]",
-          isVisible ? "translate-y-0" : "-translate-y-[200%]"
-        )}
+        className="bg-[#fafafa] border-b border-[#e0e0e0] px-4 pt-6 pb-4 sm:py-4"
       >
       <div className="max-w-6xl mx-auto">
         {/* Header */}
@@ -217,9 +212,6 @@ const FilterSection = ({
         </div>
       </div>
     </div>
-      {/* Spacer to account for fixed filter section */}
-      <div style={{ height: filterHeight }} aria-hidden />
-    </>
   );
 };
 

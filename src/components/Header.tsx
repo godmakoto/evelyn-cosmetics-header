@@ -108,9 +108,10 @@ const Header = () => {
   return <>
       <header
         className={cn(
-          "fixed top-0 left-0 right-0 z-50 w-full transition-transform duration-300 ease-in-out",
-          isScrolled ? "header-scrolled" : "header-default",
-          isTiendaPage ? "translate-y-0" : isHeaderVisible ? "translate-y-0" : "-translate-y-full"
+          "z-50 w-full transition-transform duration-300 ease-in-out",
+          isTiendaPage ? "relative" : "fixed top-0 left-0 right-0",
+          !isTiendaPage && (isScrolled ? "header-scrolled" : "header-default"),
+          !isTiendaPage && (isHeaderVisible ? "translate-y-0" : "-translate-y-full")
         )}
       >
         {/* Main Header */}
