@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Search, ShoppingCart, ChevronDown, Menu } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useCart } from "@/contexts/CartContext";
@@ -28,6 +28,8 @@ const categories = [{
   subcategories: []
 }];
 const Header = () => {
+  const location = useLocation();
+  const isTiendaPage = location.pathname === "/tienda";
   const [isScrolled, setIsScrolled] = useState(false);
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
   const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
@@ -52,6 +54,12 @@ const Header = () => {
       // Update scrolled state for shadow/styling
       setIsScrolled(currentScrollY > scrollThreshold);
 
+      // On Tienda page, keep header always visible
+      if (isTiendaPage) {
+        setIsHeaderVisible(true);
+        return;
+      }
+
       // Keep visible until user scrolls past the header + filter section height
       if (currentScrollY < 400) {
         setIsHeaderVisible(true);
@@ -73,7 +81,7 @@ const Header = () => {
       passive: true
     });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [isTiendaPage]);
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {

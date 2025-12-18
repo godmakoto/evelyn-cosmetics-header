@@ -41,8 +41,7 @@ const FilterSection = ({
   activeFilterText,
   onClear,
 }: FilterSectionProps) => {
-  const [isVisible, setIsVisible] = useState(true);
-  const lastScrollY = useRef(0);
+  const [isVisible] = useState(true);
 
   const filterRef = useRef<HTMLDivElement | null>(null);
   const [filterHeight, setFilterHeight] = useState(220);
@@ -65,32 +64,7 @@ const FilterSection = ({
     return () => ro.disconnect();
   }, []);
 
-  // Smart scroll behavior: stay visible at start, hide after scrolling down further
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-
-      // Keep visible until user scrolls past the header + filter section height
-      if (currentScrollY < 400) {
-        setIsVisible(true);
-        lastScrollY.current = currentScrollY;
-        return;
-      }
-
-      // Detect scroll direction
-      const isScrollingDown = currentScrollY > lastScrollY.current;
-      const scrollDelta = Math.abs(currentScrollY - lastScrollY.current);
-
-      // Only trigger if scroll delta is significant (prevents micro-movements)
-      if (scrollDelta > 5) {
-        setIsVisible(!isScrollingDown);
-        lastScrollY.current = currentScrollY;
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  // Filter section stays fixed (no hide on scroll)
 
   const subcategories = selectedCategory ? categories[selectedCategory] || [] : [];
 
