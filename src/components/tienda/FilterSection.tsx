@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef, useLayoutEffect } from "react";
-import { X, ChevronDown } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { X } from "lucide-react";
 import { brands, categories } from "@/data/products";
 import {
   Select,
@@ -41,30 +41,34 @@ const FilterSection = ({
   activeFilterText,
   onClear,
 }: FilterSectionProps) => {
-  const [isVisible] = useState(true);
-
+  const [isFixed, setIsFixed] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+  const lastScrollY = useRef(0);
   const filterRef = useRef<HTMLDivElement | null>(null);
-  const [filterHeight, setFilterHeight] = useState(220);
 
-  useLayoutEffect(() => {
-    const el = filterRef.current;
-    if (!el) return;
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      const headerHeight = 200; // Header + nav approximate height
 
-    const update = () => {
-      const next = Math.ceil(el.getBoundingClientRect().height);
-      setFilterHeight(next);
+      if (currentScrollY < headerHeight) {
+        setIsFixed(false);
+        setIsVisible(true);
+      } else {
+        setIsFixed(true);
+        const isScrollingUp = currentScrollY < lastScrollY.current;
+        const scrollDelta = Math.abs(currentScrollY - lastScrollY.current);
+        
+        if (scrollDelta > 5) {
+          setIsVisible(isScrollingUp);
+        }
+      }
+      lastScrollY.current = currentScrollY;
     };
 
-    update();
-
-    if (typeof ResizeObserver === "undefined") return;
-
-    const ro = new ResizeObserver(update);
-    ro.observe(el);
-    return () => ro.disconnect();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  // Filter section stays fixed (no hide on scroll)
 
   const subcategories = selectedCategory ? categories[selectedCategory] || [] : [];
 
@@ -94,7 +98,13 @@ const FilterSection = ({
   return (
       <div
         ref={filterRef}
-        className="bg-[#fafafa] border-b border-[#e0e0e0] px-4 pt-6 pb-4 sm:py-4"
+        className={cn(
+          "bg-[#fafafa] border-b border-[#e0e0e0] px-4 pt-6 pb-4 sm:py-4 transition-transform duration-300 ease-in-out",
+          isFixed 
+            ? "fixed left-0 right-0 z-40 top-[calc(4rem+3rem+1rem)] sm:top-[calc(4rem+3rem)] md:top-[calc(5rem+3rem)]" 
+            : "relative",
+          isFixed && (isVisible ? "translate-y-0" : "-translate-y-[200%]")
+        )}
       >
       <div className="max-w-6xl mx-auto">
         {/* Header */}

@@ -32,6 +32,7 @@ const Header = () => {
   const isTiendaPage = location.pathname.startsWith("/tienda");
   const [isScrolled, setIsScrolled] = useState(false);
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
+  const [isTiendaFixed, setIsTiendaFixed] = useState(false);
   const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
@@ -41,38 +42,43 @@ const Header = () => {
   const lastScrollY = useRef(0);
   const { finalTotal, itemCount, setIsCartOpen } = useCart();
 
-  // Ensure header is visible when entering Tienda
+  // Smart scroll behavior
   useEffect(() => {
-    if (isTiendaPage) setIsHeaderVisible(true);
-  }, [isTiendaPage]);
-
-  // Smart scroll behavior (disabled on Tienda)
-  useEffect(() => {
-    if (isTiendaPage) {
-      setIsHeaderVisible(true);
-      setIsScrolled(false);
-      return;
-    }
-
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
       const scrollThreshold = 10;
+      const headerHeight = 200; // Approximate header + nav height
 
-      // Update scrolled state for shadow/styling
       setIsScrolled(currentScrollY > scrollThreshold);
 
-      // Keep visible until user scrolls past the header + filter section height
+      if (isTiendaPage) {
+        // Tienda: Show fixed header when scrolling up after passing header
+        if (currentScrollY < headerHeight) {
+          setIsTiendaFixed(false);
+          setIsHeaderVisible(true);
+        } else {
+          setIsTiendaFixed(true);
+          const isScrollingUp = currentScrollY < lastScrollY.current;
+          const scrollDelta = Math.abs(currentScrollY - lastScrollY.current);
+          
+          if (scrollDelta > 5) {
+            setIsHeaderVisible(isScrollingUp);
+          }
+        }
+        lastScrollY.current = currentScrollY;
+        return;
+      }
+
+      // Other pages: original behavior
       if (currentScrollY < 400) {
         setIsHeaderVisible(true);
         lastScrollY.current = currentScrollY;
         return;
       }
 
-      // Detect scroll direction
       const isScrollingDown = currentScrollY > lastScrollY.current;
       const scrollDelta = Math.abs(currentScrollY - lastScrollY.current);
 
-      // Only trigger if scroll delta is significant (prevents micro-movements)
       if (scrollDelta > 5) {
         setIsHeaderVisible(!isScrollingDown);
         lastScrollY.current = currentScrollY;
@@ -109,9 +115,11 @@ const Header = () => {
       <header
         className={cn(
           "z-50 w-full transition-transform duration-300 ease-in-out",
-          isTiendaPage ? "relative" : "fixed top-0 left-0 right-0",
-          !isTiendaPage && (isScrolled ? "header-scrolled" : "header-default"),
-          !isTiendaPage && (isHeaderVisible ? "translate-y-0" : "-translate-y-full")
+          isTiendaPage 
+            ? (isTiendaFixed ? "fixed top-0 left-0 right-0" : "relative")
+            : "fixed top-0 left-0 right-0",
+          isScrolled ? "header-scrolled" : "header-default",
+          (isTiendaPage ? isTiendaFixed : true) && (isHeaderVisible ? "translate-y-0" : "-translate-y-full")
         )}
       >
         {/* Main Header */}
