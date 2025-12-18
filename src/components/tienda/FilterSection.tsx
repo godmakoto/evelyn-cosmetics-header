@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useLayoutEffect } from "react";
 import { X, ChevronDown } from "lucide-react";
 import { brands, categories } from "@/data/products";
 import {
@@ -43,6 +43,27 @@ const FilterSection = ({
 }: FilterSectionProps) => {
   const [isVisible, setIsVisible] = useState(true);
   const lastScrollY = useRef(0);
+
+  const filterRef = useRef<HTMLDivElement | null>(null);
+  const [filterHeight, setFilterHeight] = useState(220);
+
+  useLayoutEffect(() => {
+    const el = filterRef.current;
+    if (!el) return;
+
+    const update = () => {
+      const next = Math.ceil(el.getBoundingClientRect().height);
+      setFilterHeight(next);
+    };
+
+    update();
+
+    if (typeof ResizeObserver === "undefined") return;
+
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
 
   // Smart scroll behavior: stay visible at start, hide after scrolling down further
   useEffect(() => {
@@ -99,6 +120,7 @@ const FilterSection = ({
   return (
     <>
       <div
+        ref={filterRef}
         className={cn(
           "fixed left-0 right-0 z-40 bg-[#fafafa] border-b border-[#e0e0e0] px-4 pt-6 pb-4 sm:py-4 transition-transform duration-300 ease-in-out",
           "top-[calc(4rem+3rem+1rem)] sm:top-[calc(4rem+3rem)] md:top-[calc(5rem+3rem)]",
@@ -222,7 +244,7 @@ const FilterSection = ({
       </div>
     </div>
       {/* Spacer to account for fixed filter section */}
-      <div className="h-[220px] sm:h-[250px]" />
+      <div style={{ height: filterHeight }} aria-hidden />
     </>
   );
 };
