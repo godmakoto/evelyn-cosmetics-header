@@ -104,7 +104,7 @@ export const BestSellersCarousel = () => {
     loop: true,
     align: "start",
     slidesToScroll: 1,
-    containScroll: "trimSnaps"
+    containScroll: false
   });
 
   const scrollPrev = () => emblaApi?.scrollPrev();
@@ -182,7 +182,7 @@ export const BestSellersCarousel = () => {
                   key={product.id}
                   className={cn(
                     "flex-shrink-0 px-2",
-                    isMobile ? "w-[75%]" : isTablet ? "w-[45%]" : "w-[33.333%]"
+                    isMobile ? "w-[72%]" : isTablet ? "w-[38%]" : "lg:w-[30%] xl:w-[28%] w-1/3"
                   )}
                 >
                   <div className="bg-background border border-border rounded-xl h-full flex flex-col overflow-hidden">
