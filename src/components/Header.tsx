@@ -259,8 +259,8 @@ const Header = () => {
         </nav>
       </header>
 
-      {/* Placeholder: keeps layout stable when header is fixed */}
-      {isFixed && <div aria-hidden style={{ height: headerHeight }} />}
+      {/* Placeholder: keeps layout stable when header is fixed and visible */}
+      {isFixed && isHeaderVisible && <div aria-hidden style={{ height: headerHeight }} />}
 
       {/* Mobile Menu Drawer */}
       <MobileMenu isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)} />
