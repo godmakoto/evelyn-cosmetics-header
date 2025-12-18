@@ -49,8 +49,8 @@ const FilterSection = ({
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
 
-      // Keep visible until user scrolls past 250px
-      if (currentScrollY < 250) {
+      // Keep visible until user scrolls past the header + filter section height
+      if (currentScrollY < 400) {
         setIsVisible(true);
         lastScrollY.current = currentScrollY;
         return;

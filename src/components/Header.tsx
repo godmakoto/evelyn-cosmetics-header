@@ -52,8 +52,8 @@ const Header = () => {
       // Update scrolled state for shadow/styling
       setIsScrolled(currentScrollY > scrollThreshold);
 
-      // Keep visible until user scrolls past 250px
-      if (currentScrollY < 250) {
+      // Keep visible until user scrolls past the header + filter section height
+      if (currentScrollY < 400) {
         setIsHeaderVisible(true);
         lastScrollY.current = currentScrollY;
         return;
