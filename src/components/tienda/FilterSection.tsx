@@ -65,7 +65,7 @@ const FilterSection = ({
   };
 
   return (
-    <div className="bg-[#fafafa] border-b border-[#e0e0e0] px-4 py-4">
+    <div className="bg-[#fafafa] border-b border-[#e0e0e0] px-4 pt-6 pb-4 sm:py-4">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-4 py-1">
