@@ -49,18 +49,25 @@ const FilterSection = ({
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-      const headerHeight = 200; // Header + nav approximate height
+      const headerHeight = 200;
+      const isScrollingUp = currentScrollY < lastScrollY.current;
 
       if (currentScrollY < headerHeight) {
         setIsFixed(false);
         setIsVisible(true);
       } else {
-        setIsFixed(true);
-        const isScrollingUp = currentScrollY < lastScrollY.current;
-        const scrollDelta = Math.abs(currentScrollY - lastScrollY.current);
+        const wasAboveThreshold = lastScrollY.current < headerHeight;
         
-        if (scrollDelta > 5) {
-          setIsVisible(isScrollingUp);
+        // If just crossed threshold going down, start hidden
+        if (wasAboveThreshold && !isScrollingUp) {
+          setIsFixed(true);
+          setIsVisible(false);
+        } else {
+          setIsFixed(true);
+          const scrollDelta = Math.abs(currentScrollY - lastScrollY.current);
+          if (scrollDelta > 5) {
+            setIsVisible(isScrollingUp);
+          }
         }
       }
       lastScrollY.current = currentScrollY;
