@@ -240,6 +240,11 @@ const Header = () => {
 
               {/* Other Nav Items */}
               <li>
+                <Link to="/tienda" className="nav-item">
+                  Tienda
+                </Link>
+              </li>
+              <li>
                 <a href="#" className="nav-item">
                   Blog
                 </a>
