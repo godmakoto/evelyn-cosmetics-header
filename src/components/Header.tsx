@@ -29,13 +29,13 @@ const categories = [{
   subcategories: []
 }];
 
-// Umbral para activar estado "scrolled"
-const SCROLL_THRESHOLD = 10;
+// Umbral mínimo para activar efecto headroom (100px para evitar ocultarse con scroll pequeño)
+const SCROLL_HIDE_THRESHOLD = 100;
+const SCROLL_SHADOW_THRESHOLD = 10;
 
 const Header = () => {
   const [isVisible, setIsVisible] = useState(true);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [headerHeight, setHeaderHeight] = useState(0);
   const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
@@ -48,29 +48,16 @@ const Header = () => {
   
   const { finalTotal, itemCount, setIsCartOpen } = useCart();
 
-  // Measure header height for spacer
-  useEffect(() => {
-    const updateHeight = () => {
-      if (headerRef.current) {
-        setHeaderHeight(headerRef.current.offsetHeight);
-      }
-    };
-    
-    updateHeight();
-    window.addEventListener('resize', updateHeight);
-    return () => window.removeEventListener('resize', updateHeight);
-  }, []);
-
-  // Headroom effect: hide on scroll down, show on scroll up
+  // Headroom effect: hide on scroll down (after 100px), show on scroll up
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
       
       // Update scrolled state for shadow
-      setIsScrolled(currentScrollY > SCROLL_THRESHOLD);
+      setIsScrolled(currentScrollY > SCROLL_SHADOW_THRESHOLD);
       
-      // At top of page - always show header
-      if (currentScrollY <= 0) {
+      // At top of page or below threshold - always show header
+      if (currentScrollY <= SCROLL_HIDE_THRESHOLD) {
         setIsVisible(true);
         lastScrollY.current = currentScrollY;
         return;
@@ -252,8 +239,8 @@ const Header = () => {
         </nav>
       </header>
 
-      {/* Spacer to compensate for fixed header */}
-      <div style={{ height: headerHeight }} />
+      {/* Spacer fijo para compensar el header fixed */}
+      <div className="h-16 md:h-20" />
 
       {/* Mobile Menu Drawer */}
       <MobileMenu isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)} />
