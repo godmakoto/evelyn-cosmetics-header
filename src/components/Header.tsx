@@ -33,7 +33,9 @@ const categories = [{
 const SCROLL_THRESHOLD = 10;
 
 const Header = () => {
+  const [isVisible, setIsVisible] = useState(true);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [headerHeight, setHeaderHeight] = useState(0);
   const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
@@ -42,13 +44,48 @@ const Header = () => {
   const headerRef = useRef<HTMLElement | null>(null);
   const dropdownRef = useRef<HTMLLIElement>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const lastScrollY = useRef(0);
   
   const { finalTotal, itemCount, setIsCartOpen } = useCart();
 
-  // Simple scroll detection for shadow state
+  // Measure header height for spacer
+  useEffect(() => {
+    const updateHeight = () => {
+      if (headerRef.current) {
+        setHeaderHeight(headerRef.current.offsetHeight);
+      }
+    };
+    
+    updateHeight();
+    window.addEventListener('resize', updateHeight);
+    return () => window.removeEventListener('resize', updateHeight);
+  }, []);
+
+  // Headroom effect: hide on scroll down, show on scroll up
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > SCROLL_THRESHOLD);
+      const currentScrollY = window.scrollY;
+      
+      // Update scrolled state for shadow
+      setIsScrolled(currentScrollY > SCROLL_THRESHOLD);
+      
+      // At top of page - always show header
+      if (currentScrollY <= 0) {
+        setIsVisible(true);
+        lastScrollY.current = currentScrollY;
+        return;
+      }
+      
+      // Scrolling down - hide header
+      if (currentScrollY > lastScrollY.current) {
+        setIsVisible(false);
+      } 
+      // Scrolling up - show header
+      else {
+        setIsVisible(true);
+      }
+      
+      lastScrollY.current = currentScrollY;
     };
     
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -83,9 +120,10 @@ const Header = () => {
     setActiveCategory(categoryName);
   };
 
-  // Determinar clases del header - usando Tailwind directamente
+  // Determinar clases del header - fixed para efecto Headroom
   const headerClasses = cn(
-    "sticky top-0 z-50 w-full transition-shadow duration-300",
+    "fixed top-0 left-0 right-0 z-50 w-full transition-transform duration-300",
+    isVisible ? "translate-y-0" : "-translate-y-full",
     isScrolled && "shadow-lg"
   );
 
@@ -213,6 +251,9 @@ const Header = () => {
           </div>
         </nav>
       </header>
+
+      {/* Spacer to compensate for fixed header */}
+      <div style={{ height: headerHeight }} />
 
       {/* Mobile Menu Drawer */}
       <MobileMenu isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)} />
