@@ -291,8 +291,14 @@ const Header = () => {
         </nav>
       </header>
 
-      {/* Spacer dinámico - Solo visible cuando el header está en modo sticky */}
-      {isSticky && <div aria-hidden style={{ height: headerHeight }} />}
+      {/* Spacer dinámico - Siempre presente pero con altura 0 cuando no es sticky */}
+      <div 
+        aria-hidden 
+        style={{ 
+          height: isSticky ? headerHeight : 0,
+          transition: 'height 0.15s ease-out'
+        }} 
+      />
 
       {/* Mobile Menu Drawer */}
       <MobileMenu isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)} />
