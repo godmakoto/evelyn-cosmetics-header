@@ -131,12 +131,6 @@
 
 /* Header Styles */
 @layer components {
-  /* Sticky Header - Always fixed at top */
-  .header-wrapper {
-    @apply w-full z-[9999];
-    position: sticky;
-    top: 0;
-  }
 
   /* Main Header - Dark theme for contrast */
   .header-default {
