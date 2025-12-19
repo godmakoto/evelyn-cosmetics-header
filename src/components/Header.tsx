@@ -83,10 +83,10 @@ const Header = () => {
     setActiveCategory(categoryName);
   };
 
-  // Determinar clases del header
+  // Determinar clases del header - usando Tailwind directamente
   const headerClasses = cn(
-    "header-wrapper",
-    isScrolled && "header-scrolled"
+    "sticky top-0 z-50 w-full transition-shadow duration-300",
+    isScrolled && "shadow-lg"
   );
 
   return <>
