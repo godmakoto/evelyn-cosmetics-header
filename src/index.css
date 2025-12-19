@@ -131,19 +131,6 @@
 
 /* Header Styles */
 @layer components {
-  /* Sticky Header - Always visible at top */
-  .header-wrapper {
-    @apply w-full z-[9999];
-    position: sticky;
-    top: 0;
-    transition: box-shadow 0.3s ease;
-  }
-
-  /* Scrolled state - Adds subtle shadow */
-  .header-scrolled {
-    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
-  }
-
   /* Main Header - Dark theme for contrast */
   .header-default {
     background-color: hsl(0 0% 8%);

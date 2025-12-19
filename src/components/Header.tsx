@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { Search, ShoppingCart, ChevronDown, Menu } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -29,68 +29,92 @@ const categories = [{
   subcategories: []
 }];
 
-// Umbral para activar estado "scrolled"
-const SCROLL_THRESHOLD = 10;
+// ========== CONFIGURACIÓN AJUSTABLE ==========
+// Umbral de scroll antes de cambiar dirección (evita flicker)
+const SCROLL_THRESHOLD = 8;
+// Duración de la animación en ms
+const ANIMATION_DURATION = 220;
+// Punto donde siempre se muestra el header
+const TOP_THRESHOLD = 10;
+// ==============================================
 
 const Header = () => {
-  const [isVisible, setIsVisible] = useState(true);
-  const [isScrolled, setIsScrolled] = useState(false);
   const [headerHeight, setHeaderHeight] = useState(0);
+  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
   const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   
   const headerRef = useRef<HTMLElement | null>(null);
   const dropdownRef = useRef<HTMLLIElement>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const lastScrollY = useRef(0);
+  const ticking = useRef(false);
   
   const { finalTotal, itemCount, setIsCartOpen } = useCart();
 
-  // Measure header height for spacer
+  // Detectar preferencia de reducción de movimiento
   useEffect(() => {
-    const updateHeight = () => {
-      if (headerRef.current) {
-        setHeaderHeight(headerRef.current.offsetHeight);
-      }
-    };
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setPrefersReducedMotion(mediaQuery.matches);
     
-    updateHeight();
-    window.addEventListener('resize', updateHeight);
-    return () => window.removeEventListener('resize', updateHeight);
+    const handler = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches);
+    mediaQuery.addEventListener('change', handler);
+    return () => mediaQuery.removeEventListener('change', handler);
   }, []);
 
-  // Headroom effect: hide on scroll down, show on scroll up
+  // Medir altura del header
   useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      
-      // Update scrolled state for shadow
-      setIsScrolled(currentScrollY > SCROLL_THRESHOLD);
-      
-      // At top of page - always show header
-      if (currentScrollY <= 0) {
-        setIsVisible(true);
-        lastScrollY.current = currentScrollY;
-        return;
-      }
-      
-      // Scrolling down - hide header
-      if (currentScrollY > lastScrollY.current) {
-        setIsVisible(false);
-      } 
-      // Scrolling up - show header
-      else {
-        setIsVisible(true);
-      }
-      
+    const el = headerRef.current;
+    if (!el) return;
+
+    const update = () => setHeaderHeight(el.offsetHeight);
+    update();
+
+    if (typeof ResizeObserver === "undefined") return;
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  // Lógica de scroll tipo Facebook
+  const handleScroll = useCallback(() => {
+    const currentScrollY = window.scrollY;
+    
+    // Si estamos cerca del top, siempre mostrar
+    if (currentScrollY <= TOP_THRESHOLD) {
+      setIsHeaderVisible(true);
       lastScrollY.current = currentScrollY;
+      ticking.current = false;
+      return;
+    }
+    
+    const scrollDelta = currentScrollY - lastScrollY.current;
+    
+    // Solo actuar si superamos el umbral (evita flicker)
+    if (Math.abs(scrollDelta) >= SCROLL_THRESHOLD) {
+      // Scroll hacia abajo = ocultar, hacia arriba = mostrar
+      setIsHeaderVisible(scrollDelta < 0);
+      lastScrollY.current = currentScrollY;
+    }
+    
+    ticking.current = false;
+  }, []);
+
+  useEffect(() => {
+    const onScroll = () => {
+      if (!ticking.current) {
+        requestAnimationFrame(handleScroll);
+        ticking.current = true;
+      }
     };
     
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+    lastScrollY.current = window.scrollY;
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [handleScroll]);
 
   // Click outside para cerrar dropdown
   useEffect(() => {
@@ -120,17 +144,14 @@ const Header = () => {
     setActiveCategory(categoryName);
   };
 
-  // Determinar clases del header - fixed para efecto Headroom
-  const headerClasses = cn(
-    "fixed top-0 left-0 right-0 z-50 w-full transition-transform duration-300",
-    isVisible ? "translate-y-0" : "-translate-y-full",
-    isScrolled && "shadow-lg"
-  );
-
   return <>
       <header
         ref={headerRef}
-        className={headerClasses}
+        className="fixed top-0 left-0 right-0 z-[9999] w-full"
+        style={{
+          transform: isHeaderVisible ? 'translateY(0)' : 'translateY(-100%)',
+          transition: prefersReducedMotion ? 'none' : `transform ${ANIMATION_DURATION}ms ease`,
+        }}
       >
         {/* Main Header */}
         <div className="header-main">
@@ -252,8 +273,8 @@ const Header = () => {
         </nav>
       </header>
 
-      {/* Spacer to compensate for fixed header */}
-      <div style={{ height: headerHeight }} />
+      {/* Spacer para evitar que el contenido quede tapado por el header fixed */}
+      <div aria-hidden style={{ height: headerHeight }} />
 
       {/* Mobile Menu Drawer */}
       <MobileMenu isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)} />
