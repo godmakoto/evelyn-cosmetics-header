@@ -43,17 +43,18 @@ const Header = () => {
   
   const { finalTotal, itemCount, setIsCartOpen } = useCart();
 
-  // Hide on scroll logic
+  // Hide on scroll logic with safe zone
   const handleScroll = useCallback(() => {
     const currentScrollY = window.scrollY;
     
-    // Si está en el tope, siempre visible
-    if (currentScrollY <= 0) {
+    // Zona segura: si estamos en los primeros 100px, siempre visible
+    if (currentScrollY < 100) {
       setIsVisible(true);
       lastScrollY.current = currentScrollY;
       return;
     }
     
+    // Fuera de zona segura: aplicar lógica hide/show
     // Scroll hacia abajo = ocultar
     if (currentScrollY > lastScrollY.current) {
       setIsVisible(false);
