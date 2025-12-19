@@ -131,6 +131,25 @@
 
 /* Header Styles */
 @layer components {
+  /* Sticky Header - Always sticky at top */
+  .header-wrapper {
+    @apply w-full z-[9999];
+    position: sticky;
+    top: 0;
+    transform: translateY(0);
+    transition: transform 0.3s ease;
+  }
+
+  /* Hidden state - Slides up */
+  .header-hidden {
+    transform: translateY(-100%);
+  }
+
+  /* No transition - for instant snap at top */
+  .no-transition {
+    transition: none !important;
+  }
+
   /* Main Header - Dark theme for contrast */
   .header-default {
     background-color: hsl(0 0% 8%);

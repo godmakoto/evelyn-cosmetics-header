@@ -31,16 +31,14 @@ const categories = [{
 
 // ========== CONFIGURACIÓN AJUSTABLE ==========
 // Umbral de scroll antes de cambiar dirección (evita flicker)
-const SCROLL_THRESHOLD = 8;
-// Duración de la animación en ms
-const ANIMATION_DURATION = 220;
-// Punto donde siempre se muestra el header
+const SCROLL_THRESHOLD = 5;
+// Punto donde forzamos mostrar sin transición (instant snap)
 const TOP_THRESHOLD = 10;
 // ==============================================
 
 const Header = () => {
-  const [headerHeight, setHeaderHeight] = useState(0);
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
+  const [isAtTop, setIsAtTop] = useState(true);
   const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
@@ -65,41 +63,40 @@ const Header = () => {
     return () => mediaQuery.removeEventListener('change', handler);
   }, []);
 
-  // Medir altura del header
-  useEffect(() => {
-    const el = headerRef.current;
-    if (!el) return;
-
-    const update = () => setHeaderHeight(el.offsetHeight);
-    update();
-
-    if (typeof ResizeObserver === "undefined") return;
-    const ro = new ResizeObserver(update);
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, []);
-
-  // Lógica de scroll tipo Facebook
+  // Sticky Header scroll logic
   const handleScroll = useCallback(() => {
     const currentScrollY = window.scrollY;
-    
-    // Si estamos cerca del top, siempre mostrar
+    const scrollingDown = currentScrollY > lastScrollY.current;
+    const scrollDelta = Math.abs(currentScrollY - lastScrollY.current);
+
+    // Solo actuar si superamos el umbral (evita flicker)
+    if (scrollDelta < SCROLL_THRESHOLD) {
+      ticking.current = false;
+      return;
+    }
+
+    // Si estamos cerca del top, mostrar instantáneamente (sin transición)
     if (currentScrollY <= TOP_THRESHOLD) {
+      setIsAtTop(true);
       setIsHeaderVisible(true);
       lastScrollY.current = currentScrollY;
       ticking.current = false;
       return;
     }
-    
-    const scrollDelta = currentScrollY - lastScrollY.current;
-    
-    // Solo actuar si superamos el umbral (evita flicker)
-    if (Math.abs(scrollDelta) >= SCROLL_THRESHOLD) {
-      // Scroll hacia abajo = ocultar, hacia arriba = mostrar
-      setIsHeaderVisible(scrollDelta < 0);
-      lastScrollY.current = currentScrollY;
+
+    // Ya no estamos en el top
+    setIsAtTop(false);
+
+    // Scroll hacia abajo = ocultar header
+    if (scrollingDown) {
+      setIsHeaderVisible(false);
     }
-    
+    // Scroll hacia arriba = mostrar header
+    else {
+      setIsHeaderVisible(true);
+    }
+
+    lastScrollY.current = currentScrollY;
     ticking.current = false;
   }, []);
 
@@ -144,14 +141,18 @@ const Header = () => {
     setActiveCategory(categoryName);
   };
 
+  // Determinar clases del header
+  const headerClasses = cn(
+    "header-wrapper",
+    !isHeaderVisible && "header-hidden",
+    // Instant snap: sin transición cuando estamos en el top
+    (isAtTop || prefersReducedMotion) && "no-transition"
+  );
+
   return <>
       <header
         ref={headerRef}
-        className="fixed top-0 left-0 right-0 z-[9999] w-full"
-        style={{
-          transform: isHeaderVisible ? 'translateY(0)' : 'translateY(-100%)',
-          transition: prefersReducedMotion ? 'none' : `transform ${ANIMATION_DURATION}ms ease`,
-        }}
+        className={headerClasses}
       >
         {/* Main Header */}
         <div className="header-main">
@@ -272,9 +273,6 @@ const Header = () => {
           </div>
         </nav>
       </header>
-
-      {/* Spacer para evitar que el contenido quede tapado por el header fixed */}
-      <div aria-hidden style={{ height: headerHeight }} />
 
       {/* Mobile Menu Drawer */}
       <MobileMenu isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)} />
