@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Search, ShoppingCart, ChevronDown, Menu } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -30,7 +30,6 @@ const categories = [{
 }];
 
 const Header = () => {
-  const [isVisible, setIsVisible] = useState(true);
   const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
@@ -39,37 +38,8 @@ const Header = () => {
   const headerRef = useRef<HTMLElement | null>(null);
   const dropdownRef = useRef<HTMLLIElement>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const lastScrollY = useRef(0);
   
   const { finalTotal, itemCount, setIsCartOpen } = useCart();
-
-  // Facebook-style hide on scroll logic
-  const handleScroll = useCallback(() => {
-    const currentScrollY = window.scrollY;
-    
-    // Zona segura: en el tope absoluto (< 10px), siempre visible
-    if (currentScrollY < 10) {
-      setIsVisible(true);
-      lastScrollY.current = currentScrollY;
-      return;
-    }
-    
-    // Scroll hacia abajo = ocultar
-    if (currentScrollY > lastScrollY.current) {
-      setIsVisible(false);
-    }
-    // Scroll hacia arriba = mostrar
-    else if (currentScrollY < lastScrollY.current) {
-      setIsVisible(true);
-    }
-    
-    lastScrollY.current = currentScrollY;
-  }, []);
-
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [handleScroll]);
 
   // Click outside para cerrar dropdown
   useEffect(() => {
@@ -102,10 +72,7 @@ const Header = () => {
   return <>
       <header
         ref={headerRef}
-        className={cn(
-          "fixed top-0 w-full z-50 bg-background transition-transform duration-300 ease-in-out",
-          isVisible ? "translate-y-0" : "-translate-y-full"
-        )}
+        className="header-wrapper"
       >
         {/* Main Header */}
         <div className="header-main">

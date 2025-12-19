@@ -11,9 +11,6 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <Header />
       
-      {/* Invisible placeholder - same height as header */}
-      <div className="h-16 md:h-20" aria-hidden="true" />
-      
       {/* Hero Banner */}
       <HeroBanner />
       
