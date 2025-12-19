@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Search, ShoppingCart, ChevronDown, Menu } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -29,89 +29,31 @@ const categories = [{
   subcategories: []
 }];
 
-// ========== CONFIGURACIÓN AJUSTABLE ==========
-// Umbral de scroll antes de cambiar dirección (evita flicker)
-const SCROLL_THRESHOLD = 5;
-// Punto donde forzamos mostrar sin transición (instant snap)
-const TOP_THRESHOLD = 10;
-// ==============================================
+// Umbral para activar estado "scrolled"
+const SCROLL_THRESHOLD = 10;
 
 const Header = () => {
-  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
-  const [isAtTop, setIsAtTop] = useState(true);
+  const [isScrolled, setIsScrolled] = useState(false);
   const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   
   const headerRef = useRef<HTMLElement | null>(null);
   const dropdownRef = useRef<HTMLLIElement>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const lastScrollY = useRef(0);
-  const ticking = useRef(false);
   
   const { finalTotal, itemCount, setIsCartOpen } = useCart();
 
-  // Detectar preferencia de reducción de movimiento
+  // Simple scroll detection for shadow state
   useEffect(() => {
-    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-    setPrefersReducedMotion(mediaQuery.matches);
-    
-    const handler = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches);
-    mediaQuery.addEventListener('change', handler);
-    return () => mediaQuery.removeEventListener('change', handler);
-  }, []);
-
-  // Sticky Header scroll logic
-  const handleScroll = useCallback(() => {
-    const currentScrollY = window.scrollY;
-    const scrollingDown = currentScrollY > lastScrollY.current;
-    const scrollDelta = Math.abs(currentScrollY - lastScrollY.current);
-
-    // Solo actuar si superamos el umbral (evita flicker)
-    if (scrollDelta < SCROLL_THRESHOLD) {
-      ticking.current = false;
-      return;
-    }
-
-    // Si estamos cerca del top, mostrar instantáneamente (sin transición)
-    if (currentScrollY <= TOP_THRESHOLD) {
-      setIsAtTop(true);
-      setIsHeaderVisible(true);
-      lastScrollY.current = currentScrollY;
-      ticking.current = false;
-      return;
-    }
-
-    // Ya no estamos en el top
-    setIsAtTop(false);
-
-    // Scroll hacia abajo = ocultar header
-    if (scrollingDown) {
-      setIsHeaderVisible(false);
-    }
-    // Scroll hacia arriba = mostrar header
-    else {
-      setIsHeaderVisible(true);
-    }
-
-    lastScrollY.current = currentScrollY;
-    ticking.current = false;
-  }, []);
-
-  useEffect(() => {
-    const onScroll = () => {
-      if (!ticking.current) {
-        requestAnimationFrame(handleScroll);
-        ticking.current = true;
-      }
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > SCROLL_THRESHOLD);
     };
     
-    lastScrollY.current = window.scrollY;
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, [handleScroll]);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   // Click outside para cerrar dropdown
   useEffect(() => {
@@ -144,9 +86,7 @@ const Header = () => {
   // Determinar clases del header
   const headerClasses = cn(
     "header-wrapper",
-    !isHeaderVisible && "header-hidden",
-    // Instant snap: sin transición cuando estamos en el top
-    (isAtTop || prefersReducedMotion) && "no-transition"
+    isScrolled && "header-scrolled"
   );
 
   return <>
