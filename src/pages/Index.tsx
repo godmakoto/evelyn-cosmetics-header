@@ -11,6 +11,9 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <Header />
       
+      {/* Spacer to compensate for fixed header */}
+      <div className="h-16 md:h-20 lg:h-24" />
+      
       {/* Hero Banner */}
       <HeroBanner />
       

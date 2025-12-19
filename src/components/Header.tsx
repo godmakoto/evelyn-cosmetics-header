@@ -103,7 +103,7 @@ const Header = () => {
       <header
         ref={headerRef}
         className={cn(
-          "fixed top-0 left-0 right-0 z-[9999] transition-transform duration-300",
+          "fixed top-0 left-0 right-0 z-[9999] bg-background transition-transform duration-300 ease-in-out",
           isVisible ? "translate-y-0" : "-translate-y-full"
         )}
       >
