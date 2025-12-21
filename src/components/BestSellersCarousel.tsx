@@ -143,9 +143,9 @@ export const BestSellersCarousel = () => {
     }
   };
 
-  // Solo mostrar "Ver carrito" si el usuario agregó el producto en esta sesión
-  const wasAddedByUser = (productId: string) => {
-    return addedProducts.has(productId);
+  // Verificar si el producto está en el carrito
+  const isInCart = (productId: string) => {
+    return items.some(item => item.id === productId);
   };
 
   return (
@@ -220,12 +220,12 @@ export const BestSellersCarousel = () => {
                       </div>
 
                       <Button
-                        variant={wasAddedByUser(product.id) ? "outline" : "default"}
+                        variant={isInCart(product.id) ? "outline" : "default"}
                         className="w-full rounded-full gap-2"
                         onClick={() => handleAddToCart(product)}
                       >
                         <ShoppingBag className="w-4 h-4" />
-                        {wasAddedByUser(product.id) ? "Ver carrito" : "Agregar"}
+                        {isInCart(product.id) ? "Ver carrito" : "Agregar"}
                       </Button>
                     </div>
                   </div>
