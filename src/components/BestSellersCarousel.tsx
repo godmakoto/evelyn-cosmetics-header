@@ -50,7 +50,7 @@ const bestSellerProducts: Product[] = [
     id: "bs-5",
     name: "Contorno de Ojos Anti-ojeras con Cafeína y Péptidos Reafirmantes Intensivo",
     brand: "Vichy",
-    image: "https://images.unsplash.com/photo-1601049541289-9b1b7bbbfe19?w=400&h=400&fit=crop",
+    image: "https://images.unsplash.com/photo-1612817288484-6f916006741a?w=400&h=400&fit=crop",
     price: 180,
     originalPrice: 220
   },

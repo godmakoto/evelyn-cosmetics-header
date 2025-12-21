@@ -37,7 +37,7 @@ const products: Product[] = [{
   id: "4",
   name: "Pigmentbio Foaming cream Facial y corporal - Limpiador despigmentante crema-espuma - Limpia y exfolia suavemente, reduce manchas oscuras - 200ml",
   brand: "Bioderma",
-  image: "https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=400&h=400&fit=crop",
+  image: "https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=400&h=400&fit=crop",
   price: 95
 }, {
   id: "5",
