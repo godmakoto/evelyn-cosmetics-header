@@ -29,17 +29,51 @@ const categories = [{
   subcategories: []
 }];
 
+const SCROLL_THRESHOLD = 150; // Después de este punto, el header toma el efecto
+
 const Header = () => {
   const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
+  const [isPastThreshold, setIsPastThreshold] = useState(false);
   
   const headerRef = useRef<HTMLElement | null>(null);
   const dropdownRef = useRef<HTMLLIElement>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const lastScrollY = useRef(0);
   
   const { finalTotal, itemCount, setIsCartOpen } = useCart();
+
+  // Scroll handler para ocultar/mostrar header
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      
+      // Determinar si pasamos el umbral
+      if (currentScrollY > SCROLL_THRESHOLD) {
+        setIsPastThreshold(true);
+        // Solo aplicar efecto después del umbral
+        if (currentScrollY < lastScrollY.current) {
+          // Scrolling up - mostrar header
+          setIsHeaderVisible(true);
+        } else {
+          // Scrolling down - ocultar header
+          setIsHeaderVisible(false);
+        }
+      } else {
+        // Antes del umbral, siempre visible y sin efecto sticky especial
+        setIsPastThreshold(false);
+        setIsHeaderVisible(true);
+      }
+      
+      lastScrollY.current = currentScrollY;
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   // Click outside para cerrar dropdown
   useEffect(() => {
@@ -72,7 +106,11 @@ const Header = () => {
   return <>
       <header
         ref={headerRef}
-        className="header-wrapper"
+        className={cn(
+          "header-wrapper",
+          isPastThreshold && "header-fixed",
+          isPastThreshold && !isHeaderVisible && "header-hidden"
+        )}
       >
         {/* Main Header */}
         <div className="header-main">
