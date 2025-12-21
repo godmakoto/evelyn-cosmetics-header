@@ -50,17 +50,26 @@ const Header = () => {
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
+      const scrollDelta = currentScrollY - lastScrollY.current;
       
       // Determinar si pasamos el umbral
       if (currentScrollY > SCROLL_THRESHOLD) {
-        setIsPastThreshold(true);
-        // Solo aplicar efecto después del umbral
-        if (currentScrollY < lastScrollY.current) {
-          // Scrolling up - mostrar header
-          setIsHeaderVisible(true);
-        } else {
-          // Scrolling down - ocultar header
+        if (!isPastThreshold) {
+          // Primera vez que pasamos el umbral, ocultar inmediatamente
+          setIsPastThreshold(true);
           setIsHeaderVisible(false);
+        } else {
+          // Ya estamos pasado el umbral, aplicar lógica de dirección
+          // Solo cambiar estado si el delta es significativo (evita flickering)
+          if (Math.abs(scrollDelta) > 5) {
+            if (scrollDelta < 0) {
+              // Scrolling up - mostrar header
+              setIsHeaderVisible(true);
+            } else {
+              // Scrolling down - ocultar header
+              setIsHeaderVisible(false);
+            }
+          }
         }
       } else {
         // Antes del umbral, siempre visible y sin efecto sticky especial
