@@ -32,16 +32,16 @@ export const categories: Record<string, string[]> = {
 };
 
 const productTemplates = [
-  { type: "Protector Solar", category: "Protectores Solares", desc: "Protección avanzada con acabado ligero y no graso" },
-  { type: "Gel Limpiador", category: "Limpiadores", desc: "Limpieza profunda que respeta la barrera cutánea" },
-  { type: "Crema Hidratante", category: "Hidratantes", desc: "Hidratación intensa de larga duración" },
-  { type: "Sérum Facial", category: "Serums", desc: "Fórmula concentrada de rápida absorción" },
-  { type: "Tónico Facial", category: "Tónicos", desc: "Equilibra y prepara la piel para el siguiente paso" },
-  { type: "Agua Micelar", category: "Limpiadores", desc: "Limpia y desmaquilla sin necesidad de enjuagar" },
-  { type: "Gel-Crema", category: "Hidratantes", desc: "Textura ligera ideal para pieles mixtas" },
-  { type: "Espuma Limpiadora", category: "Limpiadores", desc: "Espuma suave que elimina impurezas" },
-  { type: "Loción Corporal", category: "Hidratantes", desc: "Nutre e hidrata la piel del cuerpo" },
-  { type: "Sérum Vitamina C", category: "Serums", desc: "Ilumina y unifica el tono de la piel" },
+  { type: "Protector Solar", category: "Protectores Solares", desc: "Protección avanzada con acabado ligero y no graso", image: "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=400&h=400&fit=crop" },
+  { type: "Gel Limpiador", category: "Limpiadores", desc: "Limpieza profunda que respeta la barrera cutánea", image: "https://images.unsplash.com/photo-1556229010-6c3f2c9ca5f8?w=400&h=400&fit=crop" },
+  { type: "Crema Hidratante", category: "Hidratantes", desc: "Hidratación intensa de larga duración", image: "https://images.unsplash.com/photo-1570194065650-d99fb4b38b15?w=400&h=400&fit=crop" },
+  { type: "Sérum Facial", category: "Serums", desc: "Fórmula concentrada de rápida absorción", image: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=400&h=400&fit=crop" },
+  { type: "Tónico Facial", category: "Tónicos", desc: "Equilibra y prepara la piel para el siguiente paso", image: "https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?w=400&h=400&fit=crop" },
+  { type: "Agua Micelar", category: "Limpiadores", desc: "Limpia y desmaquilla sin necesidad de enjuagar", image: "https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=400&h=400&fit=crop" },
+  { type: "Gel-Crema", category: "Hidratantes", desc: "Textura ligera ideal para pieles mixtas", image: "https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=400&h=400&fit=crop" },
+  { type: "Espuma Limpiadora", category: "Limpiadores", desc: "Espuma suave que elimina impurezas", image: "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=400&h=400&fit=crop" },
+  { type: "Loción Corporal", category: "Hidratantes", desc: "Nutre e hidrata la piel del cuerpo", image: "https://images.unsplash.com/photo-1526947425960-945c6e72858f?w=400&h=400&fit=crop" },
+  { type: "Sérum Vitamina C", category: "Serums", desc: "Ilumina y unifica el tono de la piel", image: "https://images.unsplash.com/photo-1617897903246-719242758050?w=400&h=400&fit=crop" },
 ];
 
 const sizes = ["30ml", "50ml", "75ml", "100ml", "150ml", "200ml"];
@@ -71,7 +71,7 @@ function generateProducts(): Product[] {
         price: finalPrice,
         originalPrice: hasDiscount ? basePrice : undefined,
         description: template.desc,
-        image: `https://images.unsplash.com/photo-${1600000000000 + id * 1000}?w=400&h=400&fit=crop`,
+        image: template.image,
       });
       id++;
     });
