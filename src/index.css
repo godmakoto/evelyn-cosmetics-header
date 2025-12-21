@@ -131,24 +131,11 @@
 
 /* Header Styles */
 @layer components {
-  /* Header base - scrolls normally at first */
+  /* Sticky Header - Always fixed at top */
   .header-wrapper {
     @apply w-full z-[9999];
-    position: relative;
-    transition: transform 0.3s ease-in-out;
-  }
-
-  /* After passing threshold, becomes fixed */
-  .header-wrapper.header-fixed {
-    position: fixed;
+    position: sticky;
     top: 0;
-    left: 0;
-    right: 0;
-  }
-
-  /* Hidden state when scrolling down */
-  .header-wrapper.header-hidden {
-    transform: translateY(-100%);
   }
 
   /* Main Header - Dark theme for contrast */
