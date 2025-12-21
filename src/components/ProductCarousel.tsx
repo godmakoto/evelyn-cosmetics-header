@@ -74,7 +74,6 @@ export const ProductCarousel = () => {
     addItem,
     setIsCartOpen
   } = useCart();
-  const [addedProducts, setAddedProducts] = useState<Set<string>>(new Set());
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
 
@@ -111,8 +110,7 @@ export const ProductCarousel = () => {
     };
   }, [emblaApi, onSelect]);
   const handleAddToCart = (product: Product) => {
-    // Si ya agregamos este producto en esta sesión, abrir el carrito
-    if (addedProducts.has(product.id)) {
+    if (isInCart(product.id)) {
       setIsCartOpen(true);
     } else {
       addItem({
@@ -122,14 +120,11 @@ export const ProductCarousel = () => {
         originalPrice: product.originalPrice || product.price,
         discountedPrice: product.originalPrice ? product.price : undefined
       });
-      // Marcar como agregado para cambiar el botón a "Ver carrito"
-      setAddedProducts(prev => new Set(prev).add(product.id));
     }
   };
 
-  // Solo mostrar "Ver carrito" si el usuario agregó el producto en esta sesión
-  const wasAddedByUser = (productId: string) => {
-    return addedProducts.has(productId);
+  const isInCart = (productId: string) => {
+    return items.some(item => item.id === productId);
   };
   return <section className="py-6 md:py-8 bg-background">
       <div className="max-w-7xl mx-auto px-4 md:px-6">
@@ -183,9 +178,9 @@ export const ProductCarousel = () => {
                       </div>
 
                       {/* Add Button */}
-                      <Button variant={wasAddedByUser(product.id) ? "outline" : "default"} className="w-full rounded-full gap-2" onClick={() => handleAddToCart(product)}>
+                      <Button variant={isInCart(product.id) ? "outline" : "default"} className="w-full rounded-full gap-2" onClick={() => handleAddToCart(product)}>
                         <ShoppingBag className="w-4 h-4" />
-                        {wasAddedByUser(product.id) ? "Ver carrito" : "Agregar"}
+                        {isInCart(product.id) ? "Ver carrito" : "Agregar"}
                       </Button>
                     </div>
                   </div>
