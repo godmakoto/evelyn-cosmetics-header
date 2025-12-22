@@ -65,7 +65,7 @@ const ShopFilters = ({ onFiltersChange }: ShopFiltersProps) => {
 
   return (
     <div
-      className="sticky top-0 z-40 bg-[#f9f9f9] border-b border-[#eaeaea] md:relative"
+      className="bg-[#f9f9f9] border-b border-[#eaeaea]"
     >
       <div className="max-w-[1200px] mx-auto px-4 py-4">
         {/* Header */}
