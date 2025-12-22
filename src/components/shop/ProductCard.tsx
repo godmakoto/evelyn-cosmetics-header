@@ -29,15 +29,15 @@ const ProductCard = ({ product }: ProductCardProps) => {
   return (
     <div className="bg-white rounded-2xl border border-[#eaeaea] overflow-hidden flex flex-row h-[220px] md:h-[280px] hover:shadow-lg transition-shadow duration-300">
       {/* Image Column */}
-      <div className="relative w-[35%] md:w-[40%] bg-[#fcfcfc] flex items-center justify-center p-3">
+      <div className="w-[35%] md:w-[40%] bg-[#f5f5f5] flex items-center justify-center p-3 md:p-4">
         <div className="relative w-full h-full">
           <img
             src={product.image}
             alt={product.name}
-            className="w-full h-full object-contain rounded-xl"
+            className="w-full h-full object-contain rounded-2xl"
           />
           {product.discount && (
-            <span className="absolute top-1 left-1 bg-[#e02b2b] text-white text-[10px] md:text-xs font-semibold px-2 py-1 rounded-md">
+            <span className="absolute top-2 left-2 bg-[#b91c1c] text-white text-[10px] md:text-xs font-bold px-3 py-1.5 rounded-full shadow-sm">
               {product.discount}% OFF
             </span>
           )}
