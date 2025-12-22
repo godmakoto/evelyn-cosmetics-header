@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { brands, categories, getSubcategories } from "@/data/shopProducts";
 import { ChevronDown } from "lucide-react";
 
@@ -17,32 +17,6 @@ const ShopFilters = ({ onFiltersChange }: ShopFiltersProps) => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedSubcategory, setSelectedSubcategory] = useState<string | null>(null);
   const [subcategories, setSubcategories] = useState<string[]>([]);
-  
-  // Smart sticky logic
-  const [isVisible, setIsVisible] = useState(true);
-  const lastScrollY = useRef(0);
-  const filterRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      
-      if (currentScrollY < 100) {
-        setIsVisible(true);
-      } else if (currentScrollY > lastScrollY.current) {
-        // Scrolling down
-        setIsVisible(false);
-      } else {
-        // Scrolling up
-        setIsVisible(true);
-      }
-      
-      lastScrollY.current = currentScrollY;
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   useEffect(() => {
     if (selectedCategory) {
@@ -91,13 +65,7 @@ const ShopFilters = ({ onFiltersChange }: ShopFiltersProps) => {
 
   return (
     <div
-      ref={filterRef}
-      className={`
-        sticky top-0 z-40 bg-[#f9f9f9] border-b border-[#eaeaea]
-        transition-transform duration-300 ease-in-out
-        md:relative md:transform-none
-        ${isVisible ? "translate-y-0" : "-translate-y-full md:translate-y-0"}
-      `}
+      className="sticky top-0 z-40 bg-[#f9f9f9] border-b border-[#eaeaea] md:relative"
     >
       <div className="max-w-[1200px] mx-auto px-4 py-4">
         {/* Header */}
