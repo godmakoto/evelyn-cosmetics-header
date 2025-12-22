@@ -27,9 +27,9 @@ const ProductCard = ({ product }: ProductCardProps) => {
   };
 
   return (
-    <div className="bg-white rounded-2xl border border-[#eaeaea] overflow-hidden flex flex-row h-[260px] md:h-[280px] hover:shadow-lg transition-shadow duration-300">
+    <div className="bg-white rounded-2xl border border-[#eaeaea] overflow-hidden flex flex-row h-[280px] sm:h-[300px] md:h-[280px] hover:shadow-lg transition-shadow duration-300">
       {/* Image Column */}
-      <div className="relative w-[40%] md:w-[40%] bg-[#fcfcfc] flex items-center justify-center p-2 md:p-3">
+      <div className="relative w-[38%] sm:w-[35%] md:w-[40%] bg-[#fcfcfc] flex items-center justify-center p-2 md:p-3">
         {product.discount && (
           <span className="absolute top-2 left-2 bg-[#e02b2b] text-white text-[10px] md:text-xs font-semibold px-2 py-1 rounded-md z-10">
             {product.discount}% OFF
@@ -43,10 +43,10 @@ const ProductCard = ({ product }: ProductCardProps) => {
       </div>
 
       {/* Info Column */}
-      <div className="flex-1 p-3 md:p-6 flex flex-col justify-between">
+      <div className="flex-1 p-3 sm:p-4 md:p-6 flex flex-col justify-between">
         <div>
           {/* Title - up to 4 lines */}
-          <h3 className="text-[#222] font-bold text-[13px] md:text-base leading-snug line-clamp-4 mb-1">
+          <h3 className="text-[#222] font-bold text-[13px] sm:text-sm md:text-base leading-snug line-clamp-4 mb-1">
             {product.name}
           </h3>
 
@@ -67,8 +67,8 @@ const ProductCard = ({ product }: ProductCardProps) => {
             )}
           </div>
 
-          {/* Description - max 2 lines, hidden on mobile */}
-          <p className="hidden md:block text-[#666] text-xs leading-relaxed line-clamp-2 mb-3">
+          {/* Description - max 2 lines */}
+          <p className="text-[#666] text-xs leading-relaxed line-clamp-2 mb-2">
             {product.description}
           </p>
         </div>
@@ -76,7 +76,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
         {/* Add to Cart Button - Same as ProductCarousel */}
         <Button
           variant={isInCart ? "outline" : "default"}
-          className="w-full rounded-full gap-2 text-sm"
+          className="w-full rounded-full gap-2 text-sm shrink-0"
           onClick={handleAddToCart}
         >
           <ShoppingBag className="w-4 h-4" />
