@@ -130,7 +130,7 @@ const Header = () => {
           <div className="search-container h-8">
             <input type="text" placeholder="¿Qué estás buscando?" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="search-input text-sm h-full" />
             <button className="search-button h-full px-2">
-              <Search className="w-4 h-4" />
+              <Search className="w-3.5 h-3.5" />
             </button>
           </div>
         </div>
