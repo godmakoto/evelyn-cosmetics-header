@@ -113,10 +113,10 @@ const ShopFilters = ({ onFiltersChange }: ShopFiltersProps) => {
           )}
         </div>
 
-        {/* Filters Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        {/* Row 1: Precio Máximo + Marca */}
+        <div className="grid grid-cols-2 gap-3 mb-3">
           {/* Max Price Input */}
-          <div className="col-span-1">
+          <div>
             <label className="block text-xs text-[#666] mb-1.5">Precio Máximo</label>
             <input
               type="number"
@@ -129,7 +129,7 @@ const ShopFilters = ({ onFiltersChange }: ShopFiltersProps) => {
           </div>
 
           {/* Brand Dropdown */}
-          <div className="col-span-1">
+          <div>
             <label className="block text-xs text-[#666] mb-1.5">Marca</label>
             <div className="relative">
               <select
@@ -148,51 +148,51 @@ const ShopFilters = ({ onFiltersChange }: ShopFiltersProps) => {
               <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#666] pointer-events-none" />
             </div>
           </div>
+        </div>
 
-          {/* Category Dropdown */}
-          <div className="col-span-1">
-            <label className="block text-xs text-[#666] mb-1.5">Categoría</label>
+        {/* Row 2: Categoría */}
+        <div className="mb-3">
+          <label className="block text-xs text-[#666] mb-1.5">Categoría</label>
+          <div className="relative">
+            <select
+              value={selectedCategory || ""}
+              onChange={(e) => handleCategoryChange(e.target.value || null)}
+              className="w-full h-10 px-3 pr-8 rounded-xl border border-[#eaeaea] bg-white text-[#222] text-sm
+                appearance-none focus:outline-none focus:border-[#222] transition-colors cursor-pointer"
+            >
+              <option value="">Todas</option>
+              {categories.map((category) => (
+                <option key={category} value={category}>
+                  {category}
+                </option>
+              ))}
+            </select>
+            <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#666] pointer-events-none" />
+          </div>
+        </div>
+
+        {/* Row 3: Subcategorías (solo visible cuando hay categoría seleccionada) */}
+        {selectedCategory && subcategories.length > 0 && (
+          <div className="animate-in fade-in slide-in-from-top-2 duration-200">
+            <label className="block text-xs text-[#666] mb-1.5">Tipo de Producto</label>
             <div className="relative">
               <select
-                value={selectedCategory || ""}
-                onChange={(e) => handleCategoryChange(e.target.value || null)}
+                value={selectedSubcategory || ""}
+                onChange={(e) => setSelectedSubcategory(e.target.value || null)}
                 className="w-full h-10 px-3 pr-8 rounded-xl border border-[#eaeaea] bg-white text-[#222] text-sm
                   appearance-none focus:outline-none focus:border-[#222] transition-colors cursor-pointer"
               >
-                <option value="">Todas</option>
-                {categories.map((category) => (
-                  <option key={category} value={category}>
-                    {category}
+                <option value="">Todos</option>
+                {subcategories.map((sub) => (
+                  <option key={sub} value={sub}>
+                    {sub}
                   </option>
                 ))}
               </select>
               <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#666] pointer-events-none" />
             </div>
           </div>
-
-          {/* Subcategory Dropdown - Only visible when category is selected */}
-          {selectedCategory && subcategories.length > 0 && (
-            <div className="col-span-1">
-              <label className="block text-xs text-[#666] mb-1.5">Tipo de Producto</label>
-              <div className="relative">
-                <select
-                  value={selectedSubcategory || ""}
-                  onChange={(e) => setSelectedSubcategory(e.target.value || null)}
-                  className="w-full h-10 px-3 pr-8 rounded-xl border border-[#eaeaea] bg-white text-[#222] text-sm
-                    appearance-none focus:outline-none focus:border-[#222] transition-colors cursor-pointer"
-                >
-                  <option value="">Todos</option>
-                  {subcategories.map((sub) => (
-                    <option key={sub} value={sub}>
-                      {sub}
-                    </option>
-                  ))}
-                </select>
-                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#666] pointer-events-none" />
-              </div>
-            </div>
-          )}
-        </div>
+        )}
       </div>
     </div>
   );
