@@ -50,7 +50,7 @@ const ProductGrid = () => {
   }, []);
 
   return (
-    <div className="bg-[#f9f9f9] min-h-screen">
+    <div className="bg-white sm:bg-[#f9f9f9] min-h-screen">
       {/* Filters */}
       <ShopFilters onFiltersChange={handleFiltersChange} />
 
