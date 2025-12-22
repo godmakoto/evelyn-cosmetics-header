@@ -86,13 +86,12 @@ const ProductCard = ({ product }: ProductCardProps) => {
           {isInCart ? (
             <>
               <Check className="w-4 h-4" />
-              <span className="hidden sm:inline">En el carrito</span>
-              <span className="sm:hidden">Ver carrito</span>
+              <span>Agregado</span>
             </>
           ) : (
             <>
               <ShoppingCart className="w-4 h-4" />
-              <span>Agregar al carrito</span>
+              <span>Agregar</span>
             </>
           )}
         </button>
