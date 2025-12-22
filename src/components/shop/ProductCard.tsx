@@ -28,23 +28,23 @@ const ProductCard = ({
     }
   };
   return (
-    <div className="bg-white rounded-none lg:rounded-2xl border-0 lg:border lg:border-[#eaeaea] border-b border-b-[#eee] overflow-hidden flex flex-row h-[240px] lg:h-[300px] shadow-none lg:hover:shadow-lg transition-shadow duration-300">
-      {/* Image Column - 50% on mobile/tablet, adjusted on larger screens */}
-      <div className="relative w-1/2 lg:w-[40%] bg-white flex items-center justify-center p-3 lg:p-4">
+    <div className="bg-white rounded-none sm:rounded-2xl border-0 sm:border sm:border-[#eaeaea] border-b border-b-[#eee] overflow-hidden flex flex-row h-[240px] sm:h-[300px] md:h-[280px] shadow-none sm:hover:shadow-lg transition-shadow duration-300">
+      {/* Image Column - 50% on mobile, adjusted on larger screens */}
+      <div className="relative w-1/2 sm:w-[35%] md:w-[40%] bg-white flex items-start sm:items-center justify-center pt-3 sm:pt-0 sm:p-3">
         {product.discount && (
-          <span className="hidden lg:block absolute top-2 left-2 bg-[#e02b2b] text-white text-[10px] lg:text-xs font-semibold px-2 py-1 rounded-md z-10">
+          <span className="hidden sm:block absolute top-2 left-2 bg-[#e02b2b] text-white text-[10px] md:text-xs font-semibold px-2 py-1 rounded-md z-10">
             {product.discount}% OFF
           </span>
         )}
         <img
           src={product.image}
           alt={product.name}
-          className="w-[85%] md:w-[75%] lg:w-full aspect-square lg:aspect-auto h-auto lg:h-full object-contain"
+          className="w-full h-auto sm:h-full object-contain object-top sm:object-center"
         />
       </div>
 
       {/* Info Column - 50% on mobile */}
-      <div className="flex-1 p-3 lg:p-6 flex flex-col justify-between">
+      <div className="flex-1 p-3 sm:p-4 md:p-6 flex flex-col justify-between">
         <div>
           {/* Title - up to 4 lines, lighter font on mobile */}
           <h3 className="text-[#222] font-semibold sm:font-bold text-[13px] sm:text-sm md:text-base leading-snug line-clamp-4 mb-1">
