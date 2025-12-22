@@ -2,16 +2,18 @@ import { ShopProduct } from "@/data/shopProducts";
 import { useCart } from "@/contexts/CartContext";
 import { ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
 interface ProductCardProps {
   product: ShopProduct;
 }
-
-const ProductCard = ({ product }: ProductCardProps) => {
-  const { addItem, items, setIsCartOpen } = useCart();
-
-  const isInCart = items.some((item) => item.id === product.id);
-
+const ProductCard = ({
+  product
+}: ProductCardProps) => {
+  const {
+    addItem,
+    items,
+    setIsCartOpen
+  } = useCart();
+  const isInCart = items.some(item => item.id === product.id);
   const handleAddToCart = () => {
     if (isInCart) {
       setIsCartOpen(true);
@@ -21,25 +23,17 @@ const ProductCard = ({ product }: ProductCardProps) => {
         name: product.name,
         image: product.image,
         originalPrice: product.originalPrice || product.price,
-        discountedPrice: product.originalPrice ? product.price : undefined,
+        discountedPrice: product.originalPrice ? product.price : undefined
       });
     }
   };
-
-  return (
-    <div className="bg-white rounded-2xl border border-[#eaeaea] overflow-hidden flex flex-row h-[220px] sm:h-[300px] md:h-[280px] hover:shadow-lg transition-shadow duration-300">
+  return <div className="bg-white rounded-2xl border border-[#eaeaea] overflow-hidden flex flex-row h-[220px] sm:h-[300px] md:h-[280px] hover:shadow-lg transition-shadow duration-300">
       {/* Image Column */}
       <div className="relative w-[38%] sm:w-[35%] md:w-[40%] bg-[#fcfcfc] flex items-center justify-center p-1.5 md:p-3">
-        {product.discount && (
-          <span className="absolute top-2 left-2 bg-[#e02b2b] text-white text-[10px] md:text-xs font-semibold px-2 py-1 rounded-md z-10">
+        {product.discount && <span className="absolute top-2 left-2 bg-[#e02b2b] text-white text-[10px] md:text-xs font-semibold px-2 py-1 rounded-md z-10">
             {product.discount}% OFF
-          </span>
-        )}
-        <img
-          src={product.image}
-          alt={product.name}
-          className="w-full h-full object-contain"
-        />
+          </span>}
+        <img src={product.image} alt={product.name} className="w-full h-full object-contain" />
       </div>
 
       {/* Info Column */}
@@ -57,14 +51,12 @@ const ProductCard = ({ product }: ProductCardProps) => {
 
           {/* Prices */}
           <div className="flex items-center gap-2 mb-1.5">
-            <span className="text-[#e02b2b] font-bold text-sm md:text-lg">
+            <span className="text-[#e02b2b] font-bold md:text-lg text-base">
               {product.price.toFixed(1)} Bs
             </span>
-            {product.originalPrice && (
-              <span className="text-[#999] text-xs md:text-sm line-through">
+            {product.originalPrice && <span className="text-[#999] text-xs md:text-sm line-through">
                 {product.originalPrice.toFixed(1)} Bs
-              </span>
-            )}
+              </span>}
           </div>
 
           {/* Description - max 2 lines */}
@@ -74,17 +66,11 @@ const ProductCard = ({ product }: ProductCardProps) => {
         </div>
 
         {/* Add to Cart Button - Same as ProductCarousel */}
-        <Button
-          variant={isInCart ? "outline" : "default"}
-          className="w-full rounded-full gap-2 text-sm shrink-0"
-          onClick={handleAddToCart}
-        >
+        <Button variant={isInCart ? "outline" : "default"} className="w-full rounded-full gap-2 text-sm shrink-0" onClick={handleAddToCart}>
           <ShoppingBag className="w-4 h-4" />
           {isInCart ? "Ver carrito" : "Agregar"}
         </Button>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default ProductCard;
