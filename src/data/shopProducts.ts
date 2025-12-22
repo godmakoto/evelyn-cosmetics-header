@@ -13,6 +13,18 @@ export interface ShopProduct {
 
 export const shopProducts: ShopProduct[] = [
   {
+    id: "shop-0",
+    name: "La Roche-Posay Effaclar Duo+ Unifiant Tratamiento Corrector Desincrustante Anti-Imperfecciones con Color Tono Medio para Pieles Grasas con Tendencia Acneica",
+    brand: "La Roche-Posay",
+    category: "Cuidado Facial",
+    subcategory: "Anti-Acné",
+    price: 189.0,
+    originalPrice: 225.0,
+    description: "Tratamiento corrector con color que unifica el tono mientras trata las imperfecciones.",
+    image: "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=400&h=400&fit=crop",
+    discount: 16
+  },
+  {
     id: "shop-1",
     name: "Avène Cicalfate+ Crema Reparadora Protectora Intensiva 100ml",
     brand: "Avène",
