@@ -27,13 +27,13 @@ const ProductCard = ({
       });
     }
   };
-  return <div className="bg-white rounded-2xl border border-[#eaeaea] overflow-hidden flex flex-row h-[240px] sm:h-[300px] md:h-[280px] hover:shadow-lg transition-shadow duration-300">
+  return <div className="bg-white rounded-none border-0 border-b border-[#eaeaea] sm:rounded-2xl sm:border sm:border-[#eaeaea] overflow-hidden flex flex-row h-auto sm:h-[300px] md:h-[280px] hover:shadow-lg transition-shadow duration-300">
       {/* Image Column */}
-      <div className="relative w-[38%] sm:w-[35%] md:w-[40%] bg-[#fcfcfc] flex items-center justify-center p-1.5 md:p-3">
+      <div className="relative w-[42%] sm:w-[35%] md:w-[40%] bg-[#fcfcfc] flex items-center justify-center p-2 sm:p-1.5 md:p-3 self-stretch">
         {product.discount && <span className="absolute top-2 left-2 bg-[#e02b2b] text-white text-[10px] md:text-xs font-semibold px-2 py-1 rounded-md z-10">
             {product.discount}% OFF
           </span>}
-        <img src={product.image} alt={product.name} className="w-full h-full object-contain" />
+        <img src={product.image} alt={product.name} className="w-full h-full object-contain max-h-[180px] sm:max-h-none" />
       </div>
 
       {/* Info Column */}
