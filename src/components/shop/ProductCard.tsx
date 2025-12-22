@@ -43,7 +43,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
       </div>
 
       {/* Info Column */}
-      <div className="flex-1 p-3 sm:p-4 md:p-6 flex flex-col justify-between">
+      <div className="flex-1 p-3 sm:p-4 md:p-6 flex flex-col justify-center gap-2">
         <div>
           {/* Title - up to 4 lines */}
           <h3 className="text-[#222] font-bold text-[13px] sm:text-sm md:text-base leading-snug line-clamp-4 mb-1">
