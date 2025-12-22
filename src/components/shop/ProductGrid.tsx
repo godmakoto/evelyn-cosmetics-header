@@ -56,8 +56,8 @@ const ProductGrid = () => {
 
       {/* Products Grid */}
       <div className="max-w-[1200px] mx-auto px-4 py-6">
-        {/* Results count */}
-        <p className="text-[#666] text-sm mb-4">
+        {/* Results count - hidden on mobile */}
+        <p className="hidden sm:block text-[#666] text-sm mb-4">
           {isLoading ? "Cargando..." : `${filteredProducts.length} productos encontrados`}
         </p>
 
