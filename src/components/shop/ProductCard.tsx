@@ -32,7 +32,7 @@ const ProductCard = ({
       {/* Image Column - 50% on mobile, adjusted on larger screens */}
       <div className="relative w-1/2 sm:w-[35%] md:w-[40%] bg-[#fcfcfc] flex items-center justify-center p-0 sm:p-3">
         {product.discount && (
-          <span className="absolute top-2 left-2 bg-[#e02b2b] text-white text-[10px] md:text-xs font-semibold px-2 py-1 rounded-md z-10">
+          <span className="hidden sm:block absolute top-2 left-2 bg-[#e02b2b] text-white text-[10px] md:text-xs font-semibold px-2 py-1 rounded-md z-10">
             {product.discount}% OFF
           </span>
         )}
