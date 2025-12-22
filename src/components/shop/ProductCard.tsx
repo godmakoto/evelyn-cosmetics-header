@@ -39,7 +39,7 @@ const ProductCard = ({
         <img
           src={product.image}
           alt={product.name}
-          className="w-full h-auto sm:w-[95%] sm:h-[95%] object-contain object-top sm:object-center"
+          className="w-full h-auto sm:h-full md:w-[95%] md:h-[95%] lg:w-full lg:h-full object-contain object-top sm:object-center"
         />
       </div>
 
