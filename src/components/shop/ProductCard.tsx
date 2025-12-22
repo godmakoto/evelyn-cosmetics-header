@@ -30,16 +30,18 @@ const ProductCard = ({ product }: ProductCardProps) => {
     <div className="bg-white rounded-2xl border border-[#eaeaea] overflow-hidden flex flex-row h-[220px] md:h-[280px] hover:shadow-lg transition-shadow duration-300">
       {/* Image Column */}
       <div className="relative w-[35%] md:w-[40%] bg-[#fcfcfc] flex items-center justify-center p-3">
-        {product.discount && (
-          <span className="absolute top-2 left-2 bg-[#e02b2b] text-white text-[10px] md:text-xs font-semibold px-2 py-1 rounded-md">
-            {product.discount}% OFF
-          </span>
-        )}
-        <img
-          src={product.image}
-          alt={product.name}
-          className="w-full h-full object-contain"
-        />
+        <div className="relative w-full h-full">
+          <img
+            src={product.image}
+            alt={product.name}
+            className="w-full h-full object-contain rounded-xl"
+          />
+          {product.discount && (
+            <span className="absolute top-1 left-1 bg-[#e02b2b] text-white text-[10px] md:text-xs font-semibold px-2 py-1 rounded-md">
+              {product.discount}% OFF
+            </span>
+          )}
+        </div>
       </div>
 
       {/* Info Column */}
