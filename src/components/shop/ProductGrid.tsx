@@ -55,7 +55,7 @@ const ProductGrid = () => {
       <ShopFilters onFiltersChange={handleFiltersChange} />
 
       {/* Products Grid */}
-      <div className="max-w-[1200px] mx-auto px-4 py-6">
+      <div className="max-w-[1200px] mx-auto px-3 py-4 md:px-4 md:py-6">
         {/* Results count - hidden on mobile */}
         <p className="hidden sm:block text-[#666] text-sm mb-4">
           {isLoading ? "Cargando..." : `${filteredProducts.length} productos encontrados`}
