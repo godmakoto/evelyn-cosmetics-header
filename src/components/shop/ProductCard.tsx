@@ -1,6 +1,7 @@
 import { ShopProduct } from "@/data/shopProducts";
 import { useCart } from "@/contexts/CartContext";
-import { ShoppingCart, Check } from "lucide-react";
+import { ShoppingBag } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface ProductCardProps {
   product: ShopProduct;
@@ -22,7 +23,6 @@ const ProductCard = ({ product }: ProductCardProps) => {
         originalPrice: product.originalPrice || product.price,
         discountedPrice: product.originalPrice ? product.price : undefined,
       });
-      setIsCartOpen(true);
     }
   };
 
@@ -71,30 +71,15 @@ const ProductCard = ({ product }: ProductCardProps) => {
           {product.description}
         </p>
 
-        {/* Add to Cart Button */}
-        <button
+        {/* Add to Cart Button - Same as ProductCarousel */}
+        <Button
+          variant={isInCart ? "outline" : "default"}
+          className="w-full rounded-full gap-2"
           onClick={handleAddToCart}
-          className={`
-            flex items-center justify-center gap-2 w-full py-2.5 px-4 rounded-full
-            text-sm font-medium transition-all duration-200
-            ${isInCart 
-              ? "bg-[#222] text-white" 
-              : "bg-black text-white hover:bg-[#333]"
-            }
-          `}
         >
-          {isInCart ? (
-            <>
-              <Check className="w-4 h-4" />
-              <span>Agregado</span>
-            </>
-          ) : (
-            <>
-              <ShoppingCart className="w-4 h-4" />
-              <span>Agregar</span>
-            </>
-          )}
-        </button>
+          <ShoppingBag className="w-4 h-4" />
+          {isInCart ? "Ver carrito" : "Agregar"}
+        </Button>
       </div>
     </div>
   );
