@@ -62,7 +62,7 @@ const ProductGrid = () => {
         </p>
 
         {/* Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 lg:gap-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5 lg:gap-6">
           {isLoading
             ? Array.from({ length: 6 }).map((_, index) => (
                 <ProductSkeleton key={index} />
