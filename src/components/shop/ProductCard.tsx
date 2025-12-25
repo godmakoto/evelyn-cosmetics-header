@@ -39,7 +39,7 @@ const ProductCard = ({
         <img
           src={product.image}
           alt={product.name}
-          className="w-full h-full object-contain rounded-xl"
+          className="w-[110%] h-[110%] object-contain rounded-xl"
         />
       </div>
 
