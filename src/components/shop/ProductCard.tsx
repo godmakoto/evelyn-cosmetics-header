@@ -31,35 +31,37 @@ const ProductCard = ({
     <>
       {/* Mobile View */}
       <div className="sm:hidden flex gap-0 bg-white items-stretch">
-        <div className="relative w-[42%] flex-shrink-0 p-3">
-          <div className="relative aspect-square overflow-hidden rounded-xl bg-[#e8e4dc]">
+        <div className="relative w-1/2 flex-shrink-0 p-4">
+          <div className="relative aspect-square overflow-hidden rounded-lg bg-gray-100">
             <img 
               src={product.image} 
               alt={product.name} 
-              className="w-full h-full object-contain p-2" 
+              className="w-full h-full object-cover" 
             />
           </div>
         </div>
 
-        <div className="flex-1 flex flex-col justify-between py-3 pr-3 pl-1">
-          <div className="space-y-1">
-            <h3 className="line-clamp-5 leading-snug text-[#222] font-medium text-[13px]">{product.name}</h3>
-            <p className="text-[#888] text-xs capitalize">{product.brand}</p>
+        <div className="flex-1 flex flex-col justify-between p-4 h-auto self-stretch">
+          <div className="space-y-2">
+            <div>
+              <h3 className="line-clamp-5 leading-tight mb-1 text-[#222] font-semibold text-sm">{product.name}</h3>
+              <p className="text-gray-400 text-xs capitalize">{product.brand}</p>
+            </div>
             
-            <div className="flex items-baseline gap-2 pt-1">
-              <span className="text-[#c41e3a] text-base font-bold">{product.price.toFixed(1)} Bs</span>
+            <div className="flex items-baseline gap-2 -mt-1">
+              <span className="text-red-600 text-lg font-bold">{product.price.toFixed(1)} Bs</span>
               {product.originalPrice && (
-                <span className="text-[#999] line-through text-xs">{product.originalPrice.toFixed(1)} Bs</span>
+                <span className="text-gray-400 line-through text-sm">{product.originalPrice.toFixed(1)} Bs</span>
               )}
             </div>
           </div>
 
           <button 
             onClick={handleAddToCart}
-            className={`w-full py-2.5 rounded-full flex items-center justify-center gap-2 text-sm font-medium border transition-colors ${
+            className={`w-full py-3 rounded-full flex items-center justify-center gap-2 ${
               isInCart 
-                ? 'bg-white border-[#222] text-[#222]' 
-                : 'bg-white border-[#222] text-[#222] hover:bg-[#222] hover:text-white'
+                ? 'bg-white border border-black text-black' 
+                : 'bg-black text-white'
             }`}
           >
             <ShoppingBag className="w-4 h-4" />
