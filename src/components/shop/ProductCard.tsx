@@ -28,7 +28,7 @@ const ProductCard = ({
     }
   };
   return (
-    <div className="bg-white rounded-none sm:rounded-2xl border-0 sm:border sm:border-[#eaeaea] border-b border-b-[#eee] overflow-hidden flex flex-row h-[240px] sm:h-[300px] md:h-[280px] shadow-none sm:hover:shadow-lg transition-shadow duration-300">
+    <div className="bg-white rounded-none sm:rounded-2xl border-0 sm:border sm:border-[#eaeaea] overflow-hidden flex flex-row h-[240px] sm:h-[300px] md:h-[280px] shadow-none sm:hover:shadow-lg transition-shadow duration-300">
       {/* Image Column - 50% on mobile, adjusted on larger screens */}
       <div className="relative w-1/2 sm:w-[35%] md:w-[40%] bg-white flex items-start min-[520px]:items-center sm:items-center justify-center pt-3 sm:pt-0 sm:p-3">
         {product.discount && (
@@ -47,7 +47,7 @@ const ProductCard = ({
       <div className="flex-1 p-3 sm:p-4 md:p-6 flex flex-col justify-start sm:justify-between gap-2 sm:gap-0">
         <div>
           {/* Title - up to 4 lines, lighter font on mobile */}
-          <h3 className="text-[#222] font-semibold sm:font-bold text-[13px] sm:text-sm md:text-base leading-snug line-clamp-4 mb-1">
+          <h3 className="text-[#222] font-semibold sm:font-bold text-[13px] sm:text-sm md:text-base leading-snug line-clamp-5 sm:line-clamp-4 mb-1">
             {product.name}
           </h3>
 
