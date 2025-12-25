@@ -55,12 +55,12 @@ const ProductCard = ({
             </div>
             
             {/* Precios */}
-            <div className="flex items-baseline gap-2 -mt-1">
-              <span className="text-red-600 text-lg">
+            <div className="flex flex-row flex-nowrap items-baseline gap-2 -mt-1">
+              <span className="text-red-600 text-lg whitespace-nowrap">
                 {product.price.toFixed(1)} Bs
               </span>
               {product.originalPrice && (
-                <span className="text-gray-400 line-through text-sm">
+                <span className="text-gray-400 line-through text-sm whitespace-nowrap">
                   {product.originalPrice.toFixed(1)} Bs
                 </span>
               )}
