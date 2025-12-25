@@ -28,9 +28,9 @@ const ProductCard = ({
     }
   };
   return (
-    <div className="bg-white rounded-none sm:rounded-2xl border-0 sm:border sm:border-[#eaeaea] overflow-hidden flex flex-row sm:h-[300px] md:h-[280px] shadow-none sm:hover:shadow-lg transition-shadow duration-300">
+    <div className="bg-white rounded-none sm:rounded-2xl border-0 sm:border sm:border-[#eaeaea] border-b border-b-[#eee] overflow-hidden flex flex-row h-[240px] sm:h-[300px] md:h-[280px] shadow-none sm:hover:shadow-lg transition-shadow duration-300">
       {/* Image Column - 50% on mobile, adjusted on larger screens */}
-      <div className="relative w-1/2 sm:w-[35%] md:w-[40%] bg-white flex items-center justify-center p-2 sm:p-3">
+      <div className="relative w-1/2 sm:w-[35%] md:w-[40%] bg-white flex items-start min-[520px]:items-center sm:items-center justify-center pt-3 sm:pt-0 sm:p-3">
         {product.discount && (
           <span className="hidden sm:block absolute top-2 left-2 bg-[#e02b2b] text-white text-[10px] md:text-xs font-semibold px-2 py-1 rounded-md z-10">
             {product.discount}% OFF
@@ -39,12 +39,12 @@ const ProductCard = ({
         <img
           src={product.image}
           alt={product.name}
-          className="w-[110%] h-[110%] object-contain rounded-xl"
+          className="w-[95%] h-auto sm:w-[95%] sm:h-[95%] md:w-[90%] md:h-[90%] min-[520px]:my-auto md:my-auto lg:my-0 lg:w-[95%] lg:h-[95%] object-contain object-top sm:object-center rounded-xl"
         />
       </div>
 
       {/* Info Column - 50% on mobile */}
-      <div className="flex-1 p-3 sm:p-4 md:p-6 flex flex-col justify-start sm:justify-between">
+      <div className="flex-1 p-3 sm:p-4 md:p-6 flex flex-col justify-between">
         <div>
           {/* Title - up to 4 lines, lighter font on mobile */}
           <h3 className="text-[#222] font-semibold sm:font-bold text-[13px] sm:text-sm md:text-base leading-snug line-clamp-4 mb-1">
@@ -68,8 +68,8 @@ const ProductCard = ({
             )}
           </div>
 
-          {/* Description - max 2 lines, hidden on mobile */}
-          <p className="hidden sm:block text-[#666] text-xs leading-relaxed line-clamp-2">
+          {/* Description - max 2 lines */}
+          <p className="text-[#666] text-xs leading-relaxed line-clamp-2">
             {product.description}
           </p>
         </div>
@@ -77,7 +77,7 @@ const ProductCard = ({
         {/* Add to Cart Button - tight spacing on mobile */}
         <Button
           variant={isInCart ? "outline" : "default"}
-          className="w-full rounded-full gap-2 text-sm mt-1 sm:mt-auto"
+          className="w-full rounded-full gap-2 text-sm mt-2"
           onClick={handleAddToCart}
         >
           <ShoppingBag className="w-4 h-4" />
