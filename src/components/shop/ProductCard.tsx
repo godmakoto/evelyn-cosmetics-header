@@ -51,7 +51,7 @@ const ProductCard = ({
                 {product.name}
               </h3>
               {/* Marca */}
-              <p className="text-gray-400 text-sm capitalize">{product.brand}</p>
+              <p className="text-gray-400 text-[11px] capitalize">{product.brand}</p>
             </div>
             
             {/* Precios */}
