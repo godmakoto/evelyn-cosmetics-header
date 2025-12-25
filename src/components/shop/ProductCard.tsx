@@ -69,7 +69,7 @@ const ProductCard = ({
 
           {/* Botón Agregar */}
           <button 
-            className="w-full py-3 rounded-full flex items-center justify-center gap-2 bg-black text-white text-base font-medium"
+            className="w-full py-2 rounded-full flex items-center justify-center gap-2 bg-black text-white text-[14px] font-medium"
             onClick={handleAddToCart}
           >
             <ShoppingBag className="w-4 h-4" />
