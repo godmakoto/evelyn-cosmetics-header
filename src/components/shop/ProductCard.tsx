@@ -55,7 +55,7 @@ const ProductCard = ({
             </div>
             
             {/* Precios */}
-            <div className="flex flex-row flex-nowrap items-baseline gap-2 -mt-1">
+            <div className="flex flex-row flex-nowrap items-baseline gap-2 -mt-2">
               <span className="text-red-600 text-[15px] whitespace-nowrap">
                 {product.price.toFixed(1)} Bs
               </span>
