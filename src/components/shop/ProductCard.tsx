@@ -30,10 +30,10 @@ const ProductCard = ({
   return (
     <>
       {/* Mobile Product Card */}
-      <div className="sm:hidden flex gap-0 bg-white items-stretch">
-        {/* Columna Izquierda: Imagen (50%) */}
-        <div className="relative w-1/2 flex-shrink-0 p-1">
-          <div className="relative aspect-square overflow-hidden rounded-lg bg-gray-100">
+      <div className="sm:hidden flex gap-0 bg-white items-stretch min-h-[180px]">
+        {/* Columna Izquierda: Imagen (~45%) */}
+        <div className="relative w-[45%] flex-shrink-0 p-3">
+          <div className="relative aspect-square overflow-hidden rounded-2xl bg-gray-100">
             <img 
               src={product.image} 
               alt={product.name} 
@@ -42,37 +42,39 @@ const ProductCard = ({
           </div>
         </div>
 
-        {/* Columna Derecha: Información (50%) */}
-        <div className="flex-1 flex flex-col justify-between p-4 h-auto self-stretch">
-          <div>
+        {/* Columna Derecha: Información (~55%) */}
+        <div className="flex-1 flex flex-col justify-between py-3 pr-3 pl-1">
+          <div className="space-y-1">
             {/* Nombre del producto */}
-            <h3 className="text-[13px] font-medium leading-tight line-clamp-5 mb-0.5">
+            <h3 className="text-[15px] font-normal leading-snug line-clamp-5 text-gray-900">
               {product.name}
             </h3>
             {/* Marca */}
-            <p className="text-gray-400 text-[11px] capitalize mb-0.5">{product.brand}</p>
+            <p className="text-gray-400 text-[13px] capitalize">{product.brand}</p>
             
             {/* Precios */}
-            <div className="flex flex-row flex-nowrap items-baseline gap-2">
-              <span className="text-red-600 text-[15px] whitespace-nowrap">
+            <div className="flex flex-row flex-nowrap items-baseline gap-2 pt-1">
+              <span className="text-red-600 font-medium text-[16px] whitespace-nowrap">
                 {product.price.toFixed(1)} Bs
               </span>
               {product.originalPrice && (
-                <span className="text-gray-400 line-through text-sm whitespace-nowrap">
+                <span className="text-gray-400 line-through text-[13px] whitespace-nowrap">
                   {product.originalPrice.toFixed(1)} Bs
                 </span>
               )}
             </div>
           </div>
 
-          {/* Botón Agregar */}
-          <button 
-            className="w-full py-1.5 rounded-full flex items-center justify-center gap-2 bg-black text-white text-[14px] font-medium"
-            onClick={handleAddToCart}
-          >
-            <ShoppingBag className="w-4 h-4" />
-            <span>{isInCart ? "Ver carrito" : "Agregar"}</span>
-          </button>
+          {/* Botón Agregar - alineado a la derecha, ancho auto */}
+          <div className="flex justify-end mt-2">
+            <button 
+              className="px-5 py-2 rounded-full flex items-center justify-center gap-2 bg-gray-900 text-white text-[14px] font-medium"
+              onClick={handleAddToCart}
+            >
+              <ShoppingBag className="w-4 h-4" />
+              <span>{isInCart ? "Ver carrito" : "Agregar"}</span>
+            </button>
+          </div>
         </div>
       </div>
 
