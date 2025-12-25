@@ -47,7 +47,7 @@ const ProductCard = ({
           <div className="space-y-2">
             {/* Nombre del producto */}
             <div>
-              <h3 className="text-lg font-medium leading-tight line-clamp-5 mb-1">
+              <h3 className="text-[13px] font-medium leading-tight line-clamp-5 mb-1">
                 {product.name}
               </h3>
               {/* Marca */}
@@ -56,7 +56,7 @@ const ProductCard = ({
             
             {/* Precios */}
             <div className="flex flex-row flex-nowrap items-baseline gap-2 -mt-1">
-              <span className="text-red-600 text-lg whitespace-nowrap">
+              <span className="text-red-600 text-[15px] whitespace-nowrap">
                 {product.price.toFixed(1)} Bs
               </span>
               {product.originalPrice && (
