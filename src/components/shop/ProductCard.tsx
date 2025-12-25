@@ -47,7 +47,7 @@ const ProductCard = ({
       <div className="flex-1 p-3 sm:p-4 md:p-6 flex flex-col justify-start sm:justify-between">
         <div>
           {/* Title - up to 4 lines, lighter font on mobile */}
-          <h3 className="text-[#222] font-semibold sm:font-bold text-[13px] sm:text-sm md:text-base leading-snug line-clamp-5 sm:line-clamp-4 mb-1">
+          <h3 className="text-[#222] font-semibold sm:font-bold text-[13px] sm:text-sm md:text-base leading-snug line-clamp-4 mb-1">
             {product.name}
           </h3>
 
