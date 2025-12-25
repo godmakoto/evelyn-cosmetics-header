@@ -32,7 +32,7 @@ const ProductCard = ({
       {/* Mobile Product Card */}
       <div className="sm:hidden flex gap-0 bg-white items-stretch">
         {/* Columna Izquierda: Imagen (50%) */}
-        <div className="relative w-1/2 flex-shrink-0 p-2">
+        <div className="relative w-1/2 flex-shrink-0 p-1">
           <div className="relative aspect-square overflow-hidden rounded-lg bg-gray-100">
             <img 
               src={product.image} 
