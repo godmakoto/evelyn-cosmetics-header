@@ -5,15 +5,10 @@ import { Button } from "@/components/ui/button";
 interface ProductCardProps {
   product: ShopProduct;
 }
-const ProductCard = ({
-  product
-}: ProductCardProps) => {
-  const {
-    addItem,
-    items,
-    setIsCartOpen
-  } = useCart();
+const ProductCard = ({ product }: ProductCardProps) => {
+  const { addItem, items, setIsCartOpen } = useCart();
   const isInCart = items.some(item => item.id === product.id);
+
   const handleAddToCart = () => {
     if (isInCart) {
       setIsCartOpen(true);
@@ -27,64 +22,60 @@ const ProductCard = ({
       });
     }
   };
+
   return (
-    <div className="bg-white rounded-none sm:rounded-2xl border-0 sm:border sm:border-[#eaeaea] border-b border-b-[#eee] overflow-hidden flex flex-row h-[240px] sm:h-[300px] md:h-[280px] shadow-none sm:hover:shadow-lg transition-shadow duration-300">
-      {/* Image Column - 50% on mobile, adjusted on larger screens */}
-      <div className="relative w-1/2 sm:w-[35%] md:w-[40%] bg-white flex items-start min-[520px]:items-center sm:items-center justify-center pt-3 sm:pt-0 sm:p-3">
-        {product.discount && (
-          <span className="hidden sm:block absolute top-2 left-2 bg-[#e02b2b] text-white text-[10px] md:text-xs font-semibold px-2 py-1 rounded-md z-10">
-            {product.discount}% OFF
-          </span>
-        )}
-        <img
-          src={product.image}
-          alt={product.name}
-          className="w-[95%] h-auto sm:w-[95%] sm:h-[95%] md:w-[90%] md:h-[90%] min-[520px]:my-auto md:my-auto lg:my-0 lg:w-[95%] lg:h-[95%] object-contain object-top sm:object-center rounded-xl"
-        />
+    <div className="bg-white rounded-2xl border border-gray-200 flex flex-row h-[170px] p-4 gap-5 hover:shadow-md transition-shadow duration-300">
+      {/* Image Column */}
+      <div className="w-[135px] sm:w-[150px] flex-shrink-0">
+        <div className="w-full aspect-square rounded-2xl overflow-hidden bg-gray-100">
+          <img
+            src={product.image}
+            alt={product.name}
+            className="w-full h-full object-cover"
+          />
+        </div>
       </div>
 
-      {/* Info Column - 50% on mobile */}
-      <div className="flex-1 p-3 sm:p-4 md:p-6 flex flex-col justify-start sm:justify-between gap-2 sm:gap-0">
+      {/* Info Column */}
+      <div className="flex-1 flex flex-col justify-between min-w-0">
+        {/* Top content block */}
         <div>
-          {/* Title - up to 4 lines, lighter font on mobile */}
-          <h3 className="text-[#222] font-semibold sm:font-bold text-[13px] sm:text-sm md:text-base leading-snug line-clamp-4 mb-1">
+          {/* Title - 3 lines max with ellipsis */}
+          <h3 className="text-[16px] leading-[1.25] font-medium text-gray-900 line-clamp-3">
             {product.name}
           </h3>
 
           {/* Brand */}
-          <p className="text-[#888] text-xs capitalize mb-1.5">
+          <p className="text-[13px] text-[#8B8BA7] capitalize mt-1">
             {product.brand}
           </p>
 
           {/* Prices */}
-          <div className="flex items-center gap-2 mb-1.5">
-            <span className="text-[#e02b2b] font-bold md:text-lg text-base">
+          <div className="flex items-center gap-2 mt-2">
+            <span className="text-[18px] font-semibold text-red-600">
               {product.price.toFixed(1)} Bs
             </span>
             {product.originalPrice && (
-              <span className="text-[#999] text-xs md:text-sm line-through">
+              <span className="text-[13px] text-gray-400 line-through">
                 {product.originalPrice.toFixed(1)} Bs
               </span>
             )}
           </div>
-
-          {/* Description - max 2 lines, hidden on mobile */}
-          <p className="hidden sm:block text-[#666] text-xs leading-relaxed line-clamp-2">
-            {product.description}
-          </p>
         </div>
 
-        {/* Add to Cart Button - tight spacing on mobile */}
-        <Button
-          variant={isInCart ? "outline" : "default"}
-          className="w-full rounded-full gap-2 text-sm mt-2"
+        {/* Add to Cart Button - pill style */}
+        <button
           onClick={handleAddToCart}
+          className="h-[44px] rounded-full bg-black text-white px-6 w-full sm:w-[240px] flex items-center justify-center gap-2 hover:bg-gray-900 transition-colors"
         >
           <ShoppingBag className="w-4 h-4" />
-          {isInCart ? "Ver carrito" : "Agregar"}
-        </Button>
+          <span className="text-sm font-medium">
+            {isInCart ? "Ver carrito" : "Agregar"}
+          </span>
+        </button>
       </div>
     </div>
   );
 };
+
 export default ProductCard;
