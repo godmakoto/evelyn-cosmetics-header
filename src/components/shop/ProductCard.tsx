@@ -68,8 +68,8 @@ const ProductCard = ({
             )}
           </div>
 
-          {/* Description - max 2 lines */}
-          <p className="text-[#666] text-xs leading-relaxed line-clamp-2">
+          {/* Description - max 2 lines, hidden on mobile */}
+          <p className="hidden sm:block text-[#666] text-xs leading-relaxed line-clamp-2">
             {product.description}
           </p>
         </div>
