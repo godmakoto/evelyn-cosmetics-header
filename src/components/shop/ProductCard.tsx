@@ -77,7 +77,7 @@ const ProductCard = ({
         {/* Add to Cart Button - tight spacing on mobile */}
         <Button
           variant={isInCart ? "outline" : "default"}
-          className="w-full rounded-full gap-2 text-sm mt-2 sm:mt-auto"
+          className="w-full rounded-full gap-2 text-sm mt-1 sm:mt-auto"
           onClick={handleAddToCart}
         >
           <ShoppingBag className="w-4 h-4" />
