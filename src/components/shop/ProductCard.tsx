@@ -44,18 +44,16 @@ const ProductCard = ({
 
         {/* Columna Derecha: Información (50%) */}
         <div className="flex-1 flex flex-col justify-between p-4 h-auto self-stretch">
-          <div className="space-y-2">
+          <div>
             {/* Nombre del producto */}
-            <div>
-              <h3 className="text-[13px] font-medium leading-tight line-clamp-5 mb-1">
-                {product.name}
-              </h3>
-              {/* Marca */}
-              <p className="text-gray-400 text-[11px] capitalize">{product.brand}</p>
-            </div>
+            <h3 className="text-[13px] font-medium leading-tight line-clamp-5 mb-0.5">
+              {product.name}
+            </h3>
+            {/* Marca */}
+            <p className="text-gray-400 text-[11px] capitalize mb-0.5">{product.brand}</p>
             
             {/* Precios */}
-            <div className="flex flex-row flex-nowrap items-baseline gap-2 -mt-3">
+            <div className="flex flex-row flex-nowrap items-baseline gap-2">
               <span className="text-red-600 text-[15px] whitespace-nowrap">
                 {product.price.toFixed(1)} Bs
               </span>
