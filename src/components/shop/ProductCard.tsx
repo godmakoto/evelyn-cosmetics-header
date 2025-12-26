@@ -33,7 +33,7 @@ const ProductCard = ({
             {product.discount}% OFF
           </span>}
         <div className="w-full h-full aspect-square overflow-hidden rounded-xl bg-white flex items-center justify-center">
-          <img src={product.image} alt={product.name} className="w-full h-full object-contain" />
+          <img src={product.image} alt={product.name} className="w-full h-full object-fill" />
         </div>
       </div>
 
