@@ -25,23 +25,18 @@ const ProductGrid = () => {
   // Apply filters
   useEffect(() => {
     let result = [...shopProducts];
-
     if (filters.maxPrice) {
       result = result.filter((p) => p.price <= filters.maxPrice!);
     }
-
     if (filters.brand) {
       result = result.filter((p) => p.brand === filters.brand);
     }
-
     if (filters.category) {
       result = result.filter((p) => p.category === filters.category);
     }
-
     if (filters.subcategory) {
       result = result.filter((p) => p.subcategory === filters.subcategory);
     }
-
     setFilteredProducts(result);
   }, [filters]);
 
@@ -55,20 +50,28 @@ const ProductGrid = () => {
       <ShopFilters onFiltersChange={handleFiltersChange} />
 
       {/* Products Grid */}
-      <div className="max-w-[1200px] mx-auto px-3 py-0 md:px-4 md:py-6">
+      <div className="max-w-[1200px] mx-auto px-0 py-0 sm:px-4 sm:py-6">
         {/* Results count - hidden on mobile */}
         <p className="hidden sm:block text-[#666] text-sm mb-4">
           {isLoading ? "Cargando..." : `${filteredProducts.length} productos encontrados`}
         </p>
 
-        {/* Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5 lg:gap-6">
+        {/* Grid - con separación controlada en móvil */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 sm:gap-5 lg:gap-6">
           {isLoading
             ? Array.from({ length: 6 }).map((_, index) => (
-                <ProductSkeleton key={index} />
+                <div key={index} className="border-b border-b-[#eee] last:border-b-0 sm:border-b-0">
+                  <div className="py-4 sm:py-0">
+                    <ProductSkeleton />
+                  </div>
+                </div>
               ))
-            : filteredProducts.map((product) => (
-                <ProductCard key={product.id} product={product} />
+            : filteredProducts.map((product, index) => (
+                <div key={product.id} className="border-b border-b-[#eee] last:border-b-0 sm:border-b-0">
+                  <div className="py-4 sm:py-0">
+                    <ProductCard product={product} />
+                  </div>
+                </div>
               ))}
         </div>
 
