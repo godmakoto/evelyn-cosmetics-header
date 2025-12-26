@@ -14,7 +14,6 @@ const ProductGrid = () => {
     subcategory: null as string | null,
   });
 
-  // Simulate loading state
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
@@ -22,7 +21,6 @@ const ProductGrid = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  // Apply filters
   useEffect(() => {
     let result = [...shopProducts];
     if (filters.maxPrice) {
@@ -46,17 +44,13 @@ const ProductGrid = () => {
 
   return (
     <div className="bg-white sm:bg-[#f9f9f9] min-h-screen">
-      {/* Filters */}
       <ShopFilters onFiltersChange={handleFiltersChange} />
 
-      {/* Products Grid */}
       <div className="max-w-[1200px] mx-auto px-0 py-0 sm:px-4 sm:py-6">
-        {/* Results count - hidden on mobile */}
         <p className="hidden sm:block text-[#666] text-sm mb-4">
           {isLoading ? "Cargando..." : `${filteredProducts.length} productos encontrados`}
         </p>
 
-        {/* Grid - con separación controlada en móvil */}
         <div className="grid grid-cols-1 lg:grid-cols-2 sm:gap-5 lg:gap-6">
           {isLoading
             ? Array.from({ length: 6 }).map((_, index) => (
@@ -66,7 +60,7 @@ const ProductGrid = () => {
                   </div>
                 </div>
               ))
-            : filteredProducts.map((product, index) => (
+            : filteredProducts.map((product) => (
                 <div key={product.id} className="border-b border-b-[#eee] last:border-b-0 sm:border-b-0">
                   <div className="py-4 sm:py-0">
                     <ProductCard product={product} />
@@ -75,7 +69,6 @@ const ProductGrid = () => {
               ))}
         </div>
 
-        {/* No results */}
         {!isLoading && filteredProducts.length === 0 && (
           <div className="text-center py-16">
             <p className="text-[#666] text-lg mb-2">No se encontraron productos</p>
