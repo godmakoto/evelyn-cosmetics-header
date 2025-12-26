@@ -34,11 +34,10 @@ const ProductCard = ({ product }: ProductCardProps) => {
             {product.discount}% OFF
           </span>
         )}
-        <img
-          src={product.image}
-          alt={product.name}
-          className="w-full h-full aspect-square object-contain md:w-[90%] md:h-[90%] md:aspect-auto rounded-xl"
-        />
+        {/* Contenedor con esquinas redondeadas y relación 1:1 */}
+        <div className="w-full aspect-square overflow-hidden rounded-xl md:w-[90%] md:h-[90%] md:aspect-auto">
+          <img src={product.image} alt={product.name} className="w-full h-full object-contain" />
+        </div>
       </div>
 
       {/* Info Column - 44% en móvil, 60% en tablet */}
