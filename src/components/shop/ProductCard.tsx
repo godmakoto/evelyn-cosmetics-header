@@ -39,7 +39,7 @@ const ProductCard = ({
 
       <div className="w-[44%] sm:w-[55%] lg:flex-1 py-3 pr-3 sm:py-4 sm:pr-4 lg:py-5 lg:pr-5 lg:pl-0 flex flex-col justify-between h-full lg:h-[280px]">
         <div className="flex-1 flex flex-col min-h-0 overflow-hidden">
-          <h3 className="text-[#222] font-medium lg:font-bold text-[13px] sm:text-[15px] lg:text-xl leading-[1.3] line-clamp-5 lg:line-clamp-3 mb-1">
+          <h3 className="text-[#222] font-medium lg:font-bold text-[13px] sm:text-[15px] lg:text-xl leading-[1.3] line-clamp-5 lg:line-clamp-4 mb-1">
             {product.name}
           </h3>
 
