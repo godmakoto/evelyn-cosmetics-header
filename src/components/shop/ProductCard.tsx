@@ -34,7 +34,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
             {product.discount}% OFF
           </span>
         )}
-        {/* Contenedor con fondo gris claro y esquinas redondeadas - igual que móvil */}
+        {/* Contenedor con fondo gris claro y esquinas redondeadas */}
         <div className="w-full aspect-square overflow-hidden rounded-xl bg-[#f5f5f5] lg:w-[90%] lg:h-[90%] lg:aspect-auto lg:bg-white flex items-center justify-center">
           <img src={product.image} alt={product.name} className="w-full h-full object-contain" />
         </div>
