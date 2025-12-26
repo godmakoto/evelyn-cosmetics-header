@@ -27,8 +27,8 @@ const ProductCard = ({ product }: ProductCardProps) => {
 
   return (
     <div className="bg-white rounded-none sm:rounded-2xl border-0 sm:border sm:border-[#eaeaea] overflow-hidden flex flex-row h-[200px] sm:h-[300px] md:h-[280px] shadow-none sm:hover:shadow-lg transition-shadow duration-300">
-      {/* Image Column - 50% cuadrado perfecto en móvil */}
-      <div className="relative w-1/2 sm:w-[35%] md:w-[40%] bg-white flex items-center justify-center p-3 sm:p-3">
+      {/* Image Column - 54% en móvil para imagen 1:1 perfecta */}
+      <div className="relative w-[54%] sm:w-[35%] md:w-[40%] bg-white flex items-center justify-center p-3 sm:p-3">
         {product.discount && (
           <span className="hidden sm:block absolute top-2 left-2 bg-[#e02b2b] text-white text-[10px] md:text-xs font-semibold px-2 py-1 rounded-md z-10">
             {product.discount}% OFF
@@ -41,8 +41,8 @@ const ProductCard = ({ product }: ProductCardProps) => {
         />
       </div>
 
-      {/* Info Column - 50% en móvil con altura igual a la imagen */}
-      <div className="w-1/2 sm:flex-1 py-3 pr-3 sm:p-4 md:p-6 flex flex-col justify-between">
+      {/* Info Column - 46% en móvil */}
+      <div className="w-[46%] sm:flex-1 py-3 pr-3 sm:p-4 md:p-6 flex flex-col justify-between">
         <div className="flex-1 flex flex-col min-h-0">
           <h3 className="text-[#222] font-medium sm:font-bold text-[13px] sm:text-sm md:text-base leading-[1.3] line-clamp-5 sm:line-clamp-4 mb-1">
             {product.name}
