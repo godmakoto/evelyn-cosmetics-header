@@ -46,23 +46,23 @@ const ProductGrid = () => {
     <div className="bg-white sm:bg-[#f9f9f9] min-h-screen">
       <ShopFilters onFiltersChange={handleFiltersChange} />
 
-      <div className="max-w-[1200px] mx-auto px-0 py-0 sm:px-4 sm:py-6">
-        <p className="hidden sm:block text-[#666] text-sm mb-4">
+      <div className="max-w-[1200px] mx-auto px-0 py-0 lg:px-4 lg:py-6">
+        <p className="hidden lg:block text-[#666] text-sm mb-4">
           {isLoading ? "Cargando..." : `${filteredProducts.length} productos encontrados`}
         </p>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 sm:gap-5 lg:gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 lg:gap-6">
           {isLoading
             ? Array.from({ length: 6 }).map((_, index) => (
-                <div key={index} className="border-b border-b-[#eee] last:border-b-0 sm:border-b-0">
-                  <div className="py-4 sm:py-0">
+                <div key={index} className="border-b border-b-[#eee] last:border-b-0 lg:border-b-0">
+                  <div className="py-4 lg:py-0">
                     <ProductSkeleton />
                   </div>
                 </div>
               ))
             : filteredProducts.map((product) => (
-                <div key={product.id} className="border-b border-b-[#eee] last:border-b-0 sm:border-b-0">
-                  <div className="py-4 sm:py-0">
+                <div key={product.id} className="border-b border-b-[#eee] last:border-b-0 lg:border-b-0">
+                  <div className="py-4 lg:py-0">
                     <ProductCard product={product} />
                   </div>
                 </div>
