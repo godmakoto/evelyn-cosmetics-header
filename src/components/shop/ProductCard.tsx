@@ -27,18 +27,20 @@ const ProductCard = ({ product }: ProductCardProps) => {
 
   return (
     <div className="bg-white rounded-none sm:rounded-2xl border-0 sm:border sm:border-[#eaeaea] overflow-hidden flex flex-row h-[200px] sm:h-[300px] md:h-[280px] shadow-none sm:hover:shadow-lg transition-shadow duration-300">
-      {/* Image Column - 50% cuadrado en móvil con padding lateral */}
-      <div className="relative w-1/2 sm:w-[35%] md:w-[40%] bg-white flex items-center justify-center px-3 sm:p-3">
+      {/* Image Column - 50% cuadrado perfecto en móvil */}
+      <div className="relative w-1/2 sm:w-[35%] md:w-[40%] bg-white flex items-center justify-center p-3 sm:p-3">
         {product.discount && (
           <span className="hidden sm:block absolute top-2 left-2 bg-[#e02b2b] text-white text-[10px] md:text-xs font-semibold px-2 py-1 rounded-md z-10">
             {product.discount}% OFF
           </span>
         )}
-        <img
-          src={product.image}
-          alt={product.name}
-          className="w-full h-full sm:w-[95%] sm:h-[95%] md:w-[90%] md:h-[90%] aspect-square sm:aspect-auto object-cover sm:object-contain rounded-xl"
-        />
+        <div className="w-full aspect-square">
+          <img
+            src={product.image}
+            alt={product.name}
+            className="w-full h-full sm:w-auto sm:h-auto sm:max-w-[95%] sm:max-h-[95%] md:max-w-[90%] md:max-h-[90%] object-cover sm:object-contain rounded-xl"
+          />
+        </div>
       </div>
 
       {/* Info Column - 50% en móvil con altura igual a la imagen */}
