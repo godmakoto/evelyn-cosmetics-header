@@ -28,7 +28,7 @@ const ProductCard = ({
     }
   };
   return <div className="bg-white rounded-none lg:rounded-2xl border-0 lg:border lg:border-[#eaeaea] overflow-hidden flex flex-row h-[200px] sm:h-[320px] lg:h-auto shadow-none lg:hover:shadow-lg transition-shadow duration-300">
-      <div className="relative w-[56%] sm:w-[45%] sm:aspect-square lg:w-[280px] lg:h-[280px] flex items-center justify-center p-3 lg:p-5 flex-shrink-0">
+      <div className="relative w-[56%] sm:w-[45%] sm:aspect-square lg:w-[300px] lg:h-[300px] flex items-center justify-center p-3 lg:p-5 flex-shrink-0">
         {product.discount && <span className="hidden lg:block absolute top-2 left-2 bg-[#e02b2b] text-white text-[10px] lg:text-xs font-semibold px-2 py-1 rounded-md z-10">
             {product.discount}% OFF
           </span>}
@@ -37,7 +37,7 @@ const ProductCard = ({
         </div>
       </div>
 
-      <div className="w-[44%] sm:w-[55%] lg:flex-1 py-3 pr-3 sm:py-4 sm:pr-4 lg:py-5 lg:pr-5 lg:pl-0 flex flex-col justify-between h-full lg:h-[280px]">
+      <div className="w-[44%] sm:w-[55%] lg:flex-1 py-3 pr-3 sm:py-4 sm:pr-4 lg:py-5 lg:pr-5 lg:pl-0 flex flex-col justify-between h-full lg:h-[300px]">
         <div className="flex-1 flex flex-col min-h-0 overflow-hidden">
           <h3 className="text-[#222] font-medium lg:font-bold text-[13px] sm:text-[15px] lg:text-base leading-[1.3] line-clamp-5 lg:line-clamp-3 mb-1">
             {product.name}
