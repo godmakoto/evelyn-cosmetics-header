@@ -28,20 +28,20 @@ const ProductCard = ({ product }: ProductCardProps) => {
   return (
     <div className="bg-white rounded-none md:rounded-2xl border-0 md:border md:border-[#eaeaea] overflow-hidden flex flex-row h-[200px] sm:h-[240px] md:h-[280px] shadow-none md:hover:shadow-lg transition-shadow duration-300">
       {/* Image Column - 56% en móvil, 40% en tablet/desktop */}
-      <div className="relative w-[56%] sm:w-[40%] md:w-[40%] bg-white flex items-center justify-center p-3">
+      <div className="relative w-[56%] sm:w-[40%] md:w-[40%] bg-white flex items-center justify-center p-3 h-full">
         {product.discount && (
           <span className="hidden md:block absolute top-2 left-2 bg-[#e02b2b] text-white text-[10px] md:text-xs font-semibold px-2 py-1 rounded-md z-10">
             {product.discount}% OFF
           </span>
         )}
-        {/* Contenedor con esquinas redondeadas y relación 1:1 */}
-        <div className="w-full aspect-square overflow-hidden rounded-xl md:w-[90%] md:h-[90%] md:aspect-auto">
+        {/* Contenedor con esquinas redondeadas, altura limitada y relación 1:1 */}
+        <div className="w-full max-h-full aspect-square overflow-hidden rounded-xl bg-white md:w-[90%] md:h-[90%] md:aspect-auto">
           <img src={product.image} alt={product.name} className="w-full h-full object-contain" />
         </div>
       </div>
 
       {/* Info Column - 44% en móvil, 60% en tablet */}
-      <div className="w-[44%] sm:w-[60%] md:flex-1 py-3 pr-3 sm:py-4 sm:pr-4 md:p-6 flex flex-col justify-between">
+      <div className="w-[44%] sm:w-[60%] md:flex-1 py-3 pr-3 sm:py-4 sm:pr-4 md:p-6 flex flex-col justify-between h-full">
         <div className="flex-1 flex flex-col min-h-0">
           <h3 className="text-[#222] font-medium md:font-bold text-[13px] sm:text-[15px] md:text-base leading-[1.3] line-clamp-5 md:line-clamp-4 mb-1">
             {product.name}
