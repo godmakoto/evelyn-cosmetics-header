@@ -43,27 +43,27 @@ const ProductGrid = () => {
   }, []);
 
   return (
-    <div className="bg-white md:bg-[#f9f9f9] min-h-screen">
+    <div className="bg-white lg:bg-[#f9f9f9] min-h-screen">
       <ShopFilters onFiltersChange={handleFiltersChange} />
 
-      <div className="max-w-[1200px] mx-auto px-0 py-0 md:px-4 md:py-6">
+      <div className="max-w-[1200px] mx-auto px-0 py-0 lg:px-4 lg:py-6">
         {/* Results count - con más espacio superior en tablet */}
-        <p className="hidden sm:block text-[#666] text-sm mb-6 px-4 md:px-0 pt-4 sm:pt-6 md:pt-0">
+        <p className="hidden sm:block text-[#666] text-sm mb-6 px-4 lg:px-0 pt-4 sm:pt-6 lg:pt-0">
           {isLoading ? "Cargando..." : `${filteredProducts.length} productos encontrados`}
         </p>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 md:gap-5 lg:gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 lg:gap-5 lg:gap-6">
           {isLoading
             ? Array.from({ length: 6 }).map((_, index) => (
-                <div key={index} className="border-b border-b-[#eee] last:border-b-0 md:border-b-0">
-                  <div className="py-4 md:py-0">
+                <div key={index} className="border-b border-b-[#eee] last:border-b-0 lg:border-b-0">
+                  <div className="py-4 lg:py-0">
                     <ProductSkeleton />
                   </div>
                 </div>
               ))
             : filteredProducts.map((product) => (
-                <div key={product.id} className="border-b border-b-[#eee] last:border-b-0 md:border-b-0">
-                  <div className="py-4 md:py-0">
+                <div key={product.id} className="border-b border-b-[#eee] last:border-b-0 lg:border-b-0">
+                  <div className="py-4 lg:py-0">
                     <ProductCard product={product} />
                   </div>
                 </div>
