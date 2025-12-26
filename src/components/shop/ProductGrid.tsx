@@ -47,8 +47,8 @@ const ProductGrid = () => {
       <ShopFilters onFiltersChange={handleFiltersChange} />
 
       <div className="max-w-[1200px] mx-auto px-0 py-0 md:px-4 md:py-6">
-        {/* Results count - visible en tablet y desktop, oculto en móvil */}
-        <p className="hidden sm:block text-[#666] text-sm mb-4 px-4 md:px-0">
+        {/* Results count - con más espacio superior en tablet */}
+        <p className="hidden sm:block text-[#666] text-sm mb-6 px-4 md:px-0 pt-4 sm:pt-6 md:pt-0">
           {isLoading ? "Cargando..." : `${filteredProducts.length} productos encontrados`}
         </p>
 
