@@ -65,7 +65,7 @@ const ProductGrid = () => {
               {isLoading ? "Cargando..." : `${filteredProducts.length} productos encontrados`}
             </p>
 
-            <div className="grid grid-cols-1 gap-0 lg:gap-6">
+            <div className="grid grid-cols-1 gap-0 lg:gap-4">
               {isLoading
                 ? Array.from({ length: 6 }).map((_, index) => (
                     <div key={index} className="border-b border-b-[#eee] last:border-b-0 lg:border-b-0">
