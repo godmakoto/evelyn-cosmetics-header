@@ -1,85 +1,78 @@
-import { ShopProduct } from "@/data/shopProducts";
-import { useCart } from "@/contexts/CartContext";
-import { ShoppingBag } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { useState, useEffect, useCallback } from "react";
+import { shopProducts, ShopProduct } from "@/data/shopProducts";
+import ShopFilters from "./ShopFilters";
+import ProductCard from "./ProductCard";
+import ProductSkeleton from "./ProductSkeleton";
 
-interface ProductCardProps {
-  product: ShopProduct;
-}
+const ProductGrid = () => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [filteredProducts, setFilteredProducts] = useState<ShopProduct[]>(shopProducts);
+  const [filters, setFilters] = useState({
+    maxPrice: null as number | null,
+    brand: null as string | null,
+    category: null as string | null,
+    subcategory: null as string | null,
+  });
 
-const ProductCard = ({ product }: ProductCardProps) => {
-  const { addItem, items, setIsCartOpen } = useCart();
-  const isInCart = items.some((item) => item.id === product.id);
+  // Simulate loading state
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, []);
 
-  const handleAddToCart = () => {
-    if (isInCart) {
-      setIsCartOpen(true);
-    } else {
-      addItem({
-        id: product.id,
-        name: product.name,
-        image: product.image,
-        originalPrice: product.originalPrice || product.price,
-        discountedPrice: product.originalPrice ? product.price : undefined,
-      });
+  // Apply filters
+  useEffect(() => {
+    let result = [...shopProducts];
+    if (filters.maxPrice) {
+      result = result.filter((p) => p.price <= filters.maxPrice!);
     }
-  };
+    if (filters.brand) {
+      result = result.filter((p) => p.brand === filters.brand);
+    }
+    if (filters.category) {
+      result = result.filter((p) => p.category === filters.category);
+    }
+    if (filters.subcategory) {
+      result = result.filter((p) => p.subcategory === filters.subcategory);
+    }
+    setFilteredProducts(result);
+  }, [filters]);
+
+  const handleFiltersChange = useCallback((newFilters: typeof filters) => {
+    setFilters(newFilters);
+  }, []);
 
   return (
-    <div className="bg-white rounded-none sm:rounded-2xl border-0 sm:border sm:border-[#eaeaea] border-b border-b-[#eee] overflow-hidden flex flex-row h-auto sm:h-[300px] md:h-[280px] shadow-none sm:hover:shadow-lg transition-shadow duration-300">
-      {/* Image Column - 50% cuadrado en móvil, ajustado en desktop */}
-      <div className="relative w-1/2 sm:w-[35%] md:w-[40%] bg-white flex items-center justify-center py-4 sm:py-0 sm:p-3">
-        {product.discount && (
-          <span className="hidden sm:block absolute top-2 left-2 bg-[#e02b2b] text-white text-[10px] md:text-xs font-semibold px-2 py-1 rounded-md z-10">
-            {product.discount}% OFF
-          </span>
-        )}
-        <img
-          src={product.image}
-          alt={product.name}
-          className="w-full aspect-square sm:w-[95%] sm:h-[95%] md:w-[90%] md:h-[90%] sm:aspect-auto object-cover sm:object-contain rounded-xl"
-        />
-      </div>
+    <div className="bg-white sm:bg-[#f9f9f9] min-h-screen">
+      {/* Filters */}
+      <ShopFilters onFiltersChange={handleFiltersChange} />
 
-      {/* Info Column - 50% en móvil */}
-      <div className="w-1/2 sm:flex-1 p-3 sm:p-4 md:p-6 flex flex-col justify-between">
-        <div className="flex-1 flex flex-col">
-          {/* Title - ajustado para móvil */}
-          <h3 className="text-[#222] font-medium sm:font-bold text-[13px] sm:text-sm md:text-base leading-[1.3] line-clamp-5 sm:line-clamp-4 mb-1">
-            {product.name}
-          </h3>
+      {/* Products Grid */}
+      <div className="max-w-[1200px] mx-auto px-0 py-0 sm:px-4 sm:py-6">
+        {/* Results count - hidden on mobile */}
+        <p className="hidden sm:block text-[#666] text-sm mb-4">
+          {isLoading ? "Cargando..." : `${filteredProducts.length} productos encontrados`}
+        </p>
 
-          {/* Brand */}
-          <p className="text-[#888] text-[10px] sm:text-xs capitalize mb-1">{product.brand}</p>
-
-          {/* Prices */}
-          <div className="flex items-center gap-1.5 mb-2 sm:mb-1.5">
-            <span className="text-[#e02b2b] font-bold text-[15px] sm:text-base md:text-lg">
-              {product.price.toFixed(1)} Bs
-            </span>
-            {product.originalPrice && (
-              <span className="text-[#999] text-[12px] sm:text-xs md:text-sm line-through">
-                {product.originalPrice.toFixed(1)} Bs
-              </span>
-            )}
-          </div>
-
-          {/* Description - oculta en móvil, visible en desktop */}
-          <p className="hidden sm:block text-[#666] text-xs leading-relaxed line-clamp-2">{product.description}</p>
+        {/* Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 sm:gap-5 lg:gap-6">
+          {isLoading
+            ? Array.from({ length: 6 }).map((_, index) => <ProductSkeleton key={index} />)
+            : filteredProducts.map((product) => <ProductCard key={product.id} product={product} />)}
         </div>
 
-        {/* Add to Cart Button */}
-        <Button
-          variant={isInCart ? "outline" : "default"}
-          className="w-full rounded-full gap-2 text-[13px] sm:text-sm mt-auto py-2.5 sm:py-2 h-auto"
-          onClick={handleAddToCart}
-        >
-          <ShoppingBag className="w-[14px] h-[14px] sm:w-4 sm:h-4" />
-          {isInCart ? "Ver carrito" : "Agregar"}
-        </Button>
+        {/* No results */}
+        {!isLoading && filteredProducts.length === 0 && (
+          <div className="text-center py-16">
+            <p className="text-[#666] text-lg mb-2">No se encontraron productos</p>
+            <p className="text-[#999] text-sm">Intenta ajustar los filtros de búsqueda</p>
+          </div>
+        )}
       </div>
     </div>
   );
 };
 
-export default ProductCard;
+export default ProductGrid;
