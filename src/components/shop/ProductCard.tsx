@@ -12,7 +12,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
   const isInCart = items.some((item) => item.id === product.id);
 
   const handleAddToCart = () => {
-    if (isInCart) {
+    if (isInCard) {
       setIsCartOpen(true);
     } else {
       addItem({
@@ -34,10 +34,13 @@ const ProductCard = ({ product }: ProductCardProps) => {
             {product.discount}% OFF
           </span>
         )}
-        {/* Contenedor con esquinas redondeadas, altura limitada y relación 1:1 */}
-        <div className="w-full max-h-full aspect-square overflow-hidden rounded-xl bg-gray-50 lg:w-[90%] lg:h-[90%] lg:aspect-auto lg:bg-white">
-          <img src={product.image} alt={product.name} className="w-full h-full object-contain" />
-        </div>
+        {/* Imagen con esquinas redondeadas directamente */}
+        <img
+          src={product.image}
+          alt={product.name}
+          className="w-full max-h-full aspect-square object-contain rounded-xl lg:w-[90%] lg:h-[90%] lg:aspect-auto"
+          style={{ clipPath: "inset(0 round 0.75rem)" }}
+        />
       </div>
 
       {/* Info Column - 44% en móvil, 60% en tablet */}
