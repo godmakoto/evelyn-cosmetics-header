@@ -28,14 +28,14 @@ const ProductCard = ({ product }: ProductCardProps) => {
   return (
     <div className="bg-white rounded-none lg:rounded-2xl border-0 lg:border lg:border-[#eaeaea] overflow-hidden flex flex-row h-[200px] sm:h-[240px] lg:h-[280px] shadow-none lg:hover:shadow-lg transition-shadow duration-300">
       {/* Image Column - 56% en móvil, 40% en tablet/desktop */}
-      <div className="relative w-[56%] sm:w-[40%] lg:w-[40%] bg-white flex items-center justify-center p-3 h-full">
+      <div className="relative w-[56%] sm:w-[40%] lg:w-[40%] flex items-center justify-center p-3 h-full">
         {product.discount && (
           <span className="hidden lg:block absolute top-2 left-2 bg-[#e02b2b] text-white text-[10px] lg:text-xs font-semibold px-2 py-1 rounded-md z-10">
             {product.discount}% OFF
           </span>
         )}
         {/* Contenedor con esquinas redondeadas, altura limitada y relación 1:1 */}
-        <div className="w-full max-h-full aspect-square overflow-hidden rounded-xl bg-white lg:w-[90%] lg:h-[90%] lg:aspect-auto">
+        <div className="w-full max-h-full aspect-square overflow-hidden rounded-xl bg-gray-50 lg:w-[90%] lg:h-[90%] lg:aspect-auto lg:bg-white">
           <img src={product.image} alt={product.name} className="w-full h-full object-contain" />
         </div>
       </div>
