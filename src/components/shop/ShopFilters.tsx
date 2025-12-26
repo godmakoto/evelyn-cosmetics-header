@@ -81,9 +81,8 @@ const ShopFilters = ({ onFiltersChange }: ShopFiltersProps) => {
           )}
         </div>
 
-        {/* Row 1: Precio Máximo + Marca */}
-        <div className="grid grid-cols-2 gap-2 mb-2 md:gap-3 md:mb-3">
-          {/* Max Price Input */}
+        {/* Precio Máximo */}
+        <div className="grid grid-cols-2 lg:grid-cols-1 gap-2 mb-2 md:gap-3 md:mb-3">
           <div>
             <label className="block text-xs text-[#666] mb-1">Precio Máximo</label>
             <input
@@ -96,7 +95,7 @@ const ShopFilters = ({ onFiltersChange }: ShopFiltersProps) => {
             />
           </div>
 
-          {/* Brand Dropdown */}
+          {/* Marca */}
           <div>
             <label className="block text-xs text-[#666] mb-1">Marca</label>
             <div className="relative">

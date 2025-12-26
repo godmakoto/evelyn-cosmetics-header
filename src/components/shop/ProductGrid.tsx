@@ -49,10 +49,10 @@ const ProductGrid = () => {
         <ShopFilters onFiltersChange={handleFiltersChange} />
       </div>
 
-      <div className="max-w-[1200px] mx-auto px-0 py-0 lg:px-4 lg:py-6">
-        <div className="lg:flex lg:gap-8">
+      <div className="max-w-[1400px] mx-auto px-0 py-0 lg:px-4 lg:py-6">
+        <div className="lg:flex lg:gap-10">
           {/* Desktop: Filtros en columna izquierda */}
-          <aside className="hidden lg:block lg:w-[280px] lg:flex-shrink-0">
+          <aside className="hidden lg:block lg:w-[300px] lg:flex-shrink-0">
             <div className="sticky top-4">
               <ShopFilters onFiltersChange={handleFiltersChange} />
             </div>
