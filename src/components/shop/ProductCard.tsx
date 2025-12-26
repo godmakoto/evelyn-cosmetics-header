@@ -27,20 +27,19 @@ const ProductCard = ({ product }: ProductCardProps) => {
 
   return (
     <div className="bg-white rounded-none lg:rounded-2xl border-0 lg:border lg:border-[#eaeaea] overflow-hidden flex flex-row h-[200px] sm:h-[240px] lg:h-[280px] shadow-none lg:hover:shadow-lg transition-shadow duration-300">
-      {/* Image Column - 56% en móvil, 40% en tablet/desktop */}
       <div className="relative w-[56%] sm:w-[40%] lg:w-[40%] flex items-center justify-center p-3 h-full">
         {product.discount && (
           <span className="hidden lg:block absolute top-2 left-2 bg-[#e02b2b] text-white text-[10px] lg:text-xs font-semibold px-2 py-1 rounded-md z-10">
             {product.discount}% OFF
           </span>
         )}
-        {/* Contenedor con fondo gris claro y esquinas redondeadas */}
-        <div className="w-full aspect-square overflow-hidden rounded-xl bg-[#f5f5f5] lg:w-[90%] lg:h-[90%] lg:aspect-auto lg:bg-white flex items-center justify-center">
-          <img src={product.image} alt={product.name} className="w-full h-full object-contain" />
-        </div>
+        <img
+          src={product.image}
+          alt={product.name}
+          className="w-full h-full aspect-square object-contain lg:w-[90%] lg:h-[90%] lg:aspect-auto"
+        />
       </div>
 
-      {/* Info Column - 44% en móvil, 60% en tablet */}
       <div className="w-[44%] sm:w-[60%] lg:flex-1 py-3 pr-3 sm:py-4 sm:pr-4 lg:p-6 flex flex-col justify-between h-full">
         <div className="flex-1 flex flex-col min-h-0">
           <h3 className="text-[#222] font-medium lg:font-bold text-[13px] sm:text-[15px] lg:text-base leading-[1.3] line-clamp-5 lg:line-clamp-4 mb-1">
@@ -60,7 +59,6 @@ const ProductCard = ({ product }: ProductCardProps) => {
             )}
           </div>
 
-          {/* Descripción breve - visible en tablet con 2 líneas */}
           <p className="hidden sm:block text-[#666] text-[12px] lg:text-xs leading-relaxed line-clamp-2 mb-2 lg:mb-0">
             {product.description}
           </p>
