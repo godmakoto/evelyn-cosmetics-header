@@ -34,17 +34,15 @@ const ProductCard = ({ product }: ProductCardProps) => {
             {product.discount}% OFF
           </span>
         )}
-        <div className="w-full aspect-square">
-          <img
-            src={product.image}
-            alt={product.name}
-            className="w-full h-full sm:w-auto sm:h-auto sm:max-w-[95%] sm:max-h-[95%] md:max-w-[90%] md:max-h-[90%] object-cover sm:object-contain rounded-xl"
-          />
-        </div>
+        <img
+          src={product.image}
+          alt={product.name}
+          className="w-full h-full sm:w-[95%] sm:h-[95%] md:w-[90%] md:h-[90%] aspect-square sm:aspect-auto object-cover sm:object-contain rounded-xl"
+        />
       </div>
 
       {/* Info Column - 50% en móvil con altura igual a la imagen */}
-      <div className="w-1/2 sm:flex-1 py-3 pr-3 sm:p-4 md:p-6 flex flex-col justify-between h-full">
+      <div className="w-1/2 sm:flex-1 py-3 pr-3 sm:p-4 md:p-6 flex flex-col justify-between">
         <div className="flex-1 flex flex-col min-h-0">
           <h3 className="text-[#222] font-medium sm:font-bold text-[13px] sm:text-sm md:text-base leading-[1.3] line-clamp-5 sm:line-clamp-4 mb-1">
             {product.name}
