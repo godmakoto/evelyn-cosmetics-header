@@ -65,9 +65,9 @@ const ShopFilters = ({ onFiltersChange }: ShopFiltersProps) => {
 
   return (
     <div
-      className="bg-[#f9f9f9] border-b border-[#eaeaea]"
+      className="bg-[#f9f9f9] border-b border-[#eaeaea] lg:border lg:rounded-xl"
     >
-      <div className="max-w-[1200px] mx-auto px-3 py-2 md:px-4 md:py-4">
+      <div className="max-w-[1200px] mx-auto px-3 py-2 md:px-4 md:py-4 lg:max-w-none">
         {/* Header */}
         <div className="flex items-center justify-between mb-2 md:mb-4">
           <h2 className="text-[#222] font-semibold text-base md:text-lg">Filtrar Productos</h2>

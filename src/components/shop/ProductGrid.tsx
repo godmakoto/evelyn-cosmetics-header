@@ -44,38 +44,53 @@ const ProductGrid = () => {
 
   return (
     <div className="bg-white lg:bg-[#f9f9f9] min-h-screen">
-      <ShopFilters onFiltersChange={handleFiltersChange} />
+      {/* Mobile/Tablet: Filtros arriba */}
+      <div className="lg:hidden">
+        <ShopFilters onFiltersChange={handleFiltersChange} />
+      </div>
 
       <div className="max-w-[1200px] mx-auto px-0 py-0 lg:px-4 lg:py-6">
-        {/* Results count - con más espacio superior en tablet */}
-        <p className="hidden sm:block text-[#666] text-sm mb-6 px-4 lg:px-0 pt-4 sm:pt-6 lg:pt-0">
-          {isLoading ? "Cargando..." : `${filteredProducts.length} productos encontrados`}
-        </p>
+        <div className="lg:flex lg:gap-8">
+          {/* Desktop: Filtros en columna izquierda */}
+          <aside className="hidden lg:block lg:w-[280px] lg:flex-shrink-0">
+            <div className="sticky top-4">
+              <ShopFilters onFiltersChange={handleFiltersChange} />
+            </div>
+          </aside>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 lg:gap-5 lg:gap-6">
-          {isLoading
-            ? Array.from({ length: 6 }).map((_, index) => (
-                <div key={index} className="border-b border-b-[#eee] last:border-b-0 lg:border-b-0">
-                  <div className="py-4 lg:py-0">
-                    <ProductSkeleton />
-                  </div>
-                </div>
-              ))
-            : filteredProducts.map((product) => (
-                <div key={product.id} className="border-b border-b-[#eee] last:border-b-0 lg:border-b-0">
-                  <div className="py-4 lg:py-0">
-                    <ProductCard product={product} />
-                  </div>
-                </div>
-              ))}
-        </div>
+          {/* Productos */}
+          <div className="flex-1">
+            {/* Results count */}
+            <p className="hidden sm:block text-[#666] text-sm mb-6 px-4 lg:px-0 pt-4 sm:pt-6 lg:pt-0">
+              {isLoading ? "Cargando..." : `${filteredProducts.length} productos encontrados`}
+            </p>
 
-        {!isLoading && filteredProducts.length === 0 && (
-          <div className="text-center py-16">
-            <p className="text-[#666] text-lg mb-2">No se encontraron productos</p>
-            <p className="text-[#999] text-sm">Intenta ajustar los filtros de búsqueda</p>
+            <div className="grid grid-cols-1 gap-0 lg:gap-6">
+              {isLoading
+                ? Array.from({ length: 6 }).map((_, index) => (
+                    <div key={index} className="border-b border-b-[#eee] last:border-b-0 lg:border-b-0">
+                      <div className="py-4 lg:py-0">
+                        <ProductSkeleton />
+                      </div>
+                    </div>
+                  ))
+                : filteredProducts.map((product) => (
+                    <div key={product.id} className="border-b border-b-[#eee] last:border-b-0 lg:border-b-0">
+                      <div className="py-4 lg:py-0">
+                        <ProductCard product={product} />
+                      </div>
+                    </div>
+                  ))}
+            </div>
+
+            {!isLoading && filteredProducts.length === 0 && (
+              <div className="text-center py-16">
+                <p className="text-[#666] text-lg mb-2">No se encontraron productos</p>
+                <p className="text-[#999] text-sm">Intenta ajustar los filtros de búsqueda</p>
+              </div>
+            )}
           </div>
-        )}
+        </div>
       </div>
     </div>
   );
