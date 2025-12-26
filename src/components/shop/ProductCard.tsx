@@ -28,7 +28,7 @@ const ProductCard = ({
     }
   };
   return <div className="bg-white rounded-none lg:rounded-2xl border-0 lg:border lg:border-[#eaeaea] overflow-hidden flex flex-row h-[200px] sm:h-[320px] lg:h-auto shadow-none lg:hover:shadow-lg transition-shadow duration-300">
-      <div className="relative w-[56%] sm:w-[45%] lg:w-[280px] lg:h-[280px] flex items-center justify-center p-3 lg:p-5 flex-shrink-0">
+      <div className="relative w-[56%] sm:w-[180px] sm:h-[180px] lg:w-[280px] lg:h-[280px] flex items-center justify-center p-3 lg:p-5 flex-shrink-0">
         {product.discount && <span className="hidden lg:block absolute top-2 left-2 bg-[#e02b2b] text-white text-[10px] lg:text-xs font-semibold px-2 py-1 rounded-md z-10">
             {product.discount}% OFF
           </span>}
