@@ -27,13 +27,13 @@ const ProductCard = ({
       });
     }
   };
-  return <div className="bg-white rounded-none lg:rounded-2xl border-0 lg:border lg:border-[#eaeaea] overflow-hidden flex flex-row h-[200px] sm:h-[320px] lg:h-[280px] shadow-none lg:hover:shadow-lg transition-shadow duration-300">
-      <div className="relative w-[56%] sm:w-[45%] lg:w-[40%] flex items-center justify-center p-3 h-full">
+  return <div className="bg-white rounded-none lg:rounded-2xl border-0 lg:border lg:border-[#eaeaea] overflow-hidden flex flex-row h-[200px] sm:h-[320px] lg:h-auto shadow-none lg:hover:shadow-lg transition-shadow duration-300">
+      <div className="relative w-[56%] sm:w-[45%] lg:w-[280px] lg:flex-shrink-0 flex items-center justify-center p-3">
         {product.discount && <span className="hidden lg:block absolute top-2 left-2 bg-[#e02b2b] text-white text-[10px] lg:text-xs font-semibold px-2 py-1 rounded-md z-10">
             {product.discount}% OFF
           </span>}
-        <div className="w-full h-full aspect-square overflow-hidden rounded-xl bg-white flex items-center justify-center lg:w-[90%] lg:h-[90%] lg:aspect-auto">
-          <img src={product.image} alt={product.name} className="w-full h-full object-fill" />
+        <div className="w-full h-full aspect-square overflow-hidden rounded-xl bg-white flex items-center justify-center lg:w-[250px] lg:h-[250px]">
+          <img src={product.image} alt={product.name} className="w-full h-full object-contain" />
         </div>
       </div>
 
