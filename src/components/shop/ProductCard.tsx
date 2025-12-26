@@ -39,7 +39,7 @@ const ProductCard = ({
 
       <div className="w-[44%] sm:w-[55%] lg:flex-1 py-3 pr-3 sm:py-4 sm:pr-4 lg:py-5 lg:pr-5 lg:pl-0 flex flex-col justify-between h-full lg:h-[280px]">
         <div className="flex-1 flex flex-col min-h-0 overflow-hidden">
-          <h3 className="text-[#222] font-medium lg:font-bold text-[13px] sm:text-[15px] lg:text-base leading-[1.3] line-clamp-5 lg:line-clamp-3 mb-1">
+          <h3 className="text-[#222] font-medium lg:font-bold text-[13px] sm:text-[15px] lg:text-xl leading-[1.3] line-clamp-5 lg:line-clamp-3 mb-1">
             {product.name}
           </h3>
 
@@ -73,14 +73,14 @@ const ProductCard = ({
         {/* PC: precio y botón en la misma fila */}
         <div className="hidden lg:flex items-center gap-4 mt-auto">
           <div className="flex items-center gap-2 w-1/2 flex-shrink-0">
-            <span className="text-[#e02b2b] font-bold text-xl">
+            <span className="text-[#e02b2b] font-bold text-2xl">
               {product.price.toFixed(1)} Bs
             </span>
-            {product.originalPrice && <span className="text-[#999] text-sm line-through">
+            {product.originalPrice && <span className="text-[#999] text-[15px] line-through">
                 {product.originalPrice.toFixed(1)} Bs
               </span>}
           </div>
-          <Button variant={isInCart ? "outline" : "default"} className="w-1/2 rounded-full gap-2 text-sm py-2 h-auto" onClick={handleAddToCart}>
+          <Button variant={isInCart ? "outline" : "default"} className="w-1/2 rounded-full gap-2 text-sm py-3.5 h-auto" onClick={handleAddToCart}>
             <ShoppingBag className="w-4 h-4" />
             {isInCart ? "Ver carrito" : "Agregar"}
           </Button>
