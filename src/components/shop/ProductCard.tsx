@@ -1,78 +1,75 @@
-import { useState, useEffect, useCallback } from "react";
-import { shopProducts, ShopProduct } from "@/data/shopProducts";
-import ShopFilters from "./ShopFilters";
-import ProductCard from "./ProductCard";
-import ProductSkeleton from "./ProductSkeleton";
+import { ShopProduct } from "@/data/shopProducts";
+import { useCart } from "@/contexts/CartContext";
+import { Button } from "@/components/ui/button";
+import { ShoppingCart } from "lucide-react";
 
-const ProductGrid = () => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [filteredProducts, setFilteredProducts] = useState<ShopProduct[]>(shopProducts);
-  const [filters, setFilters] = useState({
-    maxPrice: null as number | null,
-    brand: null as string | null,
-    category: null as string | null,
-    subcategory: null as string | null,
-  });
+interface ProductCardProps {
+  product: ShopProduct;
+}
 
-  // Simulate loading state
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, []);
+const ProductCard = ({ product }: ProductCardProps) => {
+  const { addItem } = useCart();
 
-  // Apply filters
-  useEffect(() => {
-    let result = [...shopProducts];
-    if (filters.maxPrice) {
-      result = result.filter((p) => p.price <= filters.maxPrice!);
-    }
-    if (filters.brand) {
-      result = result.filter((p) => p.brand === filters.brand);
-    }
-    if (filters.category) {
-      result = result.filter((p) => p.category === filters.category);
-    }
-    if (filters.subcategory) {
-      result = result.filter((p) => p.subcategory === filters.subcategory);
-    }
-    setFilteredProducts(result);
-  }, [filters]);
-
-  const handleFiltersChange = useCallback((newFilters: typeof filters) => {
-    setFilters(newFilters);
-  }, []);
+  const handleAddToCart = () => {
+    addItem({
+      id: product.id,
+      name: product.name,
+      originalPrice: product.price,
+      image: product.image,
+    });
+  };
 
   return (
-    <div className="bg-white sm:bg-[#f9f9f9] min-h-screen">
-      {/* Filters */}
-      <ShopFilters onFiltersChange={handleFiltersChange} />
-
-      {/* Products Grid */}
-      <div className="max-w-[1200px] mx-auto px-0 py-0 sm:px-4 sm:py-6">
-        {/* Results count - hidden on mobile */}
-        <p className="hidden sm:block text-[#666] text-sm mb-4">
-          {isLoading ? "Cargando..." : `${filteredProducts.length} productos encontrados`}
-        </p>
-
-        {/* Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 sm:gap-5 lg:gap-6">
-          {isLoading
-            ? Array.from({ length: 6 }).map((_, index) => <ProductSkeleton key={index} />)
-            : filteredProducts.map((product) => <ProductCard key={product.id} product={product} />)}
+    <div className="bg-white rounded-lg shadow-sm border border-border/50 overflow-hidden hover:shadow-md transition-shadow">
+      <div className="flex flex-col min-[520px]:flex-row">
+        {/* Image Container */}
+        <div className="w-full min-[520px]:w-[200px] min-[520px]:min-w-[200px] h-[200px] min-[520px]:h-auto min-[520px]:items-center flex justify-center bg-muted/30 p-4">
+          <img
+            src={product.image}
+            alt={product.name}
+            className="max-h-full max-w-full object-contain min-[520px]:my-auto"
+          />
         </div>
 
-        {/* No results */}
-        {!isLoading && filteredProducts.length === 0 && (
-          <div className="text-center py-16">
-            <p className="text-[#666] text-lg mb-2">No se encontraron productos</p>
-            <p className="text-[#999] text-sm">Intenta ajustar los filtros de búsqueda</p>
+        {/* Content */}
+        <div className="flex-1 p-4 flex flex-col justify-between">
+          <div>
+            <p className="text-xs text-muted-foreground uppercase tracking-wide mb-1">
+              {product.brand}
+            </p>
+            <h3 className="font-semibold text-foreground text-sm sm:text-base line-clamp-2 mb-2">
+              {product.name}
+            </h3>
+            <p className="text-xs text-muted-foreground line-clamp-2 mb-3">
+              {product.description}
+            </p>
+            <div className="flex items-center gap-2 mb-3">
+              <span className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded">
+                {product.category}
+              </span>
+              <span className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded">
+                {product.subcategory}
+              </span>
+            </div>
           </div>
-        )}
+
+          <div className="flex items-center justify-between gap-3">
+            <p className="text-lg font-bold text-foreground">
+              ${product.price.toLocaleString("es-MX")}
+            </p>
+            <Button
+              onClick={handleAddToCart}
+              size="sm"
+              className="gap-2"
+            >
+              <ShoppingCart className="h-4 w-4" />
+              Agregar
+            </Button>
+          </div>
+        </div>
       </div>
     </div>
   );
 };
 
-export default ProductGrid;
+export default ProductCard;
