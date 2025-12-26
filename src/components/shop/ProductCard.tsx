@@ -27,8 +27,8 @@ const ProductCard = ({ product }: ProductCardProps) => {
 
   return (
     <div className="bg-white rounded-none sm:rounded-2xl border-0 sm:border sm:border-[#eaeaea] overflow-hidden flex flex-row shadow-none sm:hover:shadow-lg transition-shadow duration-300 border-b border-b-[#eee] sm:border-b-0">
-      {/* Contenedor con padding uniforme solo en móvil */}
-      <div className="flex flex-row w-full py-5 sm:py-0 sm:h-[300px] md:h-[280px]">
+      {/* Contenedor con altura fija en móvil y padding uniforme */}
+      <div className="flex flex-row w-full h-[220px] sm:h-[300px] md:h-[280px] py-5 sm:py-0">
         {/* Image Column - 50% cuadrado en móvil */}
         <div className="relative w-1/2 sm:w-[35%] md:w-[40%] bg-white flex items-center justify-center sm:p-3">
           {product.discount && (
