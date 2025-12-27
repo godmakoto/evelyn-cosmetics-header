@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useCart } from "@/contexts/CartContext";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
+import { useNavigate } from "react-router-dom";
 
 interface Product {
   id: string;
@@ -79,6 +80,7 @@ const bestSellerProducts: Product[] = [
 ];
 
 export const BestSellersCarousel = () => {
+  const navigate = useNavigate();
   const isMobile = useIsMobile();
   const [isTablet, setIsTablet] = useState(false);
   const {
@@ -145,6 +147,10 @@ export const BestSellersCarousel = () => {
     return items.some(item => item.id === productId);
   };
 
+  const handleCardClick = (productId: string) => {
+    navigate(`/producto/${productId}`);
+  };
+
   return (
     <section className="py-6 md:py-8 bg-background">
       <div className="max-w-7xl mx-auto px-4 md:px-6">
@@ -182,7 +188,10 @@ export const BestSellersCarousel = () => {
                     isMobile ? "w-[72%]" : isTablet ? "w-[38%]" : "lg:w-[30%] xl:w-[28%] w-1/3"
                   )}
                 >
-                  <div className="bg-background border border-border rounded-xl h-full flex flex-col overflow-hidden">
+                  <div
+                    className="bg-background border border-border rounded-xl h-full flex flex-col overflow-hidden cursor-pointer"
+                    onClick={() => handleCardClick(product.id)}
+                  >
                     <div className="overflow-hidden bg-secondary aspect-square">
                       <img
                         src={product.image}
@@ -219,7 +228,10 @@ export const BestSellersCarousel = () => {
                       <Button
                         variant={isInCart(product.id) ? "outline" : "default"}
                         className="w-full rounded-full gap-2"
-                        onClick={() => handleAddToCart(product)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleAddToCart(product);
+                        }}
                       >
                         <ShoppingBag className="w-4 h-4" />
                         {isInCart(product.id) ? "Ver carrito" : "Agregar"}
