@@ -6,6 +6,8 @@ import { useCart } from "@/contexts/CartContext";
 import CartDrawer from "./CartDrawer";
 import MobileMenu from "./MobileMenu";
 
+// Prueba de sincronización con Lovable - 27/12/2025
+
 const categories = [{
   name: "Serums",
   subcategories: []
