@@ -2,12 +2,14 @@ import { ShopProduct } from "@/data/shopProducts";
 import { useCart } from "@/contexts/CartContext";
 import { ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 interface ProductCardProps {
   product: ShopProduct;
 }
 const ProductCard = ({
   product
 }: ProductCardProps) => {
+  const navigate = useNavigate();
   const {
     addItem,
     items,
@@ -27,7 +29,14 @@ const ProductCard = ({
       });
     }
   };
-  return <div className="bg-white rounded-none lg:rounded-2xl border-0 lg:border lg:border-[#eaeaea] overflow-hidden flex flex-row h-[200px] sm:h-[320px] lg:h-auto shadow-none lg:hover:shadow-lg transition-shadow duration-300">
+
+  const handleCardClick = () => {
+    navigate(`/producto/${product.id}`);
+  };
+  return <div
+    className="bg-white rounded-none lg:rounded-2xl border-0 lg:border lg:border-[#eaeaea] overflow-hidden flex flex-row h-[200px] sm:h-[320px] lg:h-auto shadow-none lg:hover:shadow-lg transition-shadow duration-300 cursor-pointer"
+    onClick={handleCardClick}
+  >
       <div className="relative w-[56%] sm:w-[45%] sm:aspect-square lg:w-[320px] lg:h-[320px] flex items-center justify-center p-3 lg:p-6 flex-shrink-0">
         {product.discount && <span className="hidden lg:block absolute top-2 left-2 bg-[#e02b2b] text-white text-[10px] lg:text-xs font-semibold px-2 py-1 rounded-md z-10">
             {product.discount}% OFF
@@ -65,7 +74,14 @@ const ProductCard = ({
         </div>
 
         {/* Mobile/Tablet: botón solo */}
-        <Button variant={isInCart ? "outline" : "default"} className="w-full rounded-full gap-2 text-[13px] sm:text-[14px] mt-auto py-2.5 h-auto flex-shrink-0 lg:hidden" onClick={handleAddToCart}>
+        <Button
+          variant={isInCart ? "outline" : "default"}
+          className="w-full rounded-full gap-2 text-[13px] sm:text-[14px] mt-auto py-2.5 h-auto flex-shrink-0 lg:hidden"
+          onClick={(e) => {
+            e.stopPropagation();
+            handleAddToCart();
+          }}
+        >
           <ShoppingBag className="w-[14px] h-[14px] sm:w-[15px] sm:h-[15px]" />
           {isInCart ? "Ver carrito" : "Agregar"}
         </Button>
@@ -80,7 +96,14 @@ const ProductCard = ({
                 {product.originalPrice.toFixed(1)} Bs
               </span>}
           </div>
-          <Button variant={isInCart ? "outline" : "default"} className="w-1/2 rounded-full gap-2 text-sm py-3.5 h-auto" onClick={handleAddToCart}>
+          <Button
+            variant={isInCart ? "outline" : "default"}
+            className="w-1/2 rounded-full gap-2 text-sm py-3.5 h-auto"
+            onClick={(e) => {
+              e.stopPropagation();
+              handleAddToCart();
+            }}
+          >
             <ShoppingBag className="w-4 h-4" />
             {isInCart ? "Ver carrito" : "Agregar"}
           </Button>
