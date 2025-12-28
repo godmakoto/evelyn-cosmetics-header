@@ -93,7 +93,7 @@ const ProductGrid = ({
         <div className="lg:flex lg:gap-10">
           {/* Desktop: Filtros en columna izquierda */}
           <aside className="hidden lg:block lg:w-[300px] lg:flex-shrink-0">
-            <div className="sticky top-4">
+            <div className="sticky top-0">
               <ShopFilters
                 onFiltersChange={handleFiltersChange}
                 initialBrandFilter={initialBrandFilter}
@@ -106,8 +106,8 @@ const ProductGrid = ({
 
           {/* Productos */}
           <div className="flex-1">
-            {/* Results count */}
-            <p className="hidden sm:block text-[#666] text-sm mb-6 px-4 lg:px-0 pt-4 sm:pt-6 lg:pt-0">
+            {/* Results count - only visible on mobile */}
+            <p className="sm:hidden text-[#666] text-sm mb-6 px-4 pt-4">
               {isLoading ? "Cargando..." : `${filteredProducts.length} productos encontrados`}
             </p>
 
