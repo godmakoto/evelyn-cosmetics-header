@@ -106,11 +106,6 @@ const ProductGrid = ({
 
           {/* Productos */}
           <div className="flex-1">
-            {/* Results count - only visible on mobile */}
-            <p className="sm:hidden text-[#666] text-sm mb-6 px-4 pt-4">
-              {isLoading ? "Cargando..." : `${filteredProducts.length} productos encontrados`}
-            </p>
-
             <div className="grid grid-cols-1 gap-0 lg:gap-4">
               {isLoading
                 ? Array.from({ length: 6 }).map((_, index) => (
