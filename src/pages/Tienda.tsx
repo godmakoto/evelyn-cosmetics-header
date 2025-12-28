@@ -1,13 +1,17 @@
+import { useLocation } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ProductGrid from "@/components/shop/ProductGrid";
 
 const Tienda = () => {
+  const location = useLocation();
+  const initialBrandFilter = location.state?.brandFilter || null;
+
   return (
     <div className="min-h-screen flex flex-col bg-[#f9f9f9]">
       <Header />
       <main className="flex-1">
-        <ProductGrid />
+        <ProductGrid initialBrandFilter={initialBrandFilter} />
       </main>
       <Footer />
     </div>

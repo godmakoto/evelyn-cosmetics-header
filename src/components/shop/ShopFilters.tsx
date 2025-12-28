@@ -9,11 +9,12 @@ interface ShopFiltersProps {
     category: string | null;
     subcategory: string | null;
   }) => void;
+  initialBrandFilter?: string | null;
 }
 
-const ShopFilters = ({ onFiltersChange }: ShopFiltersProps) => {
+const ShopFilters = ({ onFiltersChange, initialBrandFilter = null }: ShopFiltersProps) => {
   const [maxPrice, setMaxPrice] = useState<string>("");
-  const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
+  const [selectedBrand, setSelectedBrand] = useState<string | null>(initialBrandFilter);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedSubcategory, setSelectedSubcategory] = useState<string | null>(null);
   const [subcategories, setSubcategories] = useState<string[]>([]);

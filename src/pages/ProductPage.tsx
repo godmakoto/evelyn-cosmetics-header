@@ -127,6 +127,10 @@ const ProductPage = () => {
     navigate(`/producto/${productId}`);
   };
 
+  const handleBrandClick = () => {
+    navigate('/tienda', { state: { brandFilter: product.brand } });
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -202,22 +206,25 @@ const ProductPage = () => {
           {/* Right Column - Product Info */}
           <div className="flex flex-col">
             {/* Brand */}
-            <p className="text-sm text-muted-foreground uppercase tracking-wider mb-2">
+            <button
+              onClick={handleBrandClick}
+              className="text-sm text-muted-foreground uppercase tracking-wider mb-2 hover:text-foreground transition-colors text-left w-fit"
+            >
               {product.brand}
-            </p>
+            </button>
 
             {/* Product Name */}
-            <h1 className="text-2xl md:text-4xl font-display font-semibold text-foreground mb-4">
+            <h1 className="text-xl md:text-4xl font-display font-semibold text-foreground mb-4">
               {product.name}
             </h1>
 
             {/* Price */}
             <div className="flex items-center gap-3 mb-6">
-              <span className="text-2xl md:text-3xl font-bold text-foreground">
+              <span className="text-base md:text-3xl font-bold text-foreground">
                 {product.price.toFixed(1)} Bs
               </span>
               {product.originalPrice && (
-                <span className="text-lg md:text-xl text-muted-foreground line-through">
+                <span className="text-sm md:text-xl text-muted-foreground line-through">
                   {product.originalPrice.toFixed(1)} Bs
                 </span>
               )}

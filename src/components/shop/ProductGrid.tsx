@@ -4,12 +4,16 @@ import ShopFilters from "./ShopFilters";
 import ProductCard from "./ProductCard";
 import ProductSkeleton from "./ProductSkeleton";
 
-const ProductGrid = () => {
+interface ProductGridProps {
+  initialBrandFilter?: string | null;
+}
+
+const ProductGrid = ({ initialBrandFilter = null }: ProductGridProps) => {
   const [isLoading, setIsLoading] = useState(true);
   const [filteredProducts, setFilteredProducts] = useState<ShopProduct[]>(shopProducts);
   const [filters, setFilters] = useState({
     maxPrice: null as number | null,
-    brand: null as string | null,
+    brand: initialBrandFilter,
     category: null as string | null,
     subcategory: null as string | null,
   });
@@ -46,7 +50,7 @@ const ProductGrid = () => {
     <div className="bg-white lg:bg-[#f9f9f9] min-h-screen">
       {/* Mobile/Tablet: Filtros arriba */}
       <div className="lg:hidden">
-        <ShopFilters onFiltersChange={handleFiltersChange} />
+        <ShopFilters onFiltersChange={handleFiltersChange} initialBrandFilter={initialBrandFilter} />
       </div>
 
       <div className="max-w-[1400px] mx-auto px-0 py-0 lg:px-4 lg:py-6">
@@ -54,7 +58,7 @@ const ProductGrid = () => {
           {/* Desktop: Filtros en columna izquierda */}
           <aside className="hidden lg:block lg:w-[300px] lg:flex-shrink-0">
             <div className="sticky top-4">
-              <ShopFilters onFiltersChange={handleFiltersChange} />
+              <ShopFilters onFiltersChange={handleFiltersChange} initialBrandFilter={initialBrandFilter} />
             </div>
           </aside>
 
