@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Search, ShoppingCart, ChevronDown, Menu } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useCart } from "@/contexts/CartContext";
@@ -40,14 +40,14 @@ const Header = () => {
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const { finalTotal, itemCount, setIsCartOpen } = useCart();
+  const navigate = useNavigate();
   const location = useLocation();
 
   const handleTiendaClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    // Si ya estamos en la página de tienda, prevenir navegación y solo scroll al top
-    if (location.pathname === '/tienda') {
-      e.preventDefault();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+    e.preventDefault();
+    // Navegar a tienda sin filtros (resetear todo)
+    navigate('/tienda', { state: { resetFilters: true }, replace: location.pathname === '/tienda' });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   // Click outside para cerrar dropdown

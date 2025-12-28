@@ -6,12 +6,13 @@ import ProductGrid from "@/components/shop/ProductGrid";
 const Tienda = () => {
   const location = useLocation();
   const initialBrandFilter = location.state?.brandFilter || null;
+  const resetFilters = location.state?.resetFilters || false;
 
   return (
     <div className="min-h-screen flex flex-col bg-[#f9f9f9]">
       <Header />
       <main className="flex-1">
-        <ProductGrid initialBrandFilter={initialBrandFilter} />
+        <ProductGrid initialBrandFilter={initialBrandFilter} resetFilters={resetFilters} />
       </main>
       <Footer />
     </div>

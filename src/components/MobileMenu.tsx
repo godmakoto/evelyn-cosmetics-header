@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import {
   Sheet,
@@ -27,17 +27,15 @@ interface MobileMenuProps {
 const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
   const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
   const [expandedSubcategory, setExpandedSubcategory] = useState<string | null>(null);
+  const navigate = useNavigate();
   const location = useLocation();
 
   const handleTiendaClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    // Si ya estamos en la página de tienda, prevenir navegación y solo scroll al top
-    if (location.pathname === '/tienda') {
-      e.preventDefault();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      onClose(); // Cerrar el menú móvil
-    } else {
-      onClose(); // Cerrar el menú móvil antes de navegar
-    }
+    e.preventDefault();
+    // Navegar a tienda sin filtros (resetear todo)
+    navigate('/tienda', { state: { resetFilters: true }, replace: location.pathname === '/tienda' });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    onClose(); // Cerrar el menú móvil
   };
 
   const toggleCategories = () => {

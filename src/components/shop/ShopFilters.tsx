@@ -10,14 +10,25 @@ interface ShopFiltersProps {
     subcategory: string | null;
   }) => void;
   initialBrandFilter?: string | null;
+  resetFilters?: boolean;
 }
 
-const ShopFilters = ({ onFiltersChange, initialBrandFilter = null }: ShopFiltersProps) => {
+const ShopFilters = ({ onFiltersChange, initialBrandFilter = null, resetFilters = false }: ShopFiltersProps) => {
   const [maxPrice, setMaxPrice] = useState<string>("");
   const [selectedBrand, setSelectedBrand] = useState<string | null>(initialBrandFilter);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedSubcategory, setSelectedSubcategory] = useState<string | null>(null);
   const [subcategories, setSubcategories] = useState<string[]>([]);
+
+  // Reset all filter states when resetFilters changes
+  useEffect(() => {
+    if (resetFilters) {
+      setMaxPrice("");
+      setSelectedBrand(null);
+      setSelectedCategory(null);
+      setSelectedSubcategory(null);
+    }
+  }, [resetFilters]);
 
   useEffect(() => {
     if (selectedCategory) {

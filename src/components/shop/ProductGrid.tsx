@@ -6,9 +6,10 @@ import ProductSkeleton from "./ProductSkeleton";
 
 interface ProductGridProps {
   initialBrandFilter?: string | null;
+  resetFilters?: boolean;
 }
 
-const ProductGrid = ({ initialBrandFilter = null }: ProductGridProps) => {
+const ProductGrid = ({ initialBrandFilter = null, resetFilters = false }: ProductGridProps) => {
   const [isLoading, setIsLoading] = useState(true);
   const [filteredProducts, setFilteredProducts] = useState<ShopProduct[]>(shopProducts);
   const [filters, setFilters] = useState({
@@ -17,6 +18,18 @@ const ProductGrid = ({ initialBrandFilter = null }: ProductGridProps) => {
     category: null as string | null,
     subcategory: null as string | null,
   });
+
+  // Reset filters when resetFilters flag is true
+  useEffect(() => {
+    if (resetFilters) {
+      setFilters({
+        maxPrice: null,
+        brand: null,
+        category: null,
+        subcategory: null,
+      });
+    }
+  }, [resetFilters]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -50,7 +63,7 @@ const ProductGrid = ({ initialBrandFilter = null }: ProductGridProps) => {
     <div className="bg-white lg:bg-[#f9f9f9] min-h-screen">
       {/* Mobile/Tablet: Filtros arriba */}
       <div className="lg:hidden">
-        <ShopFilters onFiltersChange={handleFiltersChange} initialBrandFilter={initialBrandFilter} />
+        <ShopFilters onFiltersChange={handleFiltersChange} initialBrandFilter={initialBrandFilter} resetFilters={resetFilters} />
       </div>
 
       <div className="max-w-[1400px] mx-auto px-0 py-0 lg:px-4 lg:py-6">
@@ -58,7 +71,7 @@ const ProductGrid = ({ initialBrandFilter = null }: ProductGridProps) => {
           {/* Desktop: Filtros en columna izquierda */}
           <aside className="hidden lg:block lg:w-[300px] lg:flex-shrink-0">
             <div className="sticky top-4">
-              <ShopFilters onFiltersChange={handleFiltersChange} initialBrandFilter={initialBrandFilter} />
+              <ShopFilters onFiltersChange={handleFiltersChange} initialBrandFilter={initialBrandFilter} resetFilters={resetFilters} />
             </div>
           </aside>
 
