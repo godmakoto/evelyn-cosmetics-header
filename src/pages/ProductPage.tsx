@@ -207,17 +207,17 @@ const ProductPage = () => {
             </p>
 
             {/* Product Name */}
-            <h1 className="text-3xl md:text-4xl font-display font-semibold text-foreground mb-4">
+            <h1 className="text-2xl md:text-4xl font-display font-semibold text-foreground mb-4">
               {product.name}
             </h1>
 
             {/* Price */}
             <div className="flex items-center gap-3 mb-6">
-              <span className="text-3xl font-bold text-foreground">
+              <span className="text-2xl md:text-3xl font-bold text-foreground">
                 {product.price.toFixed(1)} Bs
               </span>
               {product.originalPrice && (
-                <span className="text-xl text-muted-foreground line-through">
+                <span className="text-lg md:text-xl text-muted-foreground line-through">
                   {product.originalPrice.toFixed(1)} Bs
                 </span>
               )}
@@ -231,7 +231,7 @@ const ProductPage = () => {
               onClick={handleAddToCart}
             >
               <ShoppingBag className="w-5 h-5" />
-              {isInCart ? "VER CARRITO" : "AGREGAR"}
+              {isInCart ? "Ver carrito" : "Agregar"}
             </Button>
 
             {/* Short Description */}
