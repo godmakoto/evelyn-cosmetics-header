@@ -29,6 +29,16 @@ const ProductGrid = ({
   });
   const [isFirstRender, setIsFirstRender] = useState(true);
 
+  // Update filters when initial filter props change
+  useEffect(() => {
+    setFilters(prev => ({
+      ...prev,
+      brand: initialBrandFilter,
+      category: initialCategoryFilter,
+      subcategory: initialSubcategoryFilter,
+    }));
+  }, [initialBrandFilter, initialCategoryFilter, initialSubcategoryFilter]);
+
   // Reset filters when resetFiltersTimestamp changes
   useEffect(() => {
     if (resetFiltersTimestamp) {

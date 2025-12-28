@@ -128,7 +128,8 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
                               navigate('/tienda', {
                                 state: {
                                   categoryFilter: category.name
-                                }
+                                },
+                                replace: location.pathname === '/tienda'
                               });
                               onClose();
                               window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -169,7 +170,8 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
                                     state: {
                                       categoryFilter: category.name,
                                       subcategoryFilter: sub
-                                    }
+                                    },
+                                    replace: location.pathname === '/tienda'
                                   });
                                   onClose();
                                   window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -213,8 +215,8 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
 
             <div
               className={cn(
-                "overflow-hidden transition-all duration-300 ease-in-out",
-                isBrandsOpen ? "max-h-[500px] opacity-100 mt-1" : "max-h-0 opacity-0"
+                "transition-all duration-300 ease-in-out",
+                isBrandsOpen ? "max-h-[1000px] opacity-100 mt-1" : "max-h-0 opacity-0 overflow-hidden"
               )}
             >
               <div className="ml-3 space-y-0.5">
@@ -227,7 +229,8 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
                       navigate('/tienda', {
                         state: {
                           brandFilter: brand
-                        }
+                        },
+                        replace: location.pathname === '/tienda'
                       });
                       onClose();
                       window.scrollTo({ top: 0, behavior: 'smooth' });

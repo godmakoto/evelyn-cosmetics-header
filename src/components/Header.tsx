@@ -79,6 +79,8 @@ const Header = () => {
 
   const handleCategoriesEnter = () => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    if (brandsTimeoutRef.current) clearTimeout(brandsTimeoutRef.current);
+    setIsBrandsOpen(false);
     setIsCategoriesOpen(true);
   };
 
@@ -86,7 +88,7 @@ const Header = () => {
     timeoutRef.current = setTimeout(() => {
       setIsCategoriesOpen(false);
       setActiveCategory(null);
-    }, 150);
+    }, 50);
   };
 
   const handleCategoryHover = (categoryName: string) => {
@@ -95,13 +97,16 @@ const Header = () => {
 
   const handleBrandsEnter = () => {
     if (brandsTimeoutRef.current) clearTimeout(brandsTimeoutRef.current);
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    setIsCategoriesOpen(false);
+    setActiveCategory(null);
     setIsBrandsOpen(true);
   };
 
   const handleBrandsLeave = () => {
     brandsTimeoutRef.current = setTimeout(() => {
       setIsBrandsOpen(false);
-    }, 150);
+    }, 50);
   };
 
   const handleSearch = () => {
@@ -225,7 +230,8 @@ const Header = () => {
                             navigate('/tienda', {
                               state: {
                                 categoryFilter: category.name
-                              }
+                              },
+                              replace: location.pathname === '/tienda'
                             });
                             setIsCategoriesOpen(false);
                             setActiveCategory(null);
@@ -250,7 +256,8 @@ const Header = () => {
                                     state: {
                                       categoryFilter: activeCategory,
                                       subcategoryFilter: sub
-                                    }
+                                    },
+                                    replace: location.pathname === '/tienda'
                                   });
                                   setIsCategoriesOpen(false);
                                   setActiveCategory(null);
@@ -290,7 +297,8 @@ const Header = () => {
                                 navigate('/tienda', {
                                   state: {
                                     brandFilter: brand
-                                  }
+                                  },
+                                  replace: location.pathname === '/tienda'
                                 });
                                 setIsBrandsOpen(false);
                                 window.scrollTo({ top: 0, behavior: 'smooth' });
