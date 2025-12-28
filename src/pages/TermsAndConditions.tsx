@@ -189,12 +189,12 @@ const sections = [
 
 const TermsAndConditions = () => {
   const [activeSection, setActiveSection] = useState(sections[0].id);
-  const [expandedItems, setExpandedItems] = useState<{ [key: string]: boolean }>({});
+  const [expandedSections, setExpandedSections] = useState<{ [key: string]: boolean }>({});
 
-  const toggleItem = (itemIndex: string) => {
-    setExpandedItems(prev => ({
+  const toggleSection = (sectionId: string) => {
+    setExpandedSections(prev => ({
       ...prev,
-      [itemIndex]: !prev[itemIndex]
+      [sectionId]: !prev[sectionId]
     }));
   };
 
@@ -222,16 +222,16 @@ const TermsAndConditions = () => {
           <div className="hidden lg:flex gap-8">
             {/* Sidebar */}
             <aside className="w-[320px] flex-shrink-0">
-              <div className="bg-white rounded-lg overflow-hidden shadow-sm">
+              <div className="bg-white rounded-lg overflow-hidden shadow-sm border border-[#e5e5e5]">
                 {sections.map((section) => (
                   <button
                     key={section.id}
                     onClick={() => setActiveSection(section.id)}
                     className={cn(
-                      "w-full text-left px-6 py-4 border-b border-[#f0f0f0] transition-colors text-[15px] font-medium",
+                      "w-full text-left px-6 py-4 border-b border-[#f0f0f0] last:border-b-0 transition-colors text-[15px] font-medium",
                       activeSection === section.id
-                        ? "bg-[#f8e8f0] text-[#222]"
-                        : "bg-white text-[#666] hover:bg-[#f9f9f9]"
+                        ? "bg-[#f5f5f5] text-[#222]"
+                        : "bg-white text-[#666] hover:bg-[#fafafa]"
                     )}
                   >
                     {section.title}
@@ -242,48 +242,22 @@ const TermsAndConditions = () => {
 
             {/* Content */}
             <div className="flex-1">
-              <div className="bg-[#f8e8f0] rounded-lg p-8">
+              <div className="bg-white rounded-lg p-8 shadow-sm border border-[#e5e5e5]">
                 <h2 className="text-xl font-semibold text-[#222] mb-6">
                   {currentSection.title}
                 </h2>
 
-                <div className="space-y-3">
-                  {currentSection.items.map((item, index) => {
-                    const itemKey = `${activeSection}-${index}`;
-                    const isExpanded = expandedItems[itemKey];
-
-                    return (
-                      <div key={index} className="bg-white rounded-lg overflow-hidden">
-                        <button
-                          onClick={() => toggleItem(itemKey)}
-                          className="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-[#f9f9f9] transition-colors"
-                        >
-                          <span className="text-[15px] font-medium text-[#222]">
-                            {item.title}
-                          </span>
-                          <ChevronDown
-                            className={cn(
-                              "w-5 h-5 text-[#666] transition-transform flex-shrink-0 ml-4",
-                              isExpanded && "rotate-180"
-                            )}
-                          />
-                        </button>
-
-                        <div
-                          className={cn(
-                            "overflow-hidden transition-all duration-300",
-                            isExpanded ? "max-h-[500px]" : "max-h-0"
-                          )}
-                        >
-                          <div className="px-5 pb-5 pt-2">
-                            <p className="text-[14px] text-[#666] leading-relaxed">
-                              {item.content}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })}
+                <div className="space-y-6">
+                  {currentSection.items.map((item, index) => (
+                    <div key={index} className="border-b border-[#f0f0f0] last:border-b-0 pb-6 last:pb-0">
+                      <h3 className="text-[15px] font-semibold text-[#222] mb-3">
+                        {index + 1}. {item.title}
+                      </h3>
+                      <p className="text-[14px] text-[#666] leading-relaxed">
+                        {item.content}
+                      </p>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
@@ -291,16 +265,15 @@ const TermsAndConditions = () => {
 
           {/* Mobile Layout */}
           <div className="lg:hidden">
-            <div className="bg-white rounded-lg overflow-hidden shadow-sm">
+            <div className="bg-white rounded-lg overflow-hidden shadow-sm border border-[#e5e5e5]">
               {sections.map((section) => {
-                const sectionKey = section.id;
-                const isSectionExpanded = expandedItems[sectionKey];
+                const isExpanded = expandedSections[section.id];
 
                 return (
                   <div key={section.id} className="border-b border-[#f0f0f0] last:border-b-0">
                     <button
-                      onClick={() => toggleItem(sectionKey)}
-                      className="w-full flex items-center justify-between px-5 py-4 text-left bg-[#f8e8f0]"
+                      onClick={() => toggleSection(section.id)}
+                      className="w-full flex items-center justify-between px-5 py-4 text-left bg-white hover:bg-[#fafafa] transition-colors"
                     >
                       <span className="text-[15px] font-medium text-[#222] pr-4">
                         {section.title}
@@ -308,7 +281,7 @@ const TermsAndConditions = () => {
                       <ChevronRight
                         className={cn(
                           "w-5 h-5 text-[#666] transition-transform flex-shrink-0",
-                          isSectionExpanded && "rotate-90"
+                          isExpanded && "rotate-90"
                         )}
                       />
                     </button>
@@ -316,46 +289,20 @@ const TermsAndConditions = () => {
                     <div
                       className={cn(
                         "overflow-hidden transition-all duration-300",
-                        isSectionExpanded ? "max-h-[2000px]" : "max-h-0"
+                        isExpanded ? "max-h-[3000px]" : "max-h-0"
                       )}
                     >
-                      <div className="px-4 py-3 space-y-2">
-                        {section.items.map((item, index) => {
-                          const itemKey = `${section.id}-item-${index}`;
-                          const isItemExpanded = expandedItems[itemKey];
-
-                          return (
-                            <div key={index} className="bg-[#f9f9f9] rounded-lg overflow-hidden">
-                              <button
-                                onClick={() => toggleItem(itemKey)}
-                                className="w-full flex items-center justify-between px-4 py-3 text-left"
-                              >
-                                <span className="text-[14px] font-medium text-[#222] pr-3">
-                                  {item.title}
-                                </span>
-                                <ChevronDown
-                                  className={cn(
-                                    "w-4 h-4 text-[#666] transition-transform flex-shrink-0",
-                                    isItemExpanded && "rotate-180"
-                                  )}
-                                />
-                              </button>
-
-                              <div
-                                className={cn(
-                                  "overflow-hidden transition-all duration-300",
-                                  isItemExpanded ? "max-h-[500px]" : "max-h-0"
-                                )}
-                              >
-                                <div className="px-4 pb-4 pt-1">
-                                  <p className="text-[13px] text-[#666] leading-relaxed">
-                                    {item.content}
-                                  </p>
-                                </div>
-                              </div>
-                            </div>
-                          );
-                        })}
+                      <div className="px-5 py-4 bg-[#fafafa] space-y-5">
+                        {section.items.map((item, index) => (
+                          <div key={index} className="border-b border-[#e5e5e5] last:border-b-0 pb-4 last:pb-0">
+                            <h3 className="text-[14px] font-semibold text-[#222] mb-2">
+                              {index + 1}. {item.title}
+                            </h3>
+                            <p className="text-[13px] text-[#666] leading-relaxed">
+                              {item.content}
+                            </p>
+                          </div>
+                        ))}
                       </div>
                     </div>
                   </div>
