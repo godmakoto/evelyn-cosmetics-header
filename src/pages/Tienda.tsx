@@ -9,6 +9,7 @@ const Tienda = () => {
   const initialCategoryFilter = location.state?.categoryFilter || null;
   const initialSubcategoryFilter = location.state?.subcategoryFilter || null;
   const resetFiltersTimestamp = location.state?.resetFiltersTimestamp || null;
+  const searchQuery = location.state?.searchQuery || null;
 
   return (
     <div className="min-h-screen flex flex-col bg-[#f9f9f9]">
@@ -19,6 +20,7 @@ const Tienda = () => {
           initialCategoryFilter={initialCategoryFilter}
           initialSubcategoryFilter={initialSubcategoryFilter}
           resetFiltersTimestamp={resetFiltersTimestamp}
+          searchQuery={searchQuery}
         />
       </main>
       <Footer />

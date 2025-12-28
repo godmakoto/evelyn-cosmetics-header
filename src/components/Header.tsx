@@ -72,6 +72,25 @@ const Header = () => {
     setActiveCategory(categoryName);
   };
 
+  const handleSearch = () => {
+    if (searchQuery.trim()) {
+      navigate('/tienda', {
+        state: {
+          searchQuery: searchQuery.trim(),
+          resetFiltersTimestamp: Date.now()
+        }
+      });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      setSearchQuery(""); // Clear search after navigating
+    }
+  };
+
+  const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
+  };
+
   return <>
       <header
         ref={headerRef}
@@ -109,8 +128,8 @@ const Header = () => {
               {/* Desktop: Search Bar */}
               <div className="hidden md:flex flex-1 max-w-xl mx-8">
                 <div className="search-container">
-                  <input type="text" placeholder="¿Qué estás buscando?" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="search-input" />
-                  <button className="search-button">
+                  <input type="text" placeholder="¿Qué estás buscando?" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} onKeyDown={handleSearchKeyDown} className="search-input" />
+                  <button onClick={handleSearch} className="search-button">
                     <Search className="w-5 h-5" />
                   </button>
                 </div>
@@ -131,8 +150,8 @@ const Header = () => {
         {/* Mobile Search */}
         <div className="md:hidden px-4 py-3 bg-[hsl(0,0%,85%)]">
           <div className="search-container">
-            <input type="text" placeholder="¿Qué estás buscando?" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="search-input" />
-            <button className="search-button">
+            <input type="text" placeholder="¿Qué estás buscando?" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} onKeyDown={handleSearchKeyDown} className="search-input" />
+            <button onClick={handleSearch} className="search-button">
               <Search className="w-5 h-5" />
             </button>
           </div>

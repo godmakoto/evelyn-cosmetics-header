@@ -9,13 +9,15 @@ interface ProductGridProps {
   initialCategoryFilter?: string | null;
   initialSubcategoryFilter?: string | null;
   resetFiltersTimestamp?: number | null;
+  searchQuery?: string | null;
 }
 
 const ProductGrid = ({
   initialBrandFilter = null,
   initialCategoryFilter = null,
   initialSubcategoryFilter = null,
-  resetFiltersTimestamp = null
+  resetFiltersTimestamp = null,
+  searchQuery = null
 }: ProductGridProps) => {
   const [isLoading, setIsLoading] = useState(true);
   const [filteredProducts, setFilteredProducts] = useState<ShopProduct[]>(shopProducts);
@@ -57,6 +59,20 @@ const ProductGrid = ({
 
   useEffect(() => {
     let result = [...shopProducts];
+
+    // Search query filter - searches across name, brand, category, and subcategory
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      result = result.filter((p) => {
+        return (
+          p.name.toLowerCase().includes(query) ||
+          p.brand.toLowerCase().includes(query) ||
+          p.category.toLowerCase().includes(query) ||
+          p.subcategory.toLowerCase().includes(query)
+        );
+      });
+    }
+
     if (filters.maxPrice) {
       result = result.filter((p) => p.price <= filters.maxPrice!);
     }
@@ -70,7 +86,7 @@ const ProductGrid = ({
       result = result.filter((p) => p.subcategory === filters.subcategory);
     }
     setFilteredProducts(result);
-  }, [filters]);
+  }, [filters, searchQuery]);
 
   const handleFiltersChange = useCallback((newFilters: typeof filters) => {
     setFilters(newFilters);
