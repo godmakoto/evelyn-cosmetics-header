@@ -6,10 +6,10 @@ import ProductSkeleton from "./ProductSkeleton";
 
 interface ProductGridProps {
   initialBrandFilter?: string | null;
-  resetFilters?: boolean;
+  resetFiltersTimestamp?: number | null;
 }
 
-const ProductGrid = ({ initialBrandFilter = null, resetFilters = false }: ProductGridProps) => {
+const ProductGrid = ({ initialBrandFilter = null, resetFiltersTimestamp = null }: ProductGridProps) => {
   const [isLoading, setIsLoading] = useState(true);
   const [filteredProducts, setFilteredProducts] = useState<ShopProduct[]>(shopProducts);
   const [filters, setFilters] = useState({
@@ -18,10 +18,11 @@ const ProductGrid = ({ initialBrandFilter = null, resetFilters = false }: Produc
     category: null as string | null,
     subcategory: null as string | null,
   });
+  const [isFirstRender, setIsFirstRender] = useState(true);
 
-  // Reset filters when resetFilters flag is true
+  // Reset filters when resetFiltersTimestamp changes
   useEffect(() => {
-    if (resetFilters) {
+    if (resetFiltersTimestamp) {
       setFilters({
         maxPrice: null,
         brand: null,
@@ -29,7 +30,16 @@ const ProductGrid = ({ initialBrandFilter = null, resetFilters = false }: Produc
         subcategory: null,
       });
     }
-  }, [resetFilters]);
+  }, [resetFiltersTimestamp]);
+
+  // Scroll to top when filters change (but not on first render)
+  useEffect(() => {
+    if (isFirstRender) {
+      setIsFirstRender(false);
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, [filters.brand, filters.category, filters.subcategory, filters.maxPrice]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -63,7 +73,7 @@ const ProductGrid = ({ initialBrandFilter = null, resetFilters = false }: Produc
     <div className="bg-white lg:bg-[#f9f9f9] min-h-screen">
       {/* Mobile/Tablet: Filtros arriba */}
       <div className="lg:hidden">
-        <ShopFilters onFiltersChange={handleFiltersChange} initialBrandFilter={initialBrandFilter} resetFilters={resetFilters} />
+        <ShopFilters onFiltersChange={handleFiltersChange} initialBrandFilter={initialBrandFilter} resetFiltersTimestamp={resetFiltersTimestamp} />
       </div>
 
       <div className="max-w-[1400px] mx-auto px-0 py-0 lg:px-4 lg:py-6">
@@ -71,7 +81,7 @@ const ProductGrid = ({ initialBrandFilter = null, resetFilters = false }: Produc
           {/* Desktop: Filtros en columna izquierda */}
           <aside className="hidden lg:block lg:w-[300px] lg:flex-shrink-0">
             <div className="sticky top-4">
-              <ShopFilters onFiltersChange={handleFiltersChange} initialBrandFilter={initialBrandFilter} resetFilters={resetFilters} />
+              <ShopFilters onFiltersChange={handleFiltersChange} initialBrandFilter={initialBrandFilter} resetFiltersTimestamp={resetFiltersTimestamp} />
             </div>
           </aside>
 

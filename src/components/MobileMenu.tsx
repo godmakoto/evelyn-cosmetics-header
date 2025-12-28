@@ -32,8 +32,8 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
 
   const handleTiendaClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
-    // Navegar a tienda sin filtros (resetear todo)
-    navigate('/tienda', { state: { resetFilters: true }, replace: location.pathname === '/tienda' });
+    // Navegar a tienda sin filtros (resetear todo) usando timestamp para forzar reset
+    navigate('/tienda', { state: { resetFiltersTimestamp: Date.now() }, replace: location.pathname === '/tienda' });
     window.scrollTo({ top: 0, behavior: 'smooth' });
     onClose(); // Cerrar el menú móvil
   };
