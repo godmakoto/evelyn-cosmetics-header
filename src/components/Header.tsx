@@ -261,7 +261,7 @@ const Header = () => {
                 </button>
 
                 {/* Brands Mega Menu */}
-                <div className={cn("absolute top-full left-1/2 -translate-x-1/2 bg-white shadow-lg rounded-b-lg border border-border overflow-hidden transition-all duration-200 z-50", isBrandsOpen ? "opacity-100 visible translate-y-0" : "opacity-0 invisible -translate-y-2")}>
+                <div className={cn("absolute top-full left-1/2 -translate-x-1/2 bg-white shadow-lg rounded-lg border border-border overflow-hidden transition-all duration-200 z-50", isBrandsOpen ? "opacity-100 visible translate-y-0" : "opacity-0 invisible -translate-y-2")}>
                   <div className="p-6">
                     <div className="grid gap-x-12" style={{ gridTemplateColumns: `repeat(${Math.ceil(brands.length / 10)}, minmax(180px, auto))` }}>
                       {Array.from({ length: Math.ceil(brands.length / 10) }).map((_, colIndex) => (
