@@ -326,9 +326,9 @@ const Header = () => {
                 </a>
               </li>
               <li>
-                <a href="#" className="nav-item">
+                <Link to="/terminos-y-condiciones" className="nav-item">
                   Términos y condiciones
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
