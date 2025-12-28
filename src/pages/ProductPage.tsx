@@ -26,7 +26,7 @@ const ProductPage = () => {
   const [selectedCarouselIndex, setSelectedCarouselIndex] = useState(0);
   const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
 
-  // Drag state for image gallery
+  // Desktop drag state for image gallery
   const isDragging = useRef(false);
   const startX = useRef(0);
   const dragDistance = useRef(0);
@@ -68,7 +68,30 @@ const ProductPage = () => {
     return () => window.removeEventListener("resize", checkTablet);
   }, []);
 
-  // Carousel setup
+  // Image gallery carousel for mobile
+  const [imageEmblaRef, imageEmblaApi] = useEmblaCarousel({
+    loop: false,
+    align: "start",
+    slidesToScroll: 1,
+    containScroll: "trimSnaps",
+    draggable: true
+  });
+
+  const onImageSelect = useCallback(() => {
+    if (!imageEmblaApi) return;
+    setSelectedImage(imageEmblaApi.selectedScrollSnap());
+  }, [imageEmblaApi]);
+
+  useEffect(() => {
+    if (!imageEmblaApi) return;
+    imageEmblaApi.on("select", onImageSelect);
+    onImageSelect();
+    return () => {
+      imageEmblaApi.off("select", onImageSelect);
+    };
+  }, [imageEmblaApi, onImageSelect]);
+
+  // Related products carousel setup
   const [emblaRef, emblaApi] = useEmblaCarousel({
     loop: true,
     align: "start",
@@ -136,36 +159,30 @@ const ProductPage = () => {
     navigate('/tienda', { state: { brandFilter: product.brand } });
   };
 
-  // Image gallery drag handlers
-  const handleDragStart = (e: React.MouseEvent | React.TouchEvent) => {
+  // Desktop image gallery mouse drag handlers
+  const handleDragStart = (e: React.MouseEvent) => {
     isDragging.current = true;
     dragDistance.current = 0;
-    if ('touches' in e) {
-      startX.current = e.touches[0].clientX;
-    } else {
-      startX.current = e.clientX;
-    }
+    startX.current = e.clientX;
   };
 
-  const handleDragMove = (e: React.MouseEvent | React.TouchEvent) => {
+  const handleDragMove = (e: React.MouseEvent) => {
     if (!isDragging.current) return;
-    const currentX = 'touches' in e ? e.touches[0].clientX : e.clientX;
-    dragDistance.current = currentX - startX.current;
+    dragDistance.current = e.clientX - startX.current;
   };
 
   const handleDragEnd = () => {
     if (!isDragging.current) return;
     isDragging.current = false;
 
-    // Threshold for swipe (50px)
     const threshold = 50;
 
     if (Math.abs(dragDistance.current) > threshold) {
       if (dragDistance.current > 0) {
-        // Swiped right - go to previous image
+        // Dragged right - go to previous image
         setSelectedImage(prev => prev > 0 ? prev - 1 : product.images.length - 1);
       } else {
-        // Swiped left - go to next image
+        // Dragged left - go to next image
         setSelectedImage(prev => prev < product.images.length - 1 ? prev + 1 : 0);
       }
     }
@@ -185,24 +202,30 @@ const ProductPage = () => {
           <div className="w-full">
             {/* Mobile: Carousel with dots */}
             <div className="lg:hidden">
-              <div
-                className="aspect-square overflow-hidden rounded-2xl bg-secondary mb-4 cursor-grab active:cursor-grabbing select-none"
-                onTouchStart={handleDragStart}
-                onTouchMove={handleDragMove}
-                onTouchEnd={handleDragEnd}
-              >
-                <img
-                  src={product.images[selectedImage]}
-                  alt={product.name}
-                  className="w-full h-full object-cover pointer-events-none"
-                />
+              <div className="overflow-hidden rounded-2xl mb-4" ref={imageEmblaRef}>
+                <div className="flex">
+                  {product.images.map((image, index) => (
+                    <div key={index} className="flex-[0_0_100%] min-w-0">
+                      <div className="aspect-square bg-secondary">
+                        <img
+                          src={image}
+                          alt={`${product.name} ${index + 1}`}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
               {/* Navigation dots */}
               <div className="flex justify-center gap-2">
                 {product.images.map((_, index) => (
                   <button
                     key={index}
-                    onClick={() => setSelectedImage(index)}
+                    onClick={() => {
+                      setSelectedImage(index);
+                      imageEmblaApi?.scrollTo(index);
+                    }}
                     className={cn(
                       "h-2 rounded-full transition-all",
                       index === selectedImage
