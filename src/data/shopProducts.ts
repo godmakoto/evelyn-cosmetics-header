@@ -287,6 +287,139 @@ export const shopProducts: ShopProduct[] = [
     price: 385.0,
     description: "Sérum amplificador de ácido hialurónico. Aumenta los niveles en un 30%.",
     image: "https://images.unsplash.com/photo-1620916297397-a4a5402a3c6c?w=400&h=400&fit=crop"
+  },
+  // Productos de los carruseles de la página principal
+  {
+    id: "1",
+    name: "Bond Intense Repair Óleo bifasico",
+    brand: "Nivea",
+    category: "Cuidado Capilar",
+    subcategory: "Tratamientos",
+    price: 85,
+    originalPrice: 100,
+    description: "Óleo bifásico que nutre y realza la vitalidad del cabello, controla el frizz, protección térmica y blindaje anti-humedad - 110ml",
+    image: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=400&h=400&fit=crop",
+    discount: 15
+  },
+  {
+    id: "2",
+    name: "Sebium Gel Moussant Actif",
+    brand: "La Roche-Posay",
+    category: "Limpieza Facial",
+    subcategory: "Geles Limpiadores",
+    price: 180,
+    description: "Gel limpiador facial con Ácido salicílico, Ácido glicólico y Gluconato de Zinc. Limpia, purifica y reduce el tamaño de los poros - 532g",
+    image: "https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?w=400&h=400&fit=crop"
+  },
+  {
+    id: "3",
+    name: "Photoderm Cover Touch FPS50+",
+    brand: "Eucerin",
+    category: "Protección Solar",
+    subcategory: "Facial",
+    price: 120,
+    originalPrice: 150,
+    description: "Protector solar facial anti-brillo y toque seco para piel mixta y grasa. Tono dorado con cobertura alta - 40ml",
+    image: "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=400&h=400&fit=crop",
+    discount: 20
+  },
+  {
+    id: "4",
+    name: "Pigmentbio Foaming Cream",
+    brand: "Bioderma",
+    category: "Limpieza Facial",
+    subcategory: "Geles Limpiadores",
+    price: 95,
+    description: "Limpiador despigmentante crema-espuma facial y corporal. Limpia y exfolia suavemente, reduce manchas oscuras - 200ml",
+    image: "https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=400&h=400&fit=crop"
+  },
+  {
+    id: "5",
+    name: "Crema Contorno de Ojos Anti-edad Intensiva",
+    brand: "Vichy",
+    category: "Cuidado Facial",
+    subcategory: "Contorno de Ojos",
+    price: 200,
+    originalPrice: 250,
+    description: "Con Retinol y Péptidos. Reduce ojeras, bolsas y líneas de expresión. Hidratación 24h - 15ml",
+    image: "https://images.unsplash.com/photo-1570194065650-d99fb4b38b15?w=400&h=400&fit=crop",
+    discount: 20
+  },
+  {
+    id: "6",
+    name: "Hydrating Cleanser Limpiador Facial Espuma",
+    brand: "CeraVe",
+    category: "Limpieza Facial",
+    subcategory: "Geles Limpiadores",
+    price: 75,
+    description: "Con Ceramidas y Ácido Hialurónico. Limpia sin resecar, restaura la barrera cutánea - 473ml",
+    image: "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=400&h=400&fit=crop"
+  },
+  {
+    id: "7",
+    name: "Hydro Boost Mascarilla Hidratante Nocturna",
+    brand: "Neutrogena",
+    category: "Cuidado Facial",
+    subcategory: "Mascarillas",
+    price: 45,
+    originalPrice: 55,
+    description: "Con Ácido Hialurónico. Hidratación intensa durante la noche, despierta con piel suave - 50ml",
+    image: "https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=400&h=400&fit=crop",
+    discount: 18
+  },
+  {
+    id: "8",
+    name: "100% Organic Cold-Pressed Rose Hip Seed Oil",
+    brand: "The Ordinary",
+    category: "Cuidado Facial",
+    subcategory: "Aceites Faciales",
+    price: 160,
+    description: "Aceite facial nutritivo y regenerador. Reduce cicatrices, manchas y líneas finas - 30ml",
+    image: "https://images.unsplash.com/photo-1617897903246-719242758050?w=400&h=400&fit=crop"
+  },
+  {
+    id: "bs-1",
+    name: "Crema Hidratante Facial con Ácido Hialurónico y Vitamina E",
+    brand: "Nivea",
+    category: "Cuidado Facial",
+    subcategory: "Hidratantes",
+    price: 95,
+    originalPrice: 120,
+    description: "Crema hidratante para pieles secas con ácido hialurónico y vitamina E. Hidratación profunda 24h.",
+    image: "https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=400&h=400&fit=crop",
+    discount: 21
+  },
+  {
+    id: "bs-2",
+    name: "Sérum Concentrado Reparador Nocturno con Retinol y Niacinamida",
+    brand: "La Roche-Posay",
+    category: "Cuidado Facial",
+    subcategory: "Sérums",
+    price: 220,
+    description: "Sérum anti-edad con retinol y niacinamida. Repara y regenera la piel durante la noche.",
+    image: "https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=400&h=400&fit=crop"
+  },
+  {
+    id: "bs-3",
+    name: "Protector Solar Facial SPF 50+ Resistente al Agua",
+    brand: "Eucerin",
+    category: "Protección Solar",
+    subcategory: "Facial",
+    price: 135,
+    originalPrice: 165,
+    description: "Protector solar con antioxidantes, resistente al agua. Protección muy alta UVA/UVB.",
+    image: "https://images.unsplash.com/photo-1526947425960-945c6e72858f?w=400&h=400&fit=crop",
+    discount: 18
+  },
+  {
+    id: "bs-4",
+    name: "Tónico Facial Purificante con Extracto de Té Verde y Hamamelis",
+    brand: "Bioderma",
+    category: "Cuidado Facial",
+    subcategory: "Tónicos",
+    price: 85,
+    description: "Tónico purificante natural con té verde y hamamelis. Equilibra y refresca la piel.",
+    image: "https://images.unsplash.com/photo-1512303452766-a48f2bc60dcd?w=400&h=400&fit=crop"
   }
 ];
 
