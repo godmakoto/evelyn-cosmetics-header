@@ -88,6 +88,8 @@ const Header = () => {
   const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       handleSearch();
+      // Cerrar el teclado móvil
+      e.currentTarget.blur();
     }
   };
 
