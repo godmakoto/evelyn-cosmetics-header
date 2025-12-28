@@ -3,7 +3,21 @@ import { cn } from "@/lib/utils";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-const brands = ["EUCERIN", "ISDIN", "LA ROCHE-POSAY", "NEUTROGENA", "NIVEA", "L'ORÉAL", "GARNIER", "BIODERMA", "CERAVE", "VICHY", "BYPHASSE", "REVOX"];
+// Brand names as they appear in products (for filtering)
+const actualBrands = [
+  "Eucerin",
+  "Isdin",
+  "La Roche-Posay",
+  "Neutrogena",
+  "Nivea",
+  "Bioderma",
+  "CeraVe",
+  "Vichy",
+  "Avène",
+  "SkinCeuticals",
+  "The Ordinary"
+];
+
 export const BrandsCarousel = () => {
   const navigate = useNavigate();
   const trackRef = useRef<HTMLDivElement>(null);
@@ -19,7 +33,7 @@ export const BrandsCarousel = () => {
   const startPosition = useRef(0);
 
   // Duplicate brands 4 times for infinite scroll
-  const duplicatedBrands = [...brands, ...brands, ...brands, ...brands];
+  const duplicatedBrands = [...actualBrands, ...actualBrands, ...actualBrands, ...actualBrands];
 
   // Calculate initial offset to start in the middle (hide the seam)
   useEffect(() => {
