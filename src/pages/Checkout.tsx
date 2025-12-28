@@ -23,7 +23,7 @@ const Checkout = () => {
 
     message += `Subtotal: ${subtotal.toFixed(1)} Bs\n`;
     if (totalDiscount > 0) {
-      message += `Descuento: -${discount.toFixed(1)} Bs\n`;
+      message += `Descuento: -${totalDiscount.toFixed(1)} Bs\n`;
     }
     message += `Total: ${finalTotal.toFixed(1)} Bs`;
 
@@ -229,10 +229,10 @@ const Checkout = () => {
                 <span className="text-[#666]">Subtotal</span>
                 <span className="font-medium text-[#222]">Bs {subtotal.toFixed(2)}</span>
               </div>
-              {discount > 0 && (
+              {totalDiscount > 0 && (
                 <div className="flex justify-between text-base">
                   <span className="text-[#666]">Descontos</span>
-                  <span className="font-medium text-[#e02b2b]">Bs -{discount.toFixed(2)}</span>
+                  <span className="font-medium text-[#e02b2b]">Bs -{totalDiscount.toFixed(2)}</span>
                 </div>
               )}
               <div className="border-t border-[#eee] pt-3">
