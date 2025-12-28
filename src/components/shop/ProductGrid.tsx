@@ -6,17 +6,24 @@ import ProductSkeleton from "./ProductSkeleton";
 
 interface ProductGridProps {
   initialBrandFilter?: string | null;
+  initialCategoryFilter?: string | null;
+  initialSubcategoryFilter?: string | null;
   resetFiltersTimestamp?: number | null;
 }
 
-const ProductGrid = ({ initialBrandFilter = null, resetFiltersTimestamp = null }: ProductGridProps) => {
+const ProductGrid = ({
+  initialBrandFilter = null,
+  initialCategoryFilter = null,
+  initialSubcategoryFilter = null,
+  resetFiltersTimestamp = null
+}: ProductGridProps) => {
   const [isLoading, setIsLoading] = useState(true);
   const [filteredProducts, setFilteredProducts] = useState<ShopProduct[]>(shopProducts);
   const [filters, setFilters] = useState({
     maxPrice: null as number | null,
     brand: initialBrandFilter,
-    category: null as string | null,
-    subcategory: null as string | null,
+    category: initialCategoryFilter,
+    subcategory: initialSubcategoryFilter,
   });
   const [isFirstRender, setIsFirstRender] = useState(true);
 
@@ -73,7 +80,13 @@ const ProductGrid = ({ initialBrandFilter = null, resetFiltersTimestamp = null }
     <div className="bg-white lg:bg-[#f9f9f9] min-h-screen">
       {/* Mobile/Tablet: Filtros arriba */}
       <div className="lg:hidden">
-        <ShopFilters onFiltersChange={handleFiltersChange} initialBrandFilter={initialBrandFilter} resetFiltersTimestamp={resetFiltersTimestamp} />
+        <ShopFilters
+          onFiltersChange={handleFiltersChange}
+          initialBrandFilter={initialBrandFilter}
+          initialCategoryFilter={initialCategoryFilter}
+          initialSubcategoryFilter={initialSubcategoryFilter}
+          resetFiltersTimestamp={resetFiltersTimestamp}
+        />
       </div>
 
       <div className="max-w-[1400px] mx-auto px-0 py-0 lg:px-4 lg:py-6">
@@ -81,7 +94,13 @@ const ProductGrid = ({ initialBrandFilter = null, resetFiltersTimestamp = null }
           {/* Desktop: Filtros en columna izquierda */}
           <aside className="hidden lg:block lg:w-[300px] lg:flex-shrink-0">
             <div className="sticky top-4">
-              <ShopFilters onFiltersChange={handleFiltersChange} initialBrandFilter={initialBrandFilter} resetFiltersTimestamp={resetFiltersTimestamp} />
+              <ShopFilters
+                onFiltersChange={handleFiltersChange}
+                initialBrandFilter={initialBrandFilter}
+                initialCategoryFilter={initialCategoryFilter}
+                initialSubcategoryFilter={initialSubcategoryFilter}
+                resetFiltersTimestamp={resetFiltersTimestamp}
+              />
             </div>
           </aside>
 
