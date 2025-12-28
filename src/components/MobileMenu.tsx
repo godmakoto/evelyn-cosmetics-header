@@ -114,23 +114,41 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
                   <div key={category.name}>
                     {category.subcategories.length > 0 ? (
                       <>
-                        <button
-                          onClick={() => toggleSubcategory(category.name)}
+                        <div
                           className={cn(
-                            "w-full flex items-center justify-between px-3 py-2.5 text-sm font-medium text-foreground rounded-lg transition-all duration-200",
-                            expandedSubcategory === category.name 
-                              ? "bg-secondary/70" 
+                            "w-full flex items-center justify-between rounded-lg transition-all duration-200",
+                            expandedSubcategory === category.name
+                              ? "bg-secondary/70"
                               : "hover:bg-secondary/40"
                           )}
                         >
-                          {category.name}
-                          <ChevronRight
-                            className={cn(
-                              "w-4 h-4 text-muted-foreground transition-transform duration-200",
-                              expandedSubcategory === category.name && "rotate-90"
-                            )}
-                          />
-                        </button>
+                          <button
+                            onClick={(e) => {
+                              e.preventDefault();
+                              navigate('/tienda', {
+                                state: {
+                                  categoryFilter: category.name
+                                }
+                              });
+                              onClose();
+                              window.scrollTo({ top: 0, behavior: 'smooth' });
+                            }}
+                            className="flex-1 text-left px-3 py-2.5 text-sm font-medium text-foreground"
+                          >
+                            {category.name}
+                          </button>
+                          <button
+                            onClick={() => toggleSubcategory(category.name)}
+                            className="px-3 py-2.5"
+                          >
+                            <ChevronRight
+                              className={cn(
+                                "w-4 h-4 text-muted-foreground transition-transform duration-200",
+                                expandedSubcategory === category.name && "rotate-90"
+                              )}
+                            />
+                          </button>
+                        </div>
 
                         <div
                           className={cn(

@@ -216,7 +216,22 @@ const Header = () => {
                   <div className="flex">
                     {/* Categories List */}
                     <div className="categories-list bg-accent">
-                      {categories.map(category => <button key={category.name} className={cn("category-item", activeCategory === category.name && "category-item-active")} onMouseEnter={() => handleCategoryHover(category.name)}>
+                      {categories.map(category => <button
+                          key={category.name}
+                          className={cn("category-item", activeCategory === category.name && "category-item-active")}
+                          onMouseEnter={() => handleCategoryHover(category.name)}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            navigate('/tienda', {
+                              state: {
+                                categoryFilter: category.name
+                              }
+                            });
+                            setIsCategoriesOpen(false);
+                            setActiveCategory(null);
+                            window.scrollTo({ top: 0, behavior: 'smooth' });
+                          }}
+                        >
                           {category.name}
                           <ChevronDown className="w-4 h-4 -rotate-90" />
                         </button>)}
