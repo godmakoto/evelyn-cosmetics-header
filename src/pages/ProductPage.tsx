@@ -14,79 +14,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { cn } from "@/lib/utils";
-
-// Mock data - En el futuro esto vendrá de una API
-const mockProduct = {
-  id: "1",
-  name: "Centella Cleansing Foam",
-  brand: "MIXSOON",
-  price: 185.0,
-  originalPrice: null,
-  category: "Limpiadores",
-  description: "Jabón facial con extracto de Centella Asiática que limpia suavemente mientras calma y equilibra la piel. Ideal para todo tipo de piel, especialmente sensible. Su fórmula con pH balanceado respeta la barrera natural de tu piel.",
-  images: [
-    "https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=600&h=600&fit=crop",
-    "https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=600&h=600&fit=crop",
-    "https://images.unsplash.com/photo-1526947425960-945c6e72858f?w=600&h=600&fit=crop",
-  ],
-  fullDescription: "Este limpiador facial de espuma suave está formulado con extracto puro de Centella Asiática, conocida por sus propiedades calmantes y regeneradoras. La fórmula de pH balanceado limpia profundamente sin irritar ni resecar la piel, eliminando impurezas, exceso de grasa y residuos de maquillaje mientras mantiene la barrera de humedad natural de la piel intacta.",
-  howToUse: "1. Humedece tu rostro con agua tibia.\n2. Aplica una pequeña cantidad de producto en las manos.\n3. Masajea suavemente sobre el rostro con movimientos circulares.\n4. Enjuaga abundantemente con agua tibia.\n5. Usa mañana y noche como parte de tu rutina de cuidado facial.",
-  ingredients: "Centella Asiatica Extract, Water, Glycerin, Sodium Cocoyl Isethionate, Coconut Acid, Sodium Isethionate, Potassium Cocoyl Glycinate, Coco-Betaine, Citric Acid, Sodium Chloride, Caprylyl Glycol, Ethylhexylglycerin, Disodium EDTA."
-};
-
-// Productos relacionados - Mock data
-const relatedProducts = [
-  {
-    id: "rel-1",
-    name: "Gel Limpiador Facial Suave para Todo Tipo de Piel con Ceramidas",
-    brand: "CeraVe",
-    image: "https://images.unsplash.com/photo-1556229010-6c3f2c9ca5f8?w=400&h=400&fit=crop",
-    price: 65,
-    category: "Limpiadores"
-  },
-  {
-    id: "rel-2",
-    name: "Sebium Gel Moussant Actif - Gel limpiador facial purificante",
-    brand: "Bioderma",
-    image: "https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?w=400&h=400&fit=crop",
-    price: 180,
-    category: "Limpiadores"
-  },
-  {
-    id: "rel-3",
-    name: "Pigmentbio Foaming cream - Limpiador despigmentante",
-    brand: "Bioderma",
-    image: "https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=400&h=400&fit=crop",
-    price: 95,
-    originalPrice: 120,
-    category: "Limpiadores"
-  },
-  {
-    id: "rel-4",
-    name: "Hydrating Cleanser Limpiador Facial Espuma",
-    brand: "CeraVe",
-    image: "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=400&h=400&fit=crop",
-    price: 75,
-    category: "Limpiadores"
-  },
-  {
-    id: "rel-5",
-    name: "Tónico Facial Purificante con Extracto de Té Verde",
-    brand: "Bioderma",
-    image: "https://images.unsplash.com/photo-1512303452766-a48f2bc60dcd?w=400&h=400&fit=crop",
-    price: 85,
-    category: "Limpiadores"
-  },
-  {
-    id: "rel-6",
-    name: "Limpiador Facial Anti-edad con Retinol",
-    brand: "La Roche-Posay",
-    image: "https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=400&h=400&fit=crop",
-    price: 220,
-    originalPrice: 250,
-    category: "Limpiadores"
-  }
-];
+import { getProductById, getRelatedProducts } from "@/data/productDetails";
 
 const ProductPage = () => {
   const { id } = useParams();
@@ -98,9 +26,30 @@ const ProductPage = () => {
   const [selectedCarouselIndex, setSelectedCarouselIndex] = useState(0);
   const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
 
-  // Mock: En producción, aquí cargarías el producto real basado en el ID
-  const product = mockProduct;
+  // Obtener el producto por ID
+  const product = getProductById(id || "1");
+
+  // Si el producto no existe, redirigir a la página principal
+  useEffect(() => {
+    if (!product) {
+      navigate("/");
+    }
+  }, [product, navigate]);
+
+  // Si el producto no existe, no renderizar nada (se redirigirá)
+  if (!product) {
+    return null;
+  }
+
   const isInCart = items.some(item => item.id === product.id);
+
+  // Obtener productos relacionados por categoría
+  const relatedProducts = getRelatedProducts(product.category, product.id, 6);
+
+  // Reset selected image when product changes
+  useEffect(() => {
+    setSelectedImage(0);
+  }, [id]);
 
   // Detect tablet
   useEffect(() => {
@@ -162,7 +111,7 @@ const ProductPage = () => {
       addItem({
         id: relatedProduct.id,
         name: relatedProduct.name,
-        image: relatedProduct.image,
+        image: relatedProduct.images[0],
         originalPrice: relatedProduct.originalPrice || relatedProduct.price,
         discountedPrice: relatedProduct.originalPrice ? relatedProduct.price : undefined
       });
@@ -382,7 +331,7 @@ const ProductPage = () => {
                         {/* Product Image */}
                         <div className="overflow-hidden bg-secondary aspect-square">
                           <img
-                            src={relProduct.image}
+                            src={relProduct.images[0]}
                             alt={relProduct.name}
                             className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                           />
