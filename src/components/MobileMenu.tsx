@@ -9,15 +9,22 @@ import {
 } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 
-const categories = [
-  { name: "Serums", subcategories: [] },
-  { name: "Protectores Solares", subcategories: [] },
-  { name: "Hidratantes", subcategories: [] },
-  { name: "Sprays", subcategories: [] },
-  { name: "Tónicos y Esencias", subcategories: [] },
-  { name: "Coreano", subcategories: [] },
-  { name: "Limpiadores", subcategories: [] }
-];
+const categories = [{
+  name: "Cuidado Facial",
+  subcategories: ["Sérums", "Hidratantes", "Anti-Edad", "Anti-Acné", "Brumas Faciales", "Tónicos", "Mascarillas", "Contorno de Ojos", "Aceites Faciales", "Ampollas", "Cremas Reparadoras"]
+}, {
+  name: "Protección Solar",
+  subcategories: ["Facial", "Corporal"]
+}, {
+  name: "Limpieza Facial",
+  subcategories: ["Geles Limpiadores", "Aguas Micelares"]
+}, {
+  name: "Cuidado Corporal",
+  subcategories: ["Hidratantes", "Cremas Reparadoras"]
+}, {
+  name: "Cuidado Capilar",
+  subcategories: ["Champús Tratantes", "Tratamientos"]
+}];
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -109,21 +116,30 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
                         <div
                           className={cn(
                             "overflow-hidden transition-all duration-250 ease-in-out",
-                            expandedSubcategory === category.name 
-                              ? "max-h-[500px] opacity-100 mt-0.5" 
+                            expandedSubcategory === category.name
+                              ? "max-h-[500px] opacity-100 mt-0.5"
                               : "max-h-0 opacity-0"
                           )}
                         >
                           <div className="ml-4 pl-3 border-l border-border/50 space-y-0.5">
                             {category.subcategories.map((sub) => (
-                              <a
+                              <button
                                 key={sub}
-                                href="#"
-                                className="block px-3 py-2 text-xs text-muted-foreground hover:text-foreground hover:bg-secondary/30 rounded-lg transition-all duration-200"
-                                onClick={onClose}
+                                className="w-full text-left block px-3 py-2 text-xs text-muted-foreground hover:text-foreground hover:bg-secondary/30 rounded-lg transition-all duration-200"
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  navigate('/tienda', {
+                                    state: {
+                                      categoryFilter: category.name,
+                                      subcategoryFilter: sub
+                                    }
+                                  });
+                                  onClose();
+                                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                                }}
                               >
                                 {sub}
-                              </a>
+                              </button>
                             ))}
                           </div>
                         </div>

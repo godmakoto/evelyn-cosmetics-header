@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -25,6 +25,11 @@ const ProductPage = () => {
   const [isTablet, setIsTablet] = useState(false);
   const [selectedCarouselIndex, setSelectedCarouselIndex] = useState(0);
   const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
+
+  // Drag state for image gallery
+  const isDragging = useRef(false);
+  const startX = useRef(0);
+  const dragDistance = useRef(0);
 
   // Obtener el producto por ID
   const product = getProductById(id || "1");
@@ -131,6 +136,43 @@ const ProductPage = () => {
     navigate('/tienda', { state: { brandFilter: product.brand } });
   };
 
+  // Image gallery drag handlers
+  const handleDragStart = (e: React.MouseEvent | React.TouchEvent) => {
+    isDragging.current = true;
+    dragDistance.current = 0;
+    if ('touches' in e) {
+      startX.current = e.touches[0].clientX;
+    } else {
+      startX.current = e.clientX;
+    }
+  };
+
+  const handleDragMove = (e: React.MouseEvent | React.TouchEvent) => {
+    if (!isDragging.current) return;
+    const currentX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+    dragDistance.current = currentX - startX.current;
+  };
+
+  const handleDragEnd = () => {
+    if (!isDragging.current) return;
+    isDragging.current = false;
+
+    // Threshold for swipe (50px)
+    const threshold = 50;
+
+    if (Math.abs(dragDistance.current) > threshold) {
+      if (dragDistance.current > 0) {
+        // Swiped right - go to previous image
+        setSelectedImage(prev => prev > 0 ? prev - 1 : product.images.length - 1);
+      } else {
+        // Swiped left - go to next image
+        setSelectedImage(prev => prev < product.images.length - 1 ? prev + 1 : 0);
+      }
+    }
+
+    dragDistance.current = 0;
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -143,11 +185,16 @@ const ProductPage = () => {
           <div className="w-full">
             {/* Mobile: Carousel with dots */}
             <div className="lg:hidden">
-              <div className="aspect-square overflow-hidden rounded-2xl bg-secondary mb-4">
+              <div
+                className="aspect-square overflow-hidden rounded-2xl bg-secondary mb-4 cursor-grab active:cursor-grabbing select-none"
+                onTouchStart={handleDragStart}
+                onTouchMove={handleDragMove}
+                onTouchEnd={handleDragEnd}
+              >
                 <img
                   src={product.images[selectedImage]}
                   alt={product.name}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover pointer-events-none"
                 />
               </div>
               {/* Navigation dots */}
@@ -193,11 +240,17 @@ const ProductPage = () => {
               </div>
 
               {/* Main image */}
-              <div className="flex-1 aspect-square overflow-hidden rounded-2xl bg-secondary">
+              <div
+                className="flex-1 aspect-square overflow-hidden rounded-2xl bg-secondary cursor-grab active:cursor-grabbing select-none"
+                onMouseDown={handleDragStart}
+                onMouseMove={handleDragMove}
+                onMouseUp={handleDragEnd}
+                onMouseLeave={handleDragEnd}
+              >
                 <img
                   src={product.images[selectedImage]}
                   alt={product.name}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover pointer-events-none"
                 />
               </div>
             </div>

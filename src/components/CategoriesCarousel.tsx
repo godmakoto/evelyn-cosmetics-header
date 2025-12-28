@@ -16,48 +16,49 @@ interface Category {
 
 const categories: Category[] = [
   {
+    id: "cuidado-facial",
+    name: "Cuidado Facial",
+    icon: <Heart className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
+    categoryFilter: "Cuidado Facial"
+  },
+  {
+    id: "proteccion-solar",
+    name: "Protección Solar",
+    icon: <Sun className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
+    categoryFilter: "Protección Solar"
+  },
+  {
+    id: "limpieza-facial",
+    name: "Limpieza Facial",
+    icon: <Sparkles className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
+    categoryFilter: "Limpieza Facial"
+  },
+  {
+    id: "cuidado-corporal",
+    name: "Cuidado Corporal",
+    icon: <Droplets className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
+    categoryFilter: "Cuidado Corporal"
+  },
+  {
     id: "serums",
-    name: "Serums",
+    name: "Sérums",
     icon: <Droplet className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
     categoryFilter: "Cuidado Facial",
     subcategoryFilter: "Sérums"
   },
   {
-    id: "protectores-solares",
-    name: "Protectores Solares",
-    icon: <Sun className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
-    categoryFilter: "Protección Solar"
-  },
-  {
-    id: "hidratantes",
-    name: "Hidratantes",
-    icon: <Droplets className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
-    subcategoryFilter: "Hidratantes"
-  },
-  {
-    id: "sprays",
-    name: "Sprays",
-    icon: <SprayCan className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
-    categoryFilter: "Cuidado Facial",
-    subcategoryFilter: "Brumas Faciales"
-  },
-  {
-    id: "tonicos-esencias",
-    name: "Tónicos y Esencias",
+    id: "tonicos",
+    name: "Tónicos",
     icon: <Beaker className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
     categoryFilter: "Cuidado Facial",
     subcategoryFilter: "Tónicos"
   },
   {
-    id: "coreano",
-    name: "Coreano",
-    icon: <Heart className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />
-  },
-  {
-    id: "limpiadores",
-    name: "Limpiadores",
-    icon: <Sparkles className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
-    categoryFilter: "Limpieza Facial"
+    id: "anti-edad",
+    name: "Anti-Edad",
+    icon: <SprayCan className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
+    categoryFilter: "Cuidado Facial",
+    subcategoryFilter: "Anti-Edad"
   }
 ];
 

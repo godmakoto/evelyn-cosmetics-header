@@ -7,26 +7,20 @@ import CartDrawer from "./CartDrawer";
 import MobileMenu from "./MobileMenu";
 
 const categories = [{
-  name: "Serums",
-  subcategories: []
+  name: "Cuidado Facial",
+  subcategories: ["Sérums", "Hidratantes", "Anti-Edad", "Anti-Acné", "Brumas Faciales", "Tónicos", "Mascarillas", "Contorno de Ojos", "Aceites Faciales", "Ampollas", "Cremas Reparadoras"]
 }, {
-  name: "Protectores Solares",
-  subcategories: []
+  name: "Protección Solar",
+  subcategories: ["Facial", "Corporal"]
 }, {
-  name: "Hidratantes",
-  subcategories: []
+  name: "Limpieza Facial",
+  subcategories: ["Geles Limpiadores", "Aguas Micelares"]
 }, {
-  name: "Sprays",
-  subcategories: []
+  name: "Cuidado Corporal",
+  subcategories: ["Hidratantes", "Cremas Reparadoras"]
 }, {
-  name: "Tónicos y Esencias",
-  subcategories: []
-}, {
-  name: "Coreano",
-  subcategories: []
-}, {
-  name: "Limpiadores",
-  subcategories: []
+  name: "Cuidado Capilar",
+  subcategories: ["Champús Tratantes", "Tratamientos"]
 }];
 
 const Header = () => {
@@ -170,9 +164,24 @@ const Header = () => {
                     <div className="subcategories-panel">
                       {activeCategory && <div className="subcategories-list">
                           <h4 className="subcategories-title">{activeCategory}</h4>
-                          {categories.find(c => c.name === activeCategory)?.subcategories.map(sub => <a key={sub} href="#" className="subcategory-item">
+                          {categories.find(c => c.name === activeCategory)?.subcategories.map(sub => <button
+                                key={sub}
+                                className="subcategory-item"
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  navigate('/tienda', {
+                                    state: {
+                                      categoryFilter: activeCategory,
+                                      subcategoryFilter: sub
+                                    }
+                                  });
+                                  setIsCategoriesOpen(false);
+                                  setActiveCategory(null);
+                                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                                }}
+                              >
                                 {sub}
-                              </a>)}
+                              </button>)}
                         </div>}
                       {!activeCategory && <div className="subcategories-placeholder">
                           <p>Pasa el cursor sobre una categoría para ver las subcategorías</p>
