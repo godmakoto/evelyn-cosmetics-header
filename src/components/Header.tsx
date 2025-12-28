@@ -136,9 +136,11 @@ const Header = () => {
             <div className="flex items-center justify-between h-16 md:h-20">
               {/* Mobile: Hamburger + Logo */}
               <div className="flex items-center gap-3 md:hidden">
-                <button onClick={() => setIsMobileMenuOpen(true)} className="p-2 -ml-2 hover:bg-white/10 rounded-lg transition-colors text-white" aria-label="Abrir menú">
-                  <Menu className="w-6 h-6" />
-                </button>
+                {!isCheckoutPage && (
+                  <button onClick={() => setIsMobileMenuOpen(true)} className="p-2 -ml-2 hover:bg-white/10 rounded-lg transition-colors text-white" aria-label="Abrir menú">
+                    <Menu className="w-6 h-6" />
+                  </button>
+                )}
                 <Link to="/" className="flex flex-col leading-tight">
                   <span className="text-xl font-elegant tracking-wide text-white">
                     Evelyn
@@ -160,14 +162,16 @@ const Header = () => {
               </Link>
 
               {/* Desktop: Search Bar */}
-              <div className="hidden md:flex flex-1 max-w-xl mx-8">
-                <div className="search-container">
-                  <input type="text" placeholder="¿Qué estás buscando?" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} onKeyDown={handleSearchKeyDown} className="search-input" />
-                  <button onClick={handleSearch} className="search-button">
-                    <Search className="w-5 h-5" />
-                  </button>
+              {!isCheckoutPage && (
+                <div className="hidden md:flex flex-1 max-w-xl mx-8">
+                  <div className="search-container">
+                    <input type="text" placeholder="¿Qué estás buscando?" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} onKeyDown={handleSearchKeyDown} className="search-input" />
+                    <button onClick={handleSearch} className="search-button">
+                      <Search className="w-5 h-5" />
+                    </button>
+                  </div>
                 </div>
-              </div>
+              )}
 
               {/* Cart Button */}
               {!isCheckoutPage && (
@@ -184,17 +188,20 @@ const Header = () => {
         </div>
 
         {/* Mobile Search */}
-        <div className="md:hidden px-4 py-3 bg-[hsl(0,0%,85%)]">
-          <div className="search-container">
-            <input type="text" placeholder="¿Qué estás buscando?" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} onKeyDown={handleSearchKeyDown} className="search-input" />
-            <button onClick={handleSearch} className="search-button">
-              <Search className="w-5 h-5" />
-            </button>
+        {!isCheckoutPage && (
+          <div className="md:hidden px-4 py-3 bg-[hsl(0,0%,85%)]">
+            <div className="search-container">
+              <input type="text" placeholder="¿Qué estás buscando?" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} onKeyDown={handleSearchKeyDown} className="search-input" />
+              <button onClick={handleSearch} className="search-button">
+                <Search className="w-5 h-5" />
+              </button>
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Desktop Navigation Bar */}
-        <nav className="nav-bar hidden md:block">
+        {!isCheckoutPage && (
+          <nav className="nav-bar hidden md:block">
           <div className="container mx-auto px-4 lg:px-8">
             <ul className="flex items-center justify-center gap-1">
               {/* Categories with Dropdown */}
@@ -295,6 +302,7 @@ const Header = () => {
             </ul>
           </div>
         </nav>
+        )}
       </header>
 
       {/* Mobile Menu Drawer */}
