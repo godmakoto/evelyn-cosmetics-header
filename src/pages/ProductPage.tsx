@@ -46,9 +46,10 @@ const ProductPage = () => {
   // Obtener productos relacionados por categoría
   const relatedProducts = getRelatedProducts(product.category, product.id, 6);
 
-  // Reset selected image when product changes
+  // Reset selected image and scroll to top when product changes
   useEffect(() => {
     setSelectedImage(0);
+    window.scrollTo({ top: 0, behavior: 'instant' });
   }, [id]);
 
   // Detect tablet
@@ -124,7 +125,6 @@ const ProductPage = () => {
 
   const handleRelatedCardClick = (productId: string) => {
     navigate(`/producto/${productId}`);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
