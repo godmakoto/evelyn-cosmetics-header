@@ -28,6 +28,13 @@ const ShopFilters = ({
   const [selectedSubcategory, setSelectedSubcategory] = useState<string | null>(initialSubcategoryFilter);
   const [subcategories, setSubcategories] = useState<string[]>([]);
 
+  // Update filters when initial filter props change
+  useEffect(() => {
+    setSelectedBrand(initialBrandFilter);
+    setSelectedCategory(initialCategoryFilter);
+    setSelectedSubcategory(initialSubcategoryFilter);
+  }, [initialBrandFilter, initialCategoryFilter, initialSubcategoryFilter]);
+
   // Reset all filter states when resetFiltersTimestamp changes
   useEffect(() => {
     if (resetFiltersTimestamp) {

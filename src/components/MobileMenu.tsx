@@ -64,6 +64,9 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
     setIsCategoriesOpen((prev) => !prev);
     if (isCategoriesOpen) {
       setExpandedSubcategory(null);
+    } else {
+      // Cerrar marcas cuando se abren categorías
+      setIsBrandsOpen(false);
     }
   };
 
@@ -73,6 +76,11 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
 
   const toggleBrands = () => {
     setIsBrandsOpen((prev) => !prev);
+    if (!isBrandsOpen) {
+      // Cerrar categorías cuando se abren marcas
+      setIsCategoriesOpen(false);
+      setExpandedSubcategory(null);
+    }
   };
 
   return (
@@ -106,10 +114,10 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
             <div
               className={cn(
                 "overflow-hidden transition-all duration-300 ease-in-out",
-                isCategoriesOpen ? "max-h-[1000px] opacity-100 mt-1" : "max-h-0 opacity-0"
+                isCategoriesOpen ? "max-h-[500px] opacity-100 mt-1" : "max-h-0 opacity-0"
               )}
             >
-              <div className="ml-3 space-y-0.5">
+              <div className="ml-3 space-y-0.5 max-h-[440px] overflow-y-auto">
                 {categories.map((category) => (
                   <div key={category.name}>
                     {category.subcategories.length > 0 ? (
@@ -216,10 +224,10 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
             <div
               className={cn(
                 "transition-all duration-300 ease-in-out",
-                isBrandsOpen ? "max-h-[1000px] opacity-100 mt-1" : "max-h-0 opacity-0 overflow-hidden"
+                isBrandsOpen ? "max-h-[500px] opacity-100 mt-1" : "max-h-0 opacity-0 overflow-hidden"
               )}
             >
-              <div className="ml-3 space-y-0.5">
+              <div className="ml-3 space-y-0.5 max-h-[440px] overflow-y-auto">
                 {brands.map((brand) => (
                   <button
                     key={brand}
