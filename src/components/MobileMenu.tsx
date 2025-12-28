@@ -26,6 +26,20 @@ const categories = [{
   subcategories: ["Champús Tratantes", "Tratamientos"]
 }];
 
+const brands = [
+  "Avène",
+  "Bioderma",
+  "CeraVe",
+  "Eucerin",
+  "Isdin",
+  "La Roche-Posay",
+  "Neutrogena",
+  "Nivea",
+  "SkinCeuticals",
+  "The Ordinary",
+  "Vichy"
+];
+
 interface MobileMenuProps {
   isOpen: boolean;
   onClose: () => void;
@@ -33,6 +47,7 @@ interface MobileMenuProps {
 
 const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
   const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
+  const [isBrandsOpen, setIsBrandsOpen] = useState(false);
   const [expandedSubcategory, setExpandedSubcategory] = useState<string | null>(null);
   const navigate = useNavigate();
   const location = useLocation();
@@ -54,6 +69,10 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
 
   const toggleSubcategory = (categoryName: string) => {
     setExpandedSubcategory((prev) => (prev === categoryName ? null : categoryName));
+  };
+
+  const toggleBrands = () => {
+    setIsBrandsOpen((prev) => !prev);
   };
 
   return (
@@ -154,6 +173,50 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
                       </a>
                     )}
                   </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Marcas Dropdown */}
+          <div className="mt-2 px-4">
+            <button
+              onClick={toggleBrands}
+              className="w-full flex items-center justify-between px-3 py-3 text-sm font-semibold text-foreground hover:bg-secondary rounded-lg transition-colors"
+            >
+              Marcas
+              <ChevronDown
+                className={cn(
+                  "w-4 h-4 transition-transform",
+                  isBrandsOpen && "rotate-180"
+                )}
+              />
+            </button>
+
+            <div
+              className={cn(
+                "overflow-hidden transition-all duration-300 ease-in-out",
+                isBrandsOpen ? "max-h-[500px] opacity-100 mt-1" : "max-h-0 opacity-0"
+              )}
+            >
+              <div className="ml-3 space-y-0.5">
+                {brands.map((brand) => (
+                  <button
+                    key={brand}
+                    className="w-full text-left block px-3 py-2.5 text-sm font-medium text-foreground hover:bg-secondary/40 rounded-lg transition-all duration-200"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      navigate('/tienda', {
+                        state: {
+                          brandFilter: brand
+                        }
+                      });
+                      onClose();
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
+                  >
+                    {brand}
+                  </button>
                 ))}
               </div>
             </div>
