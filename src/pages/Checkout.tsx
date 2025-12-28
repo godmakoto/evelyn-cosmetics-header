@@ -64,16 +64,14 @@ const Checkout = () => {
               <ChevronLeft className="w-5 h-5" />
               <span className="text-sm">Volver</span>
             </button>
-            <h1 className="text-2xl lg:text-3xl font-semibold text-[#222]">Minha Sacola</h1>
-            <p className="text-sm text-[#666] mt-1 lg:hidden">Paso 1 de 4</p>
+            <h1 className="text-2xl lg:text-3xl font-semibold text-[#222]">Mi Carrito</h1>
           </div>
 
           {/* Desktop: Table Header */}
-          <div className="hidden lg:grid lg:grid-cols-[2fr_1fr_1fr_1fr_1fr_auto] gap-4 pb-4 border-b border-[#eee] mb-6 text-sm font-medium text-[#666] uppercase tracking-wide">
-            <div>Produto</div>
-            <div>Entrega</div>
-            <div>Preço</div>
-            <div>Quantidade</div>
+          <div className="hidden lg:grid lg:grid-cols-[3fr_1fr_1fr_1fr_auto] gap-4 pb-4 border-b border-[#eee] mb-6 text-sm font-medium text-[#666] uppercase tracking-wide">
+            <div>Producto</div>
+            <div>Precio</div>
+            <div>Cantidad</div>
             <div>Total</div>
             <div></div>
           </div>
@@ -93,12 +91,9 @@ const Checkout = () => {
                       />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <h3 className="text-sm font-medium text-[#222] line-clamp-2 leading-tight mb-1">
+                      <h3 className="text-sm font-medium text-[#222] line-clamp-2 leading-tight mb-3">
                         {item.name}
                       </h3>
-                      <p className="text-xs text-[#666] mb-2">
-                        Produto fornecido e entregue por <span className="text-[#e02b2b]">Época Cosméticos</span>
-                      </p>
                       <div className="flex items-baseline gap-2">
                         {item.discountedPrice && (
                           <span className="text-xs text-[#999] line-through">
@@ -146,7 +141,7 @@ const Checkout = () => {
                 </div>
 
                 {/* Desktop View */}
-                <div className="hidden lg:grid lg:grid-cols-[2fr_1fr_1fr_1fr_1fr_auto] gap-4 items-center py-6 border-b border-[#eee]">
+                <div className="hidden lg:grid lg:grid-cols-[3fr_1fr_1fr_1fr_auto] gap-4 items-center py-6 border-b border-[#eee]">
                   {/* Product Info */}
                   <div className="flex gap-4">
                     <div className="w-24 h-24 flex-shrink-0 bg-[#f5f5f5] rounded-lg overflow-hidden">
@@ -157,18 +152,10 @@ const Checkout = () => {
                       />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <h3 className="text-sm font-medium text-[#222] line-clamp-2 leading-tight mb-1">
+                      <h3 className="text-sm font-medium text-[#222] line-clamp-2 leading-tight">
                         {item.name}
                       </h3>
-                      <p className="text-xs text-[#666] mt-2">
-                        Produto fornecido e entregue por <span className="text-[#e02b2b]">Época Cosméticos</span>
-                      </p>
                     </div>
-                  </div>
-
-                  {/* Delivery */}
-                  <div className="text-sm text-[#666]">
-                    a calcular
                   </div>
 
                   {/* Price */}
@@ -231,7 +218,7 @@ const Checkout = () => {
               </div>
               {totalDiscount > 0 && (
                 <div className="flex justify-between text-base">
-                  <span className="text-[#666]">Descontos</span>
+                  <span className="text-[#666]">Descuentos</span>
                   <span className="font-medium text-[#e02b2b]">Bs -{totalDiscount.toFixed(2)}</span>
                 </div>
               )}
@@ -264,7 +251,7 @@ const Checkout = () => {
               className="w-full mt-4 text-[#666] hover:text-[#222] text-sm font-medium flex items-center justify-center gap-2 transition-colors"
             >
               <ChevronLeft className="w-4 h-4" />
-              Escolher mais produtos
+              Escoger más productos
             </button>
           </div>
         </div>
