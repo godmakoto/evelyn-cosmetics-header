@@ -117,7 +117,7 @@ const Checkout = () => {
                     <div className="flex items-center gap-3 border border-[#ddd] rounded-md">
                       <button
                         onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                        className="p-2 hover:bg-[#f5f5f5] transition-colors"
+                        className="p-2 hover:bg-[#f5f5f5] transition-colors rounded-l-md"
                       >
                         <Minus className="w-4 h-4 text-[#666]" />
                       </button>
@@ -126,7 +126,7 @@ const Checkout = () => {
                       </span>
                       <button
                         onClick={() => addItem(item)}
-                        className="p-2 hover:bg-[#f5f5f5] transition-colors"
+                        className="p-2 hover:bg-[#f5f5f5] transition-colors rounded-r-md"
                       >
                         <Plus className="w-4 h-4 text-[#666]" />
                       </button>
@@ -174,7 +174,7 @@ const Checkout = () => {
                   <div className="flex items-center gap-2 border border-[#ddd] rounded-md w-fit">
                     <button
                       onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                      className="p-2 hover:bg-[#f5f5f5] transition-colors"
+                      className="p-2 hover:bg-[#f5f5f5] transition-colors rounded-l-md"
                     >
                       <Minus className="w-4 h-4 text-[#666]" />
                     </button>
@@ -183,7 +183,7 @@ const Checkout = () => {
                     </span>
                     <button
                       onClick={() => addItem(item)}
-                      className="p-2 hover:bg-[#f5f5f5] transition-colors"
+                      className="p-2 hover:bg-[#f5f5f5] transition-colors rounded-r-md"
                     >
                       <Plus className="w-4 h-4 text-[#666]" />
                     </button>
