@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Search, ShoppingCart, ChevronDown, Menu } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useCart } from "@/contexts/CartContext";
@@ -34,12 +34,21 @@ const Header = () => {
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  
+
   const headerRef = useRef<HTMLElement | null>(null);
   const dropdownRef = useRef<HTMLLIElement>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-  
+
   const { finalTotal, itemCount, setIsCartOpen } = useCart();
+  const location = useLocation();
+
+  const handleTiendaClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    // Si ya estamos en la página de tienda, prevenir navegación y solo scroll al top
+    if (location.pathname === '/tienda') {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
 
   // Click outside para cerrar dropdown
   useEffect(() => {
@@ -175,7 +184,7 @@ const Header = () => {
 
               {/* Other Nav Items */}
               <li>
-                <Link to="/tienda" className="nav-item">
+                <Link to="/tienda" className="nav-item" onClick={handleTiendaClick}>
                   Tienda
                 </Link>
               </li>
