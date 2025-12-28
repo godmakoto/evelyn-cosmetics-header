@@ -28,6 +28,11 @@ const CartDrawer = () => {
     navigate('/checkout');
   };
 
+  const handleProductClick = (productId: number) => {
+    setIsCartOpen(false);
+    navigate(`/producto/${productId}`);
+  };
+
   return (
     <Sheet open={isCartOpen} onOpenChange={setIsCartOpen}>
       <SheetContent className="w-full sm:max-w-md flex flex-col p-0">
@@ -56,12 +61,16 @@ const CartDrawer = () => {
                   <img
                     src={item.image}
                     alt={item.name}
-                    className="w-20 h-20 object-cover rounded-md"
+                    onClick={() => handleProductClick(item.id)}
+                    className="w-20 h-20 object-cover rounded-md cursor-pointer hover:opacity-80 transition-opacity"
                   />
 
                   {/* Product Details */}
                   <div className="flex-1 min-w-0">
-                    <h4 className="font-medium text-sm text-foreground truncate">
+                    <h4
+                      onClick={() => handleProductClick(item.id)}
+                      className="font-medium text-sm text-foreground truncate cursor-pointer hover:text-primary transition-colors"
+                    >
                       {item.name}
                     </h4>
 

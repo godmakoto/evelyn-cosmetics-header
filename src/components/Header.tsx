@@ -23,19 +23,37 @@ const categories = [{
   subcategories: ["Champús Tratantes", "Tratamientos"]
 }];
 
+const brands = [
+  "Avène",
+  "Bioderma",
+  "CeraVe",
+  "Eucerin",
+  "Isdin",
+  "La Roche-Posay",
+  "Neutrogena",
+  "Nivea",
+  "SkinCeuticals",
+  "The Ordinary",
+  "Vichy"
+];
+
 const Header = () => {
   const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const [isBrandsOpen, setIsBrandsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const headerRef = useRef<HTMLElement | null>(null);
   const dropdownRef = useRef<HTMLLIElement>(null);
+  const brandsDropdownRef = useRef<HTMLLIElement>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const brandsTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const { finalTotal, itemCount, setIsCartOpen } = useCart();
   const navigate = useNavigate();
   const location = useLocation();
+  const isCheckoutPage = location.pathname === '/checkout';
 
   const handleTiendaClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
@@ -50,6 +68,9 @@ const Header = () => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsCategoriesOpen(false);
         setActiveCategory(null);
+      }
+      if (brandsDropdownRef.current && !brandsDropdownRef.current.contains(event.target as Node)) {
+        setIsBrandsOpen(false);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -70,6 +91,17 @@ const Header = () => {
 
   const handleCategoryHover = (categoryName: string) => {
     setActiveCategory(categoryName);
+  };
+
+  const handleBrandsEnter = () => {
+    if (brandsTimeoutRef.current) clearTimeout(brandsTimeoutRef.current);
+    setIsBrandsOpen(true);
+  };
+
+  const handleBrandsLeave = () => {
+    brandsTimeoutRef.current = setTimeout(() => {
+      setIsBrandsOpen(false);
+    }, 150);
   };
 
   const handleSearch = () => {
@@ -138,13 +170,15 @@ const Header = () => {
               </div>
 
               {/* Cart Button */}
-              <button onClick={() => setIsCartOpen(true)} className="cart-button ml-auto md:ml-0">
-                <span className="text-sm font-medium text-white">Bs {finalTotal.toFixed(1)}</span>
-                <div className="relative text-white">
-                  <ShoppingCart className="w-6 h-6 md:w-7 md:h-7" />
-                  {itemCount > 0 && <span className="cart-badge">{itemCount}</span>}
-                </div>
-              </button>
+              {!isCheckoutPage && (
+                <button onClick={() => setIsCartOpen(true)} className="cart-button ml-auto md:ml-0">
+                  <span className="text-sm font-medium text-white">Bs {finalTotal.toFixed(1)}</span>
+                  <div className="relative text-white">
+                    <ShoppingCart className="w-6 h-6 md:w-7 md:h-7" />
+                    {itemCount > 0 && <span className="cart-badge">{itemCount}</span>}
+                  </div>
+                </button>
+              )}
             </div>
           </div>
         </div>
@@ -208,6 +242,36 @@ const Header = () => {
                           <p>Pasa el cursor sobre una categoría para ver las subcategorías</p>
                         </div>}
                     </div>
+                  </div>
+                </div>
+              </li>
+
+              {/* Brands Dropdown */}
+              <li className="relative" ref={brandsDropdownRef} onMouseEnter={handleBrandsEnter} onMouseLeave={handleBrandsLeave}>
+                <button className={cn("nav-item nav-item-categories", isBrandsOpen && "nav-item-active")} onClick={() => setIsBrandsOpen(!isBrandsOpen)}>
+                  Marcas
+                  <ChevronDown className={cn("w-4 h-4 transition-transform duration-200", isBrandsOpen && "rotate-180")} />
+                </button>
+
+                {/* Brands Dropdown Menu */}
+                <div className={cn("absolute top-full left-0 bg-white shadow-lg rounded-b-lg border border-border overflow-hidden transition-all duration-200 z-50", isBrandsOpen ? "opacity-100 visible translate-y-0" : "opacity-0 invisible -translate-y-2")}>
+                  <div className="py-2 min-w-[200px] max-h-[400px] overflow-y-auto">
+                    {brands.map(brand => <button
+                          key={brand}
+                          className="w-full text-left px-4 py-2 hover:bg-accent transition-colors text-sm"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            navigate('/tienda', {
+                              state: {
+                                brandFilter: brand
+                              }
+                            });
+                            setIsBrandsOpen(false);
+                            window.scrollTo({ top: 0, behavior: 'smooth' });
+                          }}
+                        >
+                          {brand}
+                        </button>)}
                   </div>
                 </div>
               </li>
