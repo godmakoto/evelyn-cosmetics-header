@@ -46,7 +46,6 @@ const Header = () => {
 
   // Mobile header hide/show on scroll
   const [showMobileHeader, setShowMobileHeader] = useState(true);
-  const [isMobileHeaderFixed, setIsMobileHeaderFixed] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
 
   const headerRef = useRef<HTMLElement | null>(null);
@@ -67,45 +66,42 @@ const Header = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // Mobile header scroll behavior
+  // Mobile header scroll behavior con requestAnimationFrame
   useEffect(() => {
+    // Solo ejecutar en móvil
+    if (window.innerWidth >= 768) return;
+
+    let ticking = false;
+
     const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      const headerHeight = 64; // Solo altura del header principal (sin búsqueda)
-      const threshold = 10; // Threshold para evitar parpadeos
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          const currentScrollY = window.scrollY;
+          const threshold = 10; // Threshold para evitar cambios bruscos
+          const scrollDifference = Math.abs(currentScrollY - lastScrollY);
 
-      // Calcular diferencia de scroll para detectar dirección
-      const scrollDifference = Math.abs(currentScrollY - lastScrollY);
+          // Solo actualizar si el scroll cambió más del threshold
+          if (scrollDifference >= threshold) {
+            // Si scrolleamos hacia arriba, mostrar header
+            if (currentScrollY < lastScrollY) {
+              setShowMobileHeader(true);
+            }
+            // Si scrolleamos hacia abajo y pasamos el threshold inicial, ocultar
+            else if (currentScrollY > lastScrollY && currentScrollY > 80) {
+              setShowMobileHeader(false);
+            }
 
-      // Solo actualizar si el scroll cambió más del threshold
-      if (scrollDifference < threshold && lastScrollY !== 0) {
-        return;
+            setLastScrollY(currentScrollY);
+          }
+
+          ticking = false;
+        });
+
+        ticking = true;
       }
-
-      if (currentScrollY <= headerHeight) {
-        // Si estamos cerca del top, header estático (no fixed)
-        setIsMobileHeaderFixed(false);
-        setShowMobileHeader(true);
-      } else {
-        // Cuando scrolleamos más allá del header, hacerlo fixed
-        setIsMobileHeaderFixed(true);
-
-        // Si scrolleamos hacia arriba, mostrar header
-        // Si scrolleamos hacia abajo, ocultar header
-        if (currentScrollY < lastScrollY) {
-          setShowMobileHeader(true);
-        } else if (currentScrollY > lastScrollY) {
-          setShowMobileHeader(false);
-        }
-      }
-
-      setLastScrollY(currentScrollY);
     };
 
-    // Solo agregar el listener en móvil
-    if (window.innerWidth < 768) {
-      window.addEventListener('scroll', handleScroll, { passive: true });
-    }
+    window.addEventListener('scroll', handleScroll, { passive: true });
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
@@ -185,13 +181,12 @@ const Header = () => {
         ref={headerRef}
         className="header-wrapper"
       >
-        {/* Mobile: Solo header principal con efecto */}
+        {/* Mobile: Header principal siempre fixed */}
         <div
           className={cn(
-            "md:hidden",
-            isMobileHeaderFixed ? "fixed top-0 left-0 right-0 z-50" : "relative",
+            "md:hidden fixed top-0 left-0 right-0 z-50",
             "transition-transform duration-300 ease-in-out",
-            isMobileHeaderFixed && !showMobileHeader && "-translate-y-full"
+            !showMobileHeader && "-translate-y-full"
           )}
         >
           {/* Main Header */}
@@ -230,7 +225,10 @@ const Header = () => {
           </div>
         </div>
 
-        {/* Mobile Search - Siempre estática, sin efecto */}
+        {/* Mobile: Spacer para compensar header fixed (64px) */}
+        <div className="md:hidden h-16"></div>
+
+        {/* Mobile Search - Estática debajo del spacer */}
         {!isCheckoutPage && (
           <div className="md:hidden px-4 py-3 bg-[hsl(0,0%,85%)]">
             <div className="search-container">
