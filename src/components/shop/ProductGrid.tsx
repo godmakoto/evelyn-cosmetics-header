@@ -106,16 +106,34 @@ const ProductGrid = ({
   }, [filters, activeSearchQuery]);
 
   const handleFiltersChange = useCallback((newFilters: typeof filters) => {
-    // Navegar para actualizar el estado y limpiar búsqueda
-    navigate('/tienda', {
-      state: {
-        brandFilter: newFilters.brand,
-        categoryFilter: newFilters.category,
-        subcategoryFilter: newFilters.subcategory,
-      },
-      replace: true
-    });
-  }, [navigate]);
+    // Verificar si los filtros realmente cambiaron (no solo inicialización)
+    const filtersChanged =
+      newFilters.brand !== filters.brand ||
+      newFilters.category !== filters.category ||
+      newFilters.subcategory !== filters.subcategory ||
+      newFilters.maxPrice !== filters.maxPrice;
+
+    if (!filtersChanged) {
+      // Los filtros no cambiaron, es solo inicialización, no hacer nada
+      return;
+    }
+
+    // Los filtros cambiaron - es una acción del usuario
+    if (activeSearchQuery) {
+      // Hay búsqueda activa, navegar para limpiarla
+      navigate('/tienda', {
+        state: {
+          brandFilter: newFilters.brand,
+          categoryFilter: newFilters.category,
+          subcategoryFilter: newFilters.subcategory,
+        },
+        replace: true
+      });
+    } else {
+      // No hay búsqueda activa, solo actualizar estado local
+      setFilters(newFilters);
+    }
+  }, [navigate, activeSearchQuery, filters]);
 
   const clearSearch = () => {
     navigate('/tienda', {
