@@ -12,6 +12,7 @@ import ProductPage from "./pages/ProductPage";
 import Checkout from "./pages/Checkout";
 import TermsAndConditions from "./pages/TermsAndConditions";
 import Blog from "./pages/Blog";
+import BlogPostPage from "./pages/BlogPostPage";
 
 const queryClient = new QueryClient();
 
@@ -30,6 +31,7 @@ const App = () => (
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/terminos-y-condiciones" element={<TermsAndConditions />} />
             <Route path="/blog" element={<Blog />} />
+            <Route path="/blog/:slug" element={<BlogPostPage />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

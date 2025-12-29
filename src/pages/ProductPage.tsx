@@ -301,11 +301,11 @@ const ProductPage = () => {
 
             {/* Price */}
             <div className="flex items-center gap-3 mb-6">
-              <span className="text-base md:text-3xl font-bold text-foreground">
+              <span className="text-lg md:text-3xl font-bold text-foreground">
                 {product.price.toFixed(1)} Bs
               </span>
               {product.originalPrice && (
-                <span className="text-sm md:text-xl text-muted-foreground line-through">
+                <span className="text-base md:text-xl text-muted-foreground line-through">
                   {product.originalPrice.toFixed(1)} Bs
                 </span>
               )}
