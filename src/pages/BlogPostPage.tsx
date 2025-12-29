@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { getBlogPostBySlug } from "@/data/blogPosts";
-import { User, Calendar, Clock } from "lucide-react";
+import { Calendar } from "lucide-react";
 
 const BlogPostPage = () => {
   const { slug } = useParams();
@@ -30,19 +30,9 @@ const BlogPostPage = () => {
 
       <article className="max-w-4xl mx-auto px-4 md:px-6 py-8 md:py-12">
         {/* Meta information */}
-        <div className="flex flex-wrap items-center gap-4 md:gap-6 text-sm text-muted-foreground mb-6">
-          <div className="flex items-center gap-2">
-            <User className="w-4 h-4" />
-            <span>{post.author.name}</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <Calendar className="w-4 h-4" />
-            <span>{post.date}</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <Clock className="w-4 h-4" />
-            <span>{post.readTime}</span>
-          </div>
+        <div className="flex items-center gap-2 text-sm text-muted-foreground mb-6">
+          <Calendar className="w-4 h-4" />
+          <span>{post.date}</span>
         </div>
 
         {/* Title */}
@@ -112,13 +102,6 @@ const BlogPostPage = () => {
                 return null;
             }
           })}
-        </div>
-
-        {/* Category Badge */}
-        <div className="mt-12 pt-8 border-t border-border">
-          <span className="inline-block px-4 py-2 bg-secondary text-sm font-medium text-foreground rounded-full">
-            {post.category}
-          </span>
         </div>
       </article>
 
