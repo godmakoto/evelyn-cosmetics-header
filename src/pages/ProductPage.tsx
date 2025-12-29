@@ -194,48 +194,53 @@ const ProductPage = () => {
     <div className="min-h-screen bg-background">
       <Header />
 
-      <div className="max-w-7xl mx-auto px-4 md:px-6 py-8 md:py-12">
+      {/* Mobile: Full-width image carousel - Outside main container */}
+      <div className="lg:hidden">
+        <div className="overflow-hidden mb-4" ref={imageEmblaRef}>
+          <div className="flex">
+            {product.images.map((image, index) => (
+              <div key={index} className="flex-[0_0_100%] min-w-0">
+                <div className="aspect-square bg-secondary">
+                  <img
+                    src={image}
+                    alt={`${product.name} ${index + 1}`}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        {/* Navigation dots */}
+        <div className="flex justify-center gap-2 px-4">
+          {product.images.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => {
+                setSelectedImage(index);
+                imageEmblaApi?.scrollTo(index);
+              }}
+              className={cn(
+                "h-2 rounded-full transition-all",
+                index === selectedImage
+                  ? "w-8 bg-foreground"
+                  : "w-2 bg-border"
+              )}
+              aria-label={`Ver imagen ${index + 1}`}
+            />
+          ))}
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 md:px-6 pt-4 pb-8 md:py-12">
         {/* Product Section - 2 columns on desktop */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 mb-12">
 
           {/* Left Column - Image Gallery */}
           <div className="w-full">
-            {/* Mobile: Carousel with dots */}
+            {/* Mobile carousel moved outside - this div kept for layout consistency */}
             <div className="lg:hidden">
-              <div className="overflow-hidden rounded-2xl mb-4" ref={imageEmblaRef}>
-                <div className="flex">
-                  {product.images.map((image, index) => (
-                    <div key={index} className="flex-[0_0_100%] min-w-0">
-                      <div className="aspect-square bg-secondary">
-                        <img
-                          src={image}
-                          alt={`${product.name} ${index + 1}`}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              {/* Navigation dots */}
-              <div className="flex justify-center gap-2">
-                {product.images.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => {
-                      setSelectedImage(index);
-                      imageEmblaApi?.scrollTo(index);
-                    }}
-                    className={cn(
-                      "h-2 rounded-full transition-all",
-                      index === selectedImage
-                        ? "w-8 bg-foreground"
-                        : "w-2 bg-border"
-                    )}
-                    aria-label={`Ver imagen ${index + 1}`}
-                  />
-                ))}
-              </div>
+              {/* Mobile content now rendered above, outside main container */}
             </div>
 
             {/* Desktop: Thumbnails + Main Image */}
