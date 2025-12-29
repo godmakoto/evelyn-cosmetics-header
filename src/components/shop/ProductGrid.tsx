@@ -37,6 +37,8 @@ const ProductGrid = ({
   // Usar location.state directamente como fuente de verdad para búsqueda
   const activeSearchQuery = location.state?.searchQuery || null;
 
+  console.log('ProductGrid render - activeSearchQuery:', activeSearchQuery, 'location.state:', location.state);
+
   // Update filters when initial filter props change
   useEffect(() => {
     setFilters(prev => ({
