@@ -24,6 +24,7 @@ const ProductGrid = ({
   const navigate = useNavigate();
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(true);
+  const [isFiltering, setIsFiltering] = useState(false);
   const [filteredProducts, setFilteredProducts] = useState<ShopProduct[]>(shopProducts);
   const [filters, setFilters] = useState({
     maxPrice: null as number | null,
@@ -63,9 +64,13 @@ const ProductGrid = ({
     if (isFirstRender) {
       setIsFirstRender(false);
     } else {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      // Delay el scroll para que coincida con el delay del filtrado
+      const scrollTimeout = setTimeout(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }, 200);
+      return () => clearTimeout(scrollTimeout);
     }
-  }, [filters.brand, filters.category, filters.subcategory, filters.maxPrice]);
+  }, [filters.brand, filters.category, filters.subcategory, filters.maxPrice, isFirstRender]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -75,35 +80,46 @@ const ProductGrid = ({
   }, []);
 
   useEffect(() => {
-    let result = [...shopProducts];
-
-    // Search query filter - usar activeSearchQuery en lugar de searchQuery
-    if (activeSearchQuery) {
-      const query = activeSearchQuery.toLowerCase();
-      result = result.filter((p) => {
-        return (
-          p.name.toLowerCase().includes(query) ||
-          p.brand.toLowerCase().includes(query) ||
-          p.category.toLowerCase().includes(query) ||
-          p.subcategory.toLowerCase().includes(query)
-        );
-      });
+    // Mostrar loading state cuando cambian los filtros (excepto en first render)
+    if (!isFirstRender && !isLoading) {
+      setIsFiltering(true);
     }
 
-    if (filters.maxPrice) {
-      result = result.filter((p) => p.price <= filters.maxPrice!);
-    }
-    if (filters.brand) {
-      result = result.filter((p) => p.brand === filters.brand);
-    }
-    if (filters.category) {
-      result = result.filter((p) => p.category === filters.category);
-    }
-    if (filters.subcategory) {
-      result = result.filter((p) => p.subcategory === filters.subcategory);
-    }
-    setFilteredProducts(result);
-  }, [filters, activeSearchQuery]);
+    const filterTimeout = setTimeout(() => {
+      let result = [...shopProducts];
+
+      // Search query filter - usar activeSearchQuery en lugar de searchQuery
+      if (activeSearchQuery) {
+        const query = activeSearchQuery.toLowerCase();
+        result = result.filter((p) => {
+          return (
+            p.name.toLowerCase().includes(query) ||
+            p.brand.toLowerCase().includes(query) ||
+            p.category.toLowerCase().includes(query) ||
+            p.subcategory.toLowerCase().includes(query)
+          );
+        });
+      }
+
+      if (filters.maxPrice) {
+        result = result.filter((p) => p.price <= filters.maxPrice!);
+      }
+      if (filters.brand) {
+        result = result.filter((p) => p.brand === filters.brand);
+      }
+      if (filters.category) {
+        result = result.filter((p) => p.category === filters.category);
+      }
+      if (filters.subcategory) {
+        result = result.filter((p) => p.subcategory === filters.subcategory);
+      }
+
+      setFilteredProducts(result);
+      setIsFiltering(false);
+    }, 150); // Pequeño delay para suavizar la transición
+
+    return () => clearTimeout(filterTimeout);
+  }, [filters, activeSearchQuery, isFirstRender, isLoading]);
 
   const handleFiltersChange = useCallback((newFilters: typeof filters) => {
     // Verificar si los filtros realmente cambiaron (no solo inicialización)
@@ -210,7 +226,7 @@ const ProductGrid = ({
           {/* Productos */}
           <div className="flex-1">
             <div className="grid grid-cols-1 gap-0 lg:gap-4">
-              {isLoading
+              {(isLoading || isFiltering)
                 ? Array.from({ length: 6 }).map((_, index) => (
                     <div key={index} className="border-b border-b-[#eee] last:border-b-0 lg:border-b-0">
                       <div className="py-4 lg:py-0">
@@ -227,7 +243,7 @@ const ProductGrid = ({
                   ))}
             </div>
 
-            {!isLoading && filteredProducts.length === 0 && (
+            {!isLoading && !isFiltering && filteredProducts.length === 0 && (
               <div className="text-center py-16">
                 <p className="text-[#666] text-lg mb-2">No se encontraron productos</p>
                 <p className="text-[#999] text-sm">Intenta ajustar los filtros de búsqueda</p>
