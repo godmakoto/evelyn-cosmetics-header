@@ -80,6 +80,8 @@ const ProductGrid = ({
   }, []);
 
   useEffect(() => {
+    console.log('Filter effect triggered', { filters, isFirstRender, isLoading, activeSearchQuery });
+
     // Mostrar loading state cuando cambian los filtros (excepto en first render)
     if (!isFirstRender && !isLoading) {
       setIsFiltering(true);
@@ -114,6 +116,7 @@ const ProductGrid = ({
         result = result.filter((p) => p.subcategory === filters.subcategory);
       }
 
+      console.log('Filtered products:', { count: result.length, filters });
       setFilteredProducts(result);
       setIsFiltering(false);
     }, 150); // Pequeño delay para suavizar la transición
@@ -122,17 +125,7 @@ const ProductGrid = ({
   }, [filters, activeSearchQuery, isFirstRender, isLoading]);
 
   const handleFiltersChange = useCallback((newFilters: typeof filters) => {
-    // Verificar si los filtros realmente cambiaron (no solo inicialización)
-    const filtersChanged =
-      newFilters.brand !== filters.brand ||
-      newFilters.category !== filters.category ||
-      newFilters.subcategory !== filters.subcategory ||
-      newFilters.maxPrice !== filters.maxPrice;
-
-    if (!filtersChanged) {
-      // Los filtros no cambiaron, es solo inicialización, no hacer nada
-      return;
-    }
+    console.log('handleFiltersChange called', { newFilters, currentFilters: filters, activeSearchQuery });
 
     // Los filtros cambiaron - es una acción del usuario
     if (activeSearchQuery) {
@@ -147,9 +140,10 @@ const ProductGrid = ({
       });
     } else {
       // No hay búsqueda activa, solo actualizar estado local
+      console.log('Setting filters to:', newFilters);
       setFilters(newFilters);
     }
-  }, [navigate, activeSearchQuery, filters]);
+  }, [navigate, activeSearchQuery]);
 
   const clearSearch = () => {
     navigate('/tienda', {
