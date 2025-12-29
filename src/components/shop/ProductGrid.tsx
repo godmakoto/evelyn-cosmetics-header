@@ -32,14 +32,9 @@ const ProductGrid = ({
     subcategory: initialSubcategoryFilter,
   });
   const [isFirstRender, setIsFirstRender] = useState(true);
-  // Manejar búsqueda activa localmente para poder limpiarla cuando se apliquen filtros
-  const [activeSearchQuery, setActiveSearchQuery] = useState<string | null>(searchQuery);
 
-  // Actualizar búsqueda activa cuando location cambie (cualquier navegación)
-  useEffect(() => {
-    const currentSearchQuery = location.state?.searchQuery || null;
-    setActiveSearchQuery(currentSearchQuery);
-  }, [location]);
+  // Usar location.state directamente como fuente de verdad para búsqueda
+  const activeSearchQuery = location.state?.searchQuery || null;
 
   // Update filters when initial filter props change
   useEffect(() => {
@@ -111,15 +106,22 @@ const ProductGrid = ({
   }, [filters, activeSearchQuery]);
 
   const handleFiltersChange = useCallback((newFilters: typeof filters) => {
-    setFilters(newFilters);
-    // Si hay una búsqueda activa, limpiarla cuando se apliquen filtros
-    if (activeSearchQuery) {
-      setActiveSearchQuery(null);
-    }
-  }, [activeSearchQuery]);
+    // Navegar para actualizar el estado y limpiar búsqueda
+    navigate('/tienda', {
+      state: {
+        brandFilter: newFilters.brand,
+        categoryFilter: newFilters.category,
+        subcategoryFilter: newFilters.subcategory,
+      },
+      replace: true
+    });
+  }, [navigate]);
 
   const clearSearch = () => {
-    setActiveSearchQuery(null);
+    navigate('/tienda', {
+      state: { resetFiltersTimestamp: Date.now() },
+      replace: true
+    });
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
