@@ -247,24 +247,34 @@ const ProductPage = () => {
             <div className="hidden lg:flex gap-4">
               {/* Thumbnails column */}
               <div className="flex flex-col gap-3 w-24">
-                {product.images.map((image, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setSelectedImage(index)}
-                    className={cn(
-                      "aspect-square rounded-lg overflow-hidden border-2 transition-all",
-                      index === selectedImage
-                        ? "border-foreground"
-                        : "border-border hover:border-muted-foreground"
-                    )}
-                  >
-                    <img
-                      src={image}
-                      alt={`${product.name} ${index + 1}`}
-                      className="w-full h-full object-cover"
-                    />
-                  </button>
-                ))}
+                {product.images.slice(0, 5).map((image, index) => {
+                  const isLastVisible = index === 4 && product.images.length > 5;
+                  const remainingImages = product.images.length - 5;
+
+                  return (
+                    <button
+                      key={index}
+                      onClick={() => setSelectedImage(index)}
+                      className={cn(
+                        "aspect-square rounded-lg overflow-hidden border-2 transition-all relative",
+                        index === selectedImage
+                          ? "border-foreground"
+                          : "border-border hover:border-muted-foreground"
+                      )}
+                    >
+                      <img
+                        src={image}
+                        alt={`${product.name} ${index + 1}`}
+                        className="w-full h-full object-cover"
+                      />
+                      {isLastVisible && (
+                        <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
+                          <span className="text-white text-2xl font-bold">+{remainingImages}</span>
+                        </div>
+                      )}
+                    </button>
+                  );
+                })}
               </div>
 
               {/* Main image */}
