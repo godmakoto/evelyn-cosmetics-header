@@ -1,6 +1,13 @@
 import { useState, useEffect } from "react";
 import { brands, categories, getSubcategories } from "@/data/shopProducts";
 import { ChevronDown } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface ShopFiltersProps {
   onFiltersChange: (filters: {
@@ -125,66 +132,57 @@ const ShopFilters = ({
           {/* Marca */}
           <div>
             <label className="block text-sm md:text-xs text-[#666] mb-1.5 md:mb-1">Marca</label>
-            <div className="relative">
-              <select
-                value={selectedBrand || ""}
-                onChange={(e) => handleBrandChange(e.target.value || null)}
-                className="w-full h-10 md:h-10 px-3 md:px-3 pr-8 rounded-xl border border-[#eaeaea] bg-white text-[#222] text-base md:text-sm
-                  appearance-none focus:outline-none focus:border-[#222] transition-colors cursor-pointer"
-              >
-                <option value="">Todas</option>
+            <Select value={selectedBrand || "all"} onValueChange={(value) => handleBrandChange(value === "all" ? null : value)}>
+              <SelectTrigger className="w-full h-10 md:h-10 rounded-xl border-[#eaeaea] text-base md:text-sm">
+                <SelectValue placeholder="Todas" />
+              </SelectTrigger>
+              <SelectContent className="rounded-xl">
+                <SelectItem value="all" className="text-base md:text-sm">Todas</SelectItem>
                 {brands.map((brand) => (
-                  <option key={brand} value={brand}>
+                  <SelectItem key={brand} value={brand} className="text-base md:text-sm">
                     {brand}
-                  </option>
+                  </SelectItem>
                 ))}
-              </select>
-              <ChevronDown className="absolute right-3 md:right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#666] pointer-events-none" />
-            </div>
+              </SelectContent>
+            </Select>
           </div>
         </div>
 
         {/* Row 2: Categoría */}
         <div className="mb-3 md:mb-3">
           <label className="block text-sm md:text-xs text-[#666] mb-1.5 md:mb-1">Categoría</label>
-          <div className="relative">
-            <select
-              value={selectedCategory || ""}
-              onChange={(e) => handleCategoryChange(e.target.value || null)}
-              className="w-full h-10 md:h-10 px-3 md:px-3 pr-8 rounded-xl border border-[#eaeaea] bg-white text-[#222] text-base md:text-sm
-                appearance-none focus:outline-none focus:border-[#222] transition-colors cursor-pointer"
-            >
-              <option value="">Todas</option>
+          <Select value={selectedCategory || "all"} onValueChange={(value) => handleCategoryChange(value === "all" ? null : value)}>
+            <SelectTrigger className="w-full h-10 md:h-10 rounded-xl border-[#eaeaea] text-base md:text-sm">
+              <SelectValue placeholder="Todas" />
+            </SelectTrigger>
+            <SelectContent className="rounded-xl">
+              <SelectItem value="all" className="text-base md:text-sm">Todas</SelectItem>
               {categories.map((category) => (
-                <option key={category} value={category}>
+                <SelectItem key={category} value={category} className="text-base md:text-sm">
                   {category}
-                </option>
+                </SelectItem>
               ))}
-            </select>
-            <ChevronDown className="absolute right-2 md:right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#666] pointer-events-none" />
-          </div>
+            </SelectContent>
+          </Select>
         </div>
 
         {/* Row 3: Subcategorías (solo visible cuando hay categoría seleccionada) */}
         {selectedCategory && subcategories.length > 0 && (
           <div className="animate-in fade-in slide-in-from-top-2 duration-200">
             <label className="block text-sm md:text-xs text-[#666] mb-1.5 md:mb-1">Tipo de Producto</label>
-            <div className="relative">
-              <select
-                value={selectedSubcategory || ""}
-                onChange={(e) => setSelectedSubcategory(e.target.value || null)}
-                className="w-full h-10 md:h-10 px-3 md:px-3 pr-8 rounded-xl border border-[#eaeaea] bg-white text-[#222] text-base md:text-sm
-                  appearance-none focus:outline-none focus:border-[#222] transition-colors cursor-pointer"
-              >
-                <option value="">Todos</option>
+            <Select value={selectedSubcategory || "all"} onValueChange={(value) => setSelectedSubcategory(value === "all" ? null : value)}>
+              <SelectTrigger className="w-full h-10 md:h-10 rounded-xl border-[#eaeaea] text-base md:text-sm">
+                <SelectValue placeholder="Todos" />
+              </SelectTrigger>
+              <SelectContent className="rounded-xl">
+                <SelectItem value="all" className="text-base md:text-sm">Todos</SelectItem>
                 {subcategories.map((sub) => (
-                  <option key={sub} value={sub}>
+                  <SelectItem key={sub} value={sub} className="text-base md:text-sm">
                     {sub}
-                  </option>
+                  </SelectItem>
                 ))}
-              </select>
-              <ChevronDown className="absolute right-2 md:right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#666] pointer-events-none" />
-            </div>
+              </SelectContent>
+            </Select>
           </div>
         )}
       </div>
