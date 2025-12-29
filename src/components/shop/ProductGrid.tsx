@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { X } from "lucide-react";
 import { shopProducts, ShopProduct } from "@/data/shopProducts";
@@ -36,6 +36,12 @@ const ProductGrid = ({
 
   // Usar location.state directamente como fuente de verdad para búsqueda
   const activeSearchQuery = location.state?.searchQuery || null;
+
+  // Ref para acceder a filters actuales sin causar re-creación del callback
+  const filtersRef = useRef(filters);
+  useEffect(() => {
+    filtersRef.current = filters;
+  }, [filters]);
 
   console.log('ProductGrid render - activeSearchQuery:', activeSearchQuery, 'location.state:', location.state);
 
@@ -128,14 +134,15 @@ const ProductGrid = ({
   }, [filters, activeSearchQuery, isFirstRender, isLoading]);
 
   const handleFiltersChange = useCallback((newFilters: typeof filters) => {
-    console.log('handleFiltersChange called', { newFilters, currentFilters: filters, activeSearchQuery });
+    const currentFilters = filtersRef.current;
+    console.log('handleFiltersChange called', { newFilters, currentFilters, activeSearchQuery });
 
     // Verificar si los filtros realmente cambiaron
     const filtersChanged =
-      newFilters.brand !== filters.brand ||
-      newFilters.category !== filters.category ||
-      newFilters.subcategory !== filters.subcategory ||
-      newFilters.maxPrice !== filters.maxPrice;
+      newFilters.brand !== currentFilters.brand ||
+      newFilters.category !== currentFilters.category ||
+      newFilters.subcategory !== currentFilters.subcategory ||
+      newFilters.maxPrice !== currentFilters.maxPrice;
 
     if (!filtersChanged) {
       console.log('Filters did not change, skipping');
@@ -159,7 +166,7 @@ const ProductGrid = ({
       console.log('Setting filters to:', newFilters);
       setFilters(newFilters);
     }
-  }, [navigate, activeSearchQuery, filters]);
+  }, [navigate, activeSearchQuery]);
 
   const clearSearch = () => {
     navigate('/tienda', {
