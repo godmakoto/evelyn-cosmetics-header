@@ -59,8 +59,6 @@ const ProductGrid = ({
         category: null,
         subcategory: null,
       });
-      // También limpiar búsqueda activa al resetear todo
-      setActiveSearchQuery(null);
     }
   }, [resetFiltersTimestamp]);
 
