@@ -130,9 +130,22 @@ const ProductGrid = ({
   const handleFiltersChange = useCallback((newFilters: typeof filters) => {
     console.log('handleFiltersChange called', { newFilters, currentFilters: filters, activeSearchQuery });
 
+    // Verificar si los filtros realmente cambiaron
+    const filtersChanged =
+      newFilters.brand !== filters.brand ||
+      newFilters.category !== filters.category ||
+      newFilters.subcategory !== filters.subcategory ||
+      newFilters.maxPrice !== filters.maxPrice;
+
+    if (!filtersChanged) {
+      console.log('Filters did not change, skipping');
+      return;
+    }
+
     // Los filtros cambiaron - es una acción del usuario
     if (activeSearchQuery) {
       // Hay búsqueda activa, navegar para limpiarla
+      console.log('Clearing search and applying filters');
       navigate('/tienda', {
         state: {
           brandFilter: newFilters.brand,
@@ -146,7 +159,7 @@ const ProductGrid = ({
       console.log('Setting filters to:', newFilters);
       setFilters(newFilters);
     }
-  }, [navigate, activeSearchQuery]);
+  }, [navigate, activeSearchQuery, filters]);
 
   const clearSearch = () => {
     navigate('/tienda', {
