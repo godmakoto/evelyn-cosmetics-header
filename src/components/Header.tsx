@@ -44,6 +44,11 @@ const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
+  // Mobile header hide/show on scroll
+  const [showMobileHeader, setShowMobileHeader] = useState(true);
+  const [isMobileHeaderFixed, setIsMobileHeaderFixed] = useState(false);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
   const headerRef = useRef<HTMLElement | null>(null);
   const dropdownRef = useRef<HTMLLIElement>(null);
   const brandsDropdownRef = useRef<HTMLLIElement>(null);
@@ -61,6 +66,42 @@ const Header = () => {
     navigate('/tienda', { state: { resetFiltersTimestamp: Date.now() }, replace: location.pathname === '/tienda' });
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+
+  // Mobile header scroll behavior
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      const headerHeight = 116; // Altura total del header móvil (64px header + 52px search)
+
+      if (currentScrollY < headerHeight) {
+        // Si estamos en la parte superior, header estático (no fixed)
+        setIsMobileHeaderFixed(false);
+        setShowMobileHeader(true);
+      } else {
+        // Cuando scrolleamos más allá del header, hacerlo fixed
+        setIsMobileHeaderFixed(true);
+
+        // Si scrolleamos hacia arriba, mostrar header
+        // Si scrolleamos hacia abajo, ocultar header
+        if (currentScrollY < lastScrollY) {
+          setShowMobileHeader(true);
+        } else if (currentScrollY > lastScrollY) {
+          setShowMobileHeader(false);
+        }
+      }
+
+      setLastScrollY(currentScrollY);
+    };
+
+    // Solo agregar el listener en móvil
+    if (window.innerWidth < 768) {
+      window.addEventListener('scroll', handleScroll, { passive: true });
+    }
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [lastScrollY]);
 
   // Click outside para cerrar dropdown
   useEffect(() => {
@@ -135,74 +176,105 @@ const Header = () => {
         ref={headerRef}
         className="header-wrapper"
       >
-        {/* Main Header */}
-        <div className="header-main">
-          <div className="container mx-auto px-4 lg:px-8">
-            <div className="flex items-center justify-between h-16 md:h-20">
-              {/* Mobile: Hamburger + Logo */}
-              <div className="flex items-center gap-3 md:hidden">
+        {/* Mobile: wrapper para header + search */}
+        <div
+          className={cn(
+            "md:hidden",
+            isMobileHeaderFixed ? "fixed top-0 left-0 right-0 z-50" : "relative",
+            "transition-transform duration-300 ease-in-out",
+            isMobileHeaderFixed && !showMobileHeader && "-translate-y-full"
+          )}
+        >
+          {/* Main Header */}
+          <div className="header-main">
+            <div className="container mx-auto px-4 lg:px-8">
+              <div className="flex items-center justify-between h-16">
+                {/* Mobile: Hamburger + Logo */}
+                <div className="flex items-center gap-3">
+                  {!isCheckoutPage && (
+                    <button onClick={() => setIsMobileMenuOpen(true)} className="p-2 -ml-2 hover:bg-white/10 rounded-lg transition-colors text-white" aria-label="Abrir menú">
+                      <Menu className="w-6 h-6" />
+                    </button>
+                  )}
+                  <Link to="/" className="flex flex-col leading-tight">
+                    <span className="text-xl font-elegant tracking-wide text-white">
+                      Evelyn
+                    </span>
+                    <span className="text-[0.6rem] font-normal text-gray-400 tracking-widest uppercase">
+                      cosmetics
+                    </span>
+                  </Link>
+                </div>
+
+                {/* Cart Button */}
                 {!isCheckoutPage && (
-                  <button onClick={() => setIsMobileMenuOpen(true)} className="p-2 -ml-2 hover:bg-white/10 rounded-lg transition-colors text-white" aria-label="Abrir menú">
-                    <Menu className="w-6 h-6" />
+                  <button onClick={() => setIsCartOpen(true)} className="cart-button ml-auto">
+                    <span className="text-sm font-medium text-white">Bs {finalTotal.toFixed(1)}</span>
+                    <div className="relative text-white">
+                      <ShoppingCart className="w-6 h-6" />
+                      {itemCount > 0 && <span className="cart-badge">{itemCount}</span>}
+                    </div>
                   </button>
                 )}
-                <Link to="/" className="flex flex-col leading-tight">
-                  <span className="text-xl font-elegant tracking-wide text-white">
+              </div>
+            </div>
+          </div>
+
+          {/* Mobile Search */}
+          {!isCheckoutPage && (
+            <div className="px-4 py-3 bg-[hsl(0,0%,85%)]">
+              <div className="search-container">
+                <input type="text" placeholder="¿Qué estás buscando?" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} onKeyDown={handleSearchKeyDown} className="search-input" />
+                <button onClick={handleSearch} className="search-button">
+                  <Search className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Desktop Header */}
+        <div className="hidden md:block">
+          {/* Main Header */}
+          <div className="header-main">
+            <div className="container mx-auto px-4 lg:px-8">
+              <div className="flex items-center justify-between h-20">
+                {/* Desktop: Logo */}
+                <Link to="/" className="flex flex-col leading-tight group">
+                  <span className="text-3xl font-elegant tracking-wide text-white transition-colors group-hover:text-gray-200">
                     Evelyn
                   </span>
-                  <span className="text-[0.6rem] font-normal text-gray-400 tracking-widest uppercase">
+                  <span className="text-[0.65rem] font-normal text-gray-400 tracking-widest uppercase">
                     cosmetics
                   </span>
                 </Link>
+
+                {/* Desktop: Search Bar */}
+                {!isCheckoutPage && (
+                  <div className="flex flex-1 max-w-xl mx-8">
+                    <div className="search-container">
+                      <input type="text" placeholder="¿Qué estás buscando?" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} onKeyDown={handleSearchKeyDown} className="search-input" />
+                      <button onClick={handleSearch} className="search-button">
+                        <Search className="w-5 h-5" />
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {/* Cart Button */}
+                {!isCheckoutPage && (
+                  <button onClick={() => setIsCartOpen(true)} className="cart-button">
+                    <span className="text-sm font-medium text-white">Bs {finalTotal.toFixed(1)}</span>
+                    <div className="relative text-white">
+                      <ShoppingCart className="w-7 h-7" />
+                      {itemCount > 0 && <span className="cart-badge">{itemCount}</span>}
+                    </div>
+                  </button>
+                )}
               </div>
-
-              {/* Desktop: Logo */}
-              <Link to="/" className="hidden md:flex flex-col leading-tight group">
-                <span className="text-3xl font-elegant tracking-wide text-white transition-colors group-hover:text-gray-200">
-                  Evelyn
-                </span>
-                <span className="text-[0.65rem] font-normal text-gray-400 tracking-widest uppercase">
-                  cosmetics
-                </span>
-              </Link>
-
-              {/* Desktop: Search Bar */}
-              {!isCheckoutPage && (
-                <div className="hidden md:flex flex-1 max-w-xl mx-8">
-                  <div className="search-container">
-                    <input type="text" placeholder="¿Qué estás buscando?" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} onKeyDown={handleSearchKeyDown} className="search-input" />
-                    <button onClick={handleSearch} className="search-button">
-                      <Search className="w-5 h-5" />
-                    </button>
-                  </div>
-                </div>
-              )}
-
-              {/* Cart Button */}
-              {!isCheckoutPage && (
-                <button onClick={() => setIsCartOpen(true)} className="cart-button ml-auto md:ml-0">
-                  <span className="text-sm font-medium text-white">Bs {finalTotal.toFixed(1)}</span>
-                  <div className="relative text-white">
-                    <ShoppingCart className="w-6 h-6 md:w-7 md:h-7" />
-                    {itemCount > 0 && <span className="cart-badge">{itemCount}</span>}
-                  </div>
-                </button>
-              )}
             </div>
           </div>
         </div>
-
-        {/* Mobile Search */}
-        {!isCheckoutPage && (
-          <div className="md:hidden px-4 py-3 bg-[hsl(0,0%,85%)]">
-            <div className="search-container">
-              <input type="text" placeholder="¿Qué estás buscando?" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} onKeyDown={handleSearchKeyDown} className="search-input" />
-              <button onClick={handleSearch} className="search-button">
-                <Search className="w-5 h-5" />
-              </button>
-            </div>
-          </div>
-        )}
 
         {/* Desktop Navigation Bar */}
         {!isCheckoutPage && (
