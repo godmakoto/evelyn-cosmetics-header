@@ -321,9 +321,9 @@ const Header = () => {
                 </Link>
               </li>
               <li>
-                <a href="#" className="nav-item">
+                <Link to="/blog" className="nav-item">
                   Blog
-                </a>
+                </Link>
               </li>
               <li>
                 <Link to="/terminos-y-condiciones" className="nav-item">

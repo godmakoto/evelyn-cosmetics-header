@@ -11,6 +11,7 @@ import Tienda from "./pages/Tienda";
 import ProductPage from "./pages/ProductPage";
 import Checkout from "./pages/Checkout";
 import TermsAndConditions from "./pages/TermsAndConditions";
+import Blog from "./pages/Blog";
 
 const queryClient = new QueryClient();
 
@@ -28,6 +29,7 @@ const App = () => (
             <Route path="/producto/:id" element={<ProductPage />} />
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/terminos-y-condiciones" element={<TermsAndConditions />} />
+            <Route path="/blog" element={<Blog />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

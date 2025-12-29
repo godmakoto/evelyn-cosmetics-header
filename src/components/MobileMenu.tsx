@@ -260,13 +260,13 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
             >
               Tienda
             </Link>
-            <a
-              href="#"
+            <Link
+              to="/blog"
               className="block px-3 py-3 text-sm font-medium text-foreground hover:bg-secondary rounded-lg transition-colors"
               onClick={onClose}
             >
               Blog
-            </a>
+            </Link>
             <Link
               to="/terminos-y-condiciones"
               className="block px-3 py-3 text-sm font-medium text-foreground hover:bg-secondary rounded-lg transition-colors"
