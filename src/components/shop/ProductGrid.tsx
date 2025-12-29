@@ -120,6 +120,7 @@ const ProductGrid = ({
 
       console.log('Filtered products:', { count: result.length, filters });
       setFilteredProducts(result);
+      console.log('Setting isFiltering to FALSE');
       setIsFiltering(false);
     }, 150); // Pequeño delay para suavizar la transición
 
@@ -221,6 +222,7 @@ const ProductGrid = ({
 
           {/* Productos */}
           <div className="flex-1">
+            {console.log('Rendering products section - isLoading:', isLoading, 'isFiltering:', isFiltering, 'filteredProducts:', filteredProducts.length)}
             <div className="grid grid-cols-1 gap-0 lg:gap-4">
               {(isLoading || isFiltering)
                 ? Array.from({ length: 6 }).map((_, index) => (
