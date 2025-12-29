@@ -118,7 +118,10 @@ const blogPosts: BlogPost[] = [
 ];
 
 const Blog = () => {
-  const [visibleCount, setVisibleCount] = useState(7); // 1 principal + 6 tarjetas en desktop, 4 en mobile
+  // Desktop: 1 hero + 6 cards = 7, Mobile: 1 hero + 3 cards = 4
+  const [visibleCount, setVisibleCount] = useState(() => {
+    return window.innerWidth >= 1024 ? 7 : 4;
+  });
 
   const heroPost = blogPosts[0];
   const gridPosts = blogPosts.slice(1, visibleCount);
@@ -162,11 +165,7 @@ const Blog = () => {
               </div>
               <div className="lg:w-1/2 p-6 lg:p-10 flex flex-col justify-center">
                 <div className="flex items-center gap-3 mb-4">
-                  <span className="text-xs font-semibold text-white bg-[#222] px-3 py-1 rounded-full">
-                    {heroPost.category}
-                  </span>
                   <span className="text-xs text-[#999]">{heroPost.date}</span>
-                  <span className="text-xs text-[#999]">• {heroPost.readTime} lectura</span>
                 </div>
                 <h2 className="text-2xl lg:text-3xl font-bold text-[#222] mb-4">
                   {heroPost.title}
@@ -196,9 +195,6 @@ const Blog = () => {
                 />
                 <div className="p-5">
                   <div className="flex items-center gap-2 mb-3">
-                    <span className="text-xs font-semibold text-[#222] border border-[#222] px-2 py-0.5 rounded">
-                      {post.category}
-                    </span>
                     <span className="text-xs text-[#999]">{post.date}</span>
                   </div>
                   <h3 className="text-lg font-bold text-[#222] mb-2 line-clamp-2">
