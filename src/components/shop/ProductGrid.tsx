@@ -32,6 +32,13 @@ const ProductGrid = ({
     subcategory: initialSubcategoryFilter,
   });
   const [isFirstRender, setIsFirstRender] = useState(true);
+  // Manejar búsqueda activa localmente para poder limpiarla cuando se apliquen filtros
+  const [activeSearchQuery, setActiveSearchQuery] = useState<string | null>(searchQuery);
+
+  // Actualizar búsqueda activa cuando searchQuery cambie (nueva búsqueda desde Header)
+  useEffect(() => {
+    setActiveSearchQuery(searchQuery);
+  }, [searchQuery]);
 
   // Update filters when initial filter props change
   useEffect(() => {
@@ -52,6 +59,8 @@ const ProductGrid = ({
         category: null,
         subcategory: null,
       });
+      // También limpiar búsqueda activa al resetear todo
+      setActiveSearchQuery(null);
     }
   }, [resetFiltersTimestamp]);
 
@@ -74,9 +83,9 @@ const ProductGrid = ({
   useEffect(() => {
     let result = [...shopProducts];
 
-    // Search query filter - searches across name, brand, category, and subcategory
-    if (searchQuery) {
-      const query = searchQuery.toLowerCase();
+    // Search query filter - usar activeSearchQuery en lugar de searchQuery
+    if (activeSearchQuery) {
+      const query = activeSearchQuery.toLowerCase();
       result = result.filter((p) => {
         return (
           p.name.toLowerCase().includes(query) ||
@@ -100,41 +109,30 @@ const ProductGrid = ({
       result = result.filter((p) => p.subcategory === filters.subcategory);
     }
     setFilteredProducts(result);
-  }, [filters, searchQuery]);
+  }, [filters, activeSearchQuery]);
 
   const handleFiltersChange = useCallback((newFilters: typeof filters) => {
-    // Si hay una búsqueda activa, limpiarla y navegar solo con los filtros
-    if (searchQuery) {
-      navigate('/tienda', {
-        state: {
-          brandFilter: newFilters.brand,
-          categoryFilter: newFilters.category,
-          subcategoryFilter: newFilters.subcategory,
-        },
-        replace: true
-      });
-    } else {
-      setFilters(newFilters);
+    setFilters(newFilters);
+    // Si hay una búsqueda activa, limpiarla cuando se apliquen filtros
+    if (activeSearchQuery) {
+      setActiveSearchQuery(null);
     }
-  }, [searchQuery, navigate]);
+  }, [activeSearchQuery]);
 
   const clearSearch = () => {
-    navigate('/tienda', {
-      state: { resetFiltersTimestamp: Date.now() },
-      replace: location.pathname === '/tienda'
-    });
+    setActiveSearchQuery(null);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
     <div className="bg-white lg:bg-[#f9f9f9] min-h-screen">
       {/* Mobile: Search Results Header - Debajo de la barra de búsqueda */}
-      {searchQuery && (
+      {activeSearchQuery && (
         <div className="lg:hidden bg-white border-b border-[#e5e5e5] px-4 py-3">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-[#666]">Resultados para</p>
-              <p className="text-base font-semibold text-[#222]">"{searchQuery}"</p>
+              <p className="text-base font-semibold text-[#222]">"{activeSearchQuery}"</p>
             </div>
             <button
               onClick={clearSearch}
@@ -164,11 +162,11 @@ const ProductGrid = ({
           <aside className="hidden lg:block lg:w-[300px] lg:flex-shrink-0">
             <div className="sticky top-0">
               {/* Desktop: Search Results Header - Encima de los filtros */}
-              {searchQuery && (
+              {activeSearchQuery && (
                 <div className="bg-white rounded-lg border border-[#e5e5e5] p-4 mb-4">
                   <div className="mb-3">
                     <p className="text-xs text-[#666] mb-1">Resultados para</p>
-                    <p className="text-base font-semibold text-[#222]">"{searchQuery}"</p>
+                    <p className="text-base font-semibold text-[#222]">"{activeSearchQuery}"</p>
                   </div>
                   <button
                     onClick={clearSearch}
