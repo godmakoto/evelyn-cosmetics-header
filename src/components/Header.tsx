@@ -159,8 +159,7 @@ const Header = () => {
     if (searchQuery.trim()) {
       navigate('/tienda', {
         state: {
-          searchQuery: searchQuery.trim(),
-          resetFiltersTimestamp: Date.now()
+          searchQuery: searchQuery.trim()
         }
       });
       window.scrollTo({ top: 0, behavior: 'smooth' });
