@@ -269,7 +269,7 @@ const ProductPage = () => {
                       />
                       {isLastVisible && (
                         <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
-                          <span className="text-white text-2xl font-bold">+{remainingImages}</span>
+                          <span className="text-white text-2xl font-bold">+</span>
                         </div>
                       )}
                     </button>
