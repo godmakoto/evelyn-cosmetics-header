@@ -103,8 +103,20 @@ const ProductGrid = ({
   }, [filters, searchQuery]);
 
   const handleFiltersChange = useCallback((newFilters: typeof filters) => {
-    setFilters(newFilters);
-  }, []);
+    // Si hay una búsqueda activa, limpiarla y navegar solo con los filtros
+    if (searchQuery) {
+      navigate('/tienda', {
+        state: {
+          brandFilter: newFilters.brand,
+          categoryFilter: newFilters.category,
+          subcategoryFilter: newFilters.subcategory,
+        },
+        replace: true
+      });
+    } else {
+      setFilters(newFilters);
+    }
+  }, [searchQuery, navigate]);
 
   const clearSearch = () => {
     navigate('/tienda', {
