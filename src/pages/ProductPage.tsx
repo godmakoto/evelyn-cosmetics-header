@@ -249,7 +249,7 @@ const ProductPage = () => {
               <div className="flex flex-col gap-3 w-24">
                 {product.images.slice(0, 5).map((image, index) => {
                   const isLastVisible = index === 4 && product.images.length > 5;
-                  const remainingImages = product.images.length - 5;
+                  const remainingImages = product.images.length - 6;
 
                   return (
                     <button
@@ -269,7 +269,7 @@ const ProductPage = () => {
                       />
                       {isLastVisible && (
                         <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
-                          <span className="text-white text-2xl font-bold">+</span>
+                          <span className="text-white text-3xl font-bold">+ {remainingImages}</span>
                         </div>
                       )}
                     </button>
