@@ -1,4 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { X } from "lucide-react";
 import { shopProducts, ShopProduct } from "@/data/shopProducts";
 import ShopFilters from "./ShopFilters";
 import ProductCard from "./ProductCard";
@@ -19,6 +21,8 @@ const ProductGrid = ({
   resetFiltersTimestamp = null,
   searchQuery = null
 }: ProductGridProps) => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [isLoading, setIsLoading] = useState(true);
   const [filteredProducts, setFilteredProducts] = useState<ShopProduct[]>(shopProducts);
   const [filters, setFilters] = useState({
@@ -102,8 +106,35 @@ const ProductGrid = ({
     setFilters(newFilters);
   }, []);
 
+  const clearSearch = () => {
+    navigate('/tienda', {
+      state: { resetFiltersTimestamp: Date.now() },
+      replace: location.pathname === '/tienda'
+    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
     <div className="bg-white lg:bg-[#f9f9f9] min-h-screen">
+      {/* Mobile: Search Results Header - Debajo de la barra de búsqueda */}
+      {searchQuery && (
+        <div className="lg:hidden bg-white border-b border-[#e5e5e5] px-4 py-3">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-[#666]">Resultados para</p>
+              <p className="text-base font-semibold text-[#222]">"{searchQuery}"</p>
+            </div>
+            <button
+              onClick={clearSearch}
+              className="flex items-center gap-1.5 text-sm text-[#666] hover:text-[#222] transition-colors"
+            >
+              <X className="w-4 h-4" />
+              <span>Limpiar</span>
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Mobile/Tablet: Filtros arriba */}
       <div className="lg:hidden">
         <ShopFilters
@@ -120,6 +151,23 @@ const ProductGrid = ({
           {/* Desktop: Filtros en columna izquierda */}
           <aside className="hidden lg:block lg:w-[300px] lg:flex-shrink-0">
             <div className="sticky top-0">
+              {/* Desktop: Search Results Header - Encima de los filtros */}
+              {searchQuery && (
+                <div className="bg-white rounded-lg border border-[#e5e5e5] p-4 mb-4">
+                  <div className="mb-3">
+                    <p className="text-xs text-[#666] mb-1">Resultados para</p>
+                    <p className="text-base font-semibold text-[#222]">"{searchQuery}"</p>
+                  </div>
+                  <button
+                    onClick={clearSearch}
+                    className="flex items-center gap-1.5 text-sm text-[#666] hover:text-[#222] transition-colors w-full justify-center py-2 border border-[#e5e5e5] rounded hover:bg-[#f5f5f5]"
+                  >
+                    <X className="w-4 h-4" />
+                    <span>Limpiar búsqueda</span>
+                  </button>
+                </div>
+              )}
+
               <ShopFilters
                 onFiltersChange={handleFiltersChange}
                 initialBrandFilter={initialBrandFilter}
