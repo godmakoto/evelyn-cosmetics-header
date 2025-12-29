@@ -71,10 +71,19 @@ const Header = () => {
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-      const headerHeight = 116; // Altura total del header móvil (64px header + 52px search)
+      const headerHeight = 64; // Solo altura del header principal (sin búsqueda)
+      const threshold = 10; // Threshold para evitar parpadeos
 
-      if (currentScrollY < headerHeight) {
-        // Si estamos en la parte superior, header estático (no fixed)
+      // Calcular diferencia de scroll para detectar dirección
+      const scrollDifference = Math.abs(currentScrollY - lastScrollY);
+
+      // Solo actualizar si el scroll cambió más del threshold
+      if (scrollDifference < threshold && lastScrollY !== 0) {
+        return;
+      }
+
+      if (currentScrollY <= headerHeight) {
+        // Si estamos cerca del top, header estático (no fixed)
         setIsMobileHeaderFixed(false);
         setShowMobileHeader(true);
       } else {
@@ -176,7 +185,7 @@ const Header = () => {
         ref={headerRef}
         className="header-wrapper"
       >
-        {/* Mobile: wrapper para header + search */}
+        {/* Mobile: Solo header principal con efecto */}
         <div
           className={cn(
             "md:hidden",
@@ -219,19 +228,19 @@ const Header = () => {
               </div>
             </div>
           </div>
-
-          {/* Mobile Search */}
-          {!isCheckoutPage && (
-            <div className="px-4 py-3 bg-[hsl(0,0%,85%)]">
-              <div className="search-container">
-                <input type="text" placeholder="¿Qué estás buscando?" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} onKeyDown={handleSearchKeyDown} className="search-input" />
-                <button onClick={handleSearch} className="search-button">
-                  <Search className="w-5 h-5" />
-                </button>
-              </div>
-            </div>
-          )}
         </div>
+
+        {/* Mobile Search - Siempre estática, sin efecto */}
+        {!isCheckoutPage && (
+          <div className="md:hidden px-4 py-3 bg-[hsl(0,0%,85%)]">
+            <div className="search-container">
+              <input type="text" placeholder="¿Qué estás buscando?" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} onKeyDown={handleSearchKeyDown} className="search-input" />
+              <button onClick={handleSearch} className="search-button">
+                <Search className="w-5 h-5" />
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* Desktop Header */}
         <div className="hidden md:block">
