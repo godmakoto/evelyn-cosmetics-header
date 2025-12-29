@@ -35,11 +35,11 @@ const ProductGrid = ({
   // Manejar búsqueda activa localmente para poder limpiarla cuando se apliquen filtros
   const [activeSearchQuery, setActiveSearchQuery] = useState<string | null>(searchQuery);
 
-  // Actualizar búsqueda activa cuando searchQuery cambie (leer directamente de location.state)
+  // Actualizar búsqueda activa cuando location cambie (cualquier navegación)
   useEffect(() => {
     const currentSearchQuery = location.state?.searchQuery || null;
     setActiveSearchQuery(currentSearchQuery);
-  }, [location.state?.searchQuery]);
+  }, [location]);
 
   // Update filters when initial filter props change
   useEffect(() => {
