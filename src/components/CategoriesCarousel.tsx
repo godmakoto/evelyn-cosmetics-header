@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
-import { ChevronLeft, ChevronRight, Droplet, Sun, Droplets, SprayCan, Beaker, Heart, Sparkles } from "lucide-react";
+import { ChevronLeft, ChevronRight, Droplet, Sun, Droplets, SprayCan, Beaker, Heart, Sparkles, Smile, Package, Paintbrush, CircleDot } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
@@ -16,49 +16,94 @@ interface Category {
 
 const categories: Category[] = [
   {
-    id: "cuidado-facial",
-    name: "Cuidado Facial",
-    icon: <Heart className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
-    categoryFilter: "Cuidado Facial"
-  },
-  {
-    id: "proteccion-solar",
-    name: "Protección Solar",
-    icon: <Sun className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
-    categoryFilter: "Protección Solar"
-  },
-  {
-    id: "limpieza-facial",
-    name: "Limpieza Facial",
+    id: "limpiadores",
+    name: "Limpiadores",
     icon: <Sparkles className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
-    categoryFilter: "Limpieza Facial"
+    categoryFilter: "Limpiadores"
   },
   {
-    id: "cuidado-corporal",
-    name: "Cuidado Corporal",
+    id: "hidratantes-faciales",
+    name: "Hidratantes Faciales",
     icon: <Droplets className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
-    categoryFilter: "Cuidado Corporal"
+    categoryFilter: "Hidratantes Faciales"
+  },
+  {
+    id: "hidratantes-corporales",
+    name: "Hidratantes Corporales",
+    icon: <Heart className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
+    categoryFilter: "Hidratantes Corporales"
+  },
+  {
+    id: "protectores-solares",
+    name: "Protectores Solares",
+    icon: <Sun className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
+    categoryFilter: "Protectores Solares"
   },
   {
     id: "serums",
-    name: "Sérums",
+    name: "Serums",
     icon: <Droplet className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
-    categoryFilter: "Cuidado Facial",
-    subcategoryFilter: "Sérums"
+    categoryFilter: "Serums"
   },
   {
-    id: "tonicos",
-    name: "Tónicos",
+    id: "exfoliantes-faciales",
+    name: "Exfoliantes faciales",
+    icon: <CircleDot className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
+    categoryFilter: "Exfoliantes faciales"
+  },
+  {
+    id: "exfoliantes-corporales",
+    name: "Exfoliantes Corporales",
+    icon: <CircleDot className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
+    categoryFilter: "Exfoliantes Corporales"
+  },
+  {
+    id: "desmaquillantes",
+    name: "Desmaquillantes",
+    icon: <Sparkles className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
+    categoryFilter: "Desmaquillantes"
+  },
+  {
+    id: "tonicos-esencias",
+    name: "Tonicos y Esencias",
     icon: <Beaker className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
-    categoryFilter: "Cuidado Facial",
-    subcategoryFilter: "Tónicos"
+    categoryFilter: "Tonicos y Esencias"
   },
   {
-    id: "anti-edad",
-    name: "Anti-Edad",
+    id: "agua-termal-mist",
+    name: "Agua Termal y Mist",
     icon: <SprayCan className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
-    categoryFilter: "Cuidado Facial",
-    subcategoryFilter: "Anti-Edad"
+    categoryFilter: "Agua Termal y Mist"
+  },
+  {
+    id: "capilar",
+    name: "Capilar",
+    icon: <Sparkles className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
+    categoryFilter: "Capilar"
+  },
+  {
+    id: "maquillaje",
+    name: "Maquillaje",
+    icon: <Paintbrush className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
+    categoryFilter: "Maquillaje"
+  },
+  {
+    id: "kits",
+    name: "Kits",
+    icon: <Package className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
+    categoryFilter: "Kits"
+  },
+  {
+    id: "labios",
+    name: "Labios",
+    icon: <Smile className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
+    categoryFilter: "Labios"
+  },
+  {
+    id: "mascarillas",
+    name: "Mascarillas",
+    icon: <Heart className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
+    categoryFilter: "Mascarillas"
   }
 ];
 

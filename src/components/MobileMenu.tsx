@@ -10,20 +10,50 @@ import {
 import { cn } from "@/lib/utils";
 
 const categories = [{
-  name: "Cuidado Facial",
-  subcategories: ["Sérums", "Hidratantes", "Anti-Edad", "Anti-Acné", "Brumas Faciales", "Tónicos", "Mascarillas", "Contorno de Ojos", "Aceites Faciales", "Ampollas", "Cremas Reparadoras"]
+  name: "Limpiadores",
+  subcategories: ["Piel Mixta a Grasa", "Piel normal a seca", "Piel sensible"]
 }, {
-  name: "Protección Solar",
-  subcategories: ["Facial", "Corporal"]
+  name: "Hidratantes Faciales",
+  subcategories: ["Piel Mixta a Grasa", "Piel normal a seca", "Piel sensible"]
 }, {
-  name: "Limpieza Facial",
-  subcategories: ["Geles Limpiadores", "Aguas Micelares"]
+  name: "Hidratantes Corporales",
+  subcategories: ["Locion", "Crema"]
 }, {
-  name: "Cuidado Corporal",
-  subcategories: ["Hidratantes", "Cremas Reparadoras"]
+  name: "Protectores Solares",
+  subcategories: ["Piel Mixta a Grasa", "Piel normal a seca", "Piel sensible", "Corporales", "Para Niños"]
 }, {
-  name: "Cuidado Capilar",
-  subcategories: ["Champús Tratantes", "Tratamientos"]
+  name: "Serums",
+  subcategories: ["Niacimida", "Retinol", "Vitamina C", "Acido Hialuronico"]
+}, {
+  name: "Exfoliantes faciales",
+  subcategories: ["Quimicos", "Fisicos (Granulos)"]
+}, {
+  name: "Exfoliantes Corporales",
+  subcategories: []
+}, {
+  name: "Desmaquillantes",
+  subcategories: ["Agua Micelar", "Aceite Limpiador"]
+}, {
+  name: "Tonicos y Esencias",
+  subcategories: []
+}, {
+  name: "Agua Termal y Mist",
+  subcategories: []
+}, {
+  name: "Capilar",
+  subcategories: []
+}, {
+  name: "Maquillaje",
+  subcategories: ["Base", "Labial"]
+}, {
+  name: "Kits",
+  subcategories: []
+}, {
+  name: "Labios",
+  subcategories: []
+}, {
+  name: "Mascarillas",
+  subcategories: []
 }];
 
 const brands = [

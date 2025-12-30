@@ -7,20 +7,50 @@ import CartDrawer from "./CartDrawer";
 import MobileMenu from "./MobileMenu";
 
 const categories = [{
-  name: "Cuidado Facial",
-  subcategories: ["Sérums", "Hidratantes", "Anti-Edad", "Anti-Acné", "Brumas Faciales", "Tónicos", "Mascarillas", "Contorno de Ojos", "Aceites Faciales", "Ampollas", "Cremas Reparadoras"]
+  name: "Limpiadores",
+  subcategories: ["Piel Mixta a Grasa", "Piel normal a seca", "Piel sensible"]
 }, {
-  name: "Protección Solar",
-  subcategories: ["Facial", "Corporal"]
+  name: "Hidratantes Faciales",
+  subcategories: ["Piel Mixta a Grasa", "Piel normal a seca", "Piel sensible"]
 }, {
-  name: "Limpieza Facial",
-  subcategories: ["Geles Limpiadores", "Aguas Micelares"]
+  name: "Hidratantes Corporales",
+  subcategories: ["Locion", "Crema"]
 }, {
-  name: "Cuidado Corporal",
-  subcategories: ["Hidratantes", "Cremas Reparadoras"]
+  name: "Protectores Solares",
+  subcategories: ["Piel Mixta a Grasa", "Piel normal a seca", "Piel sensible", "Corporales", "Para Niños"]
 }, {
-  name: "Cuidado Capilar",
-  subcategories: ["Champús Tratantes", "Tratamientos"]
+  name: "Serums",
+  subcategories: ["Niacimida", "Retinol", "Vitamina C", "Acido Hialuronico"]
+}, {
+  name: "Exfoliantes faciales",
+  subcategories: ["Quimicos", "Fisicos (Granulos)"]
+}, {
+  name: "Exfoliantes Corporales",
+  subcategories: []
+}, {
+  name: "Desmaquillantes",
+  subcategories: ["Agua Micelar", "Aceite Limpiador"]
+}, {
+  name: "Tonicos y Esencias",
+  subcategories: []
+}, {
+  name: "Agua Termal y Mist",
+  subcategories: []
+}, {
+  name: "Capilar",
+  subcategories: []
+}, {
+  name: "Maquillaje",
+  subcategories: ["Base", "Labial"]
+}, {
+  name: "Kits",
+  subcategories: []
+}, {
+  name: "Labios",
+  subcategories: []
+}, {
+  name: "Mascarillas",
+  subcategories: []
 }];
 
 const brands = [
@@ -323,28 +353,39 @@ const Header = () => {
 
                     {/* Subcategories */}
                     <div className="subcategories-panel">
-                      {activeCategory && <div className="subcategories-list">
-                          <h4 className="subcategories-title">{activeCategory}</h4>
-                          {categories.find(c => c.name === activeCategory)?.subcategories.map(sub => <button
-                                key={sub}
-                                className="subcategory-item"
-                                onClick={(e) => {
-                                  e.preventDefault();
-                                  navigate('/tienda', {
-                                    state: {
-                                      categoryFilter: activeCategory,
-                                      subcategoryFilter: sub
-                                    },
-                                    replace: location.pathname === '/tienda'
-                                  });
-                                  setIsCategoriesOpen(false);
-                                  setActiveCategory(null);
-                                  window.scrollTo({ top: 0, behavior: 'smooth' });
-                                }}
-                              >
-                                {sub}
-                              </button>)}
-                        </div>}
+                      {activeCategory && (() => {
+                        const category = categories.find(c => c.name === activeCategory);
+                        const hasSubcategories = category && category.subcategories.length > 0;
+
+                        return hasSubcategories ? (
+                          <div className="subcategories-list">
+                            <h4 className="subcategories-title">{activeCategory}</h4>
+                            {category.subcategories.map(sub => <button
+                                  key={sub}
+                                  className="subcategory-item"
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    navigate('/tienda', {
+                                      state: {
+                                        categoryFilter: activeCategory,
+                                        subcategoryFilter: sub
+                                      },
+                                      replace: location.pathname === '/tienda'
+                                    });
+                                    setIsCategoriesOpen(false);
+                                    setActiveCategory(null);
+                                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                                  }}
+                                >
+                                  {sub}
+                                </button>)}
+                          </div>
+                        ) : (
+                          <div className="subcategories-placeholder">
+                            <p>Esta categoría no tiene subcategorías</p>
+                          </div>
+                        );
+                      })()}
                       {!activeCategory && <div className="subcategories-placeholder">
                           <p>Pasa el cursor sobre una categoría para ver las subcategorías</p>
                         </div>}
