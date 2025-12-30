@@ -255,7 +255,7 @@
   /* Mega Menu - Light dropdown for contrast */
   .mega-menu {
     @apply absolute top-full left-0 mt-1 rounded-xl border
-           shadow-lg overflow-hidden z-50 min-w-[500px];
+           shadow-lg overflow-hidden z-50 min-w-[650px];
     background-color: hsl(0 0% 100%);
     border-color: hsl(0 0% 90%);
     box-shadow: var(--dropdown-shadow);
@@ -272,7 +272,7 @@
 
   /* Categories List */
   .categories-list {
-    @apply w-52 py-2 border-r;
+    @apply w-64 py-2 border-r;
     background-color: hsl(0 0% 97%);
     border-color: hsl(0 0% 92%);
   }
@@ -297,7 +297,7 @@
 
   /* Subcategories Panel */
   .subcategories-panel {
-    @apply flex-1 min-w-[280px] p-5;
+    @apply flex-1 min-w-[320px] p-5;
     background-color: hsl(0 0% 100%);
   }
 
