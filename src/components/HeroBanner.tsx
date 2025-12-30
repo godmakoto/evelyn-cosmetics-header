@@ -3,6 +3,7 @@ import useEmblaCarousel from "embla-carousel-react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useNavigate } from "react-router-dom";
 import heroTienda from "@/assets/hero-tienda.jpg";
 import heroMaquillaje from "@/assets/hero-maquillaje.jpg";
 import heroKits from "@/assets/hero-kits.jpg";
@@ -12,7 +13,7 @@ interface Slide {
   headline: string;
   subtitle: string;
   ctaText?: string;
-  ctaLink?: string;
+  categoryFilter?: string | null;
   imageUrl: string;
 }
 
@@ -22,7 +23,7 @@ const slides: Slide[] = [
     headline: "Explora nuestra tienda",
     subtitle: "Descubre toda nuestra colección de productos de belleza y cuidado personal",
     ctaText: "Ver tienda",
-    ctaLink: "/tienda",
+    categoryFilter: null, // Sin filtro - va a tienda general
     imageUrl: heroTienda,
   },
   {
@@ -30,7 +31,7 @@ const slides: Slide[] = [
     headline: "Maquillaje profesional",
     subtitle: "Los mejores productos para realzar tu belleza natural",
     ctaText: "Ver maquillaje",
-    ctaLink: "/tienda?category=Maquillaje",
+    categoryFilter: "Maquillaje", // Navega con filtro de Maquillaje
     imageUrl: heroMaquillaje,
   },
   {
@@ -38,12 +39,13 @@ const slides: Slide[] = [
     headline: "Kits exclusivos",
     subtitle: "Sets completos con todo lo que necesitas para tu rutina de belleza",
     ctaText: "Ver kits",
-    ctaLink: "/tienda?category=Kits",
+    categoryFilter: "Kits", // Navega con filtro de Kits
     imageUrl: heroKits,
   },
 ];
 
 const HeroBanner = () => {
+  const navigate = useNavigate();
   const isMobile = useIsMobile();
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -76,6 +78,16 @@ const HeroBanner = () => {
       emblaApi.off("select", onSelect);
     };
   }, [emblaApi, onSelect]);
+
+  const handleCTAClick = (categoryFilter: string | null | undefined) => {
+    if (categoryFilter) {
+      navigate('/tienda', {
+        state: { categoryFilter: categoryFilter }
+      });
+    } else {
+      navigate('/tienda');
+    }
+  };
 
   return (
     <section className="relative w-full bg-secondary/30">
@@ -114,19 +126,20 @@ const HeroBanner = () => {
                       {slide.subtitle}
                     </p>
                     {slide.ctaText && (
-                      <a
-                        href={slide.ctaLink}
+                      <button
+                        onClick={() => handleCTAClick(slide.categoryFilter)}
                         className={cn(
                           "inline-block px-6 py-2.5 md:px-8 md:py-3",
                           "text-sm md:text-base font-medium",
                           "bg-foreground text-background",
                           "rounded-full",
                           "transition-all duration-200",
-                          "hover:bg-foreground/90"
+                          "hover:bg-foreground/90",
+                          "cursor-pointer"
                         )}
                       >
                         {slide.ctaText}
-                      </a>
+                      </button>
                     )}
                   </div>
                 </div>
