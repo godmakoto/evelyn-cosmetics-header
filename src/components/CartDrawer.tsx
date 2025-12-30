@@ -28,7 +28,7 @@ const CartDrawer = () => {
     navigate('/checkout');
   };
 
-  const handleProductClick = (productId: number) => {
+  const handleProductClick = (productId: string) => {
     setIsCartOpen(false);
     navigate(`/producto/${productId}`);
   };

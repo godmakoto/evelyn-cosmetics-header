@@ -73,8 +73,7 @@ const ProductPage = () => {
     loop: false,
     align: "start",
     slidesToScroll: 1,
-    containScroll: "trimSnaps",
-    draggable: true
+    containScroll: "trimSnaps"
   });
 
   const onImageSelect = useCallback(() => {
