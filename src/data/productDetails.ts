@@ -631,6 +631,139 @@ export const productDetails: Record<string, ProductDetail> = {
     fullDescription: "Sérum revolucionario que multiplica el ácido hialurónico natural de la piel hasta en un 30%. Su fórmula patentada con [Ácido Hialurónico 1.3% + Ácido Polihidroxi + Extracto de Licorice] estimula la producción endógena de ácido hialurónico, mejora el volumen, hidrata profundamente y reduce arrugas. Textura gel sedosa de rápida absorción. Resultados duraderos.",
     howToUse: "1. Aplica mañana y noche después de limpiar.\n2. Usa 4-6 gotas sobre rostro seco.\n3. Extiende sobre cuello y escote.\n4. Espera absorción antes de crema.\n5. Continúa con antioxidante de día.\n6. Resultados óptimos en 8 semanas de uso continuo.",
     ingredients: "Aqua, Cyclohexasiloxane, Glycerin, Alcohol Denat, Hydroxypropyl Tetrahydropyrantriol, Propylene Glycol, Dipotassium Glycyrrhizate, Polysilicone-11, Dimethicone, Sodium Hyaluronate, Gluconic Acid."
+  },
+  // Productos De Vuelta en Stock
+  "bis-1": {
+    id: "bis-1",
+    name: "Agua Micelar Desmaquillante Todo en Uno para Piel Sensible",
+    brand: "Bioderma",
+    price: 125,
+    originalPrice: 145,
+    category: "Desmaquillantes",
+    description: "Agua micelar ultra suave que limpia, desmaquilla y tonifica sin necesidad de enjuague.",
+    images: [
+      "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1631729371254-42c2892f0e6e?w=600&h=600&fit=crop",
+    ],
+    fullDescription: "Agua micelar de limpieza suave desarrollada para pieles sensibles. Las micelas atrapan impurezas, maquillaje (incluso resistente al agua) y sebo sin necesidad de frotar. Respeta el equilibrio fisiológico de la piel sensible y el contorno de ojos. Libre de perfume, alcohol y parabenos. Testado oftalmológicamente.",
+    howToUse: "1. Empapa un algodón con el producto.\n2. Limpia suavemente rostro y ojos.\n3. No requiere enjuague.\n4. Úsala mañana y noche.\n5. Ideal como primer paso de limpieza.\n6. Apta para piel sensible y ojos sensibles.",
+    ingredients: "Aqua, PEG-6 Caprylic/Capric Glycerides, Cucumis Sativus Fruit Extract, Mannitol, Xylitol, Rhamnose, Fructooligosaccharides, Propylene Glycol, Disodium EDTA."
+  },
+  "bis-2": {
+    id: "bis-2",
+    name: "Exfoliante Facial Químico con AHA y BHA Anti-Imperfecciones",
+    brand: "The Ordinary",
+    price: 95,
+    category: "Exfoliantes faciales",
+    description: "Exfoliante químico suave que renueva la piel, minimiza poros y mejora la textura.",
+    images: [
+      "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1617897903246-719242758050?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1556228720-da5274c3fb6f?w=600&h=600&fit=crop",
+    ],
+    fullDescription: "Solución exfoliante química con 7% de ácido glicólico (AHA) y 2% de ácido salicílico (BHA) que renueva la superficie de la piel. Los AHA exfolian la capa superior mientras los BHA penetran en los poros para limpiarlos desde el interior. Mejora textura, luminosidad y tono. Reduce la apariencia de poros e imperfecciones. Uso nocturno recomendado.",
+    howToUse: "1. Aplica únicamente por la noche.\n2. Usa sobre piel limpia y seca.\n3. Evita contorno de ojos.\n4. No enjuagues.\n5. Usa protector solar al día siguiente.\n6. Empieza 2-3 veces por semana, aumenta gradualmente.",
+    ingredients: "Aqua, Glycolic Acid, Rosa Damascena Flower Water, Centaurea Cyanus Flower Water, Aloe Barbadensis Leaf Water, Propanediol, Glycerin, Triethanolamine, Salicylic Acid, Sodium Hyaluronate Crosspolymer."
+  },
+  "bis-3": {
+    id: "bis-3",
+    name: "Crema Hidratante Corporal Nutritiva con Manteca de Karité",
+    brand: "Nivea",
+    price: 78,
+    originalPrice: 95,
+    category: "Hidratantes Corporales",
+    description: "Crema corporal intensiva que nutre profundamente la piel muy seca.",
+    images: [
+      "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1611930022073-b7a4ba5fcccd?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=600&h=600&fit=crop",
+    ],
+    fullDescription: "Crema corporal nutritiva enriquecida con manteca de karité pura (10%) que proporciona nutrición profunda e intensiva para piel muy seca. Su fórmula con vitamina E y aceite de almendras dulces penetra rápidamente, dejando la piel suave, sedosa y protegida durante 48 horas. Textura rica pero de rápida absorción.",
+    howToUse: "1. Aplica después del baño sobre piel húmeda.\n2. Masajea con movimientos circulares.\n3. Insiste en zonas más secas.\n4. Usa diariamente para mejores resultados.\n5. Ideal para clima frío.\n6. Apta para piel muy seca.",
+    ingredients: "Aqua, Glycerin, Butyrospermum Parkii Butter, Paraffinum Liquidum, Cetearyl Alcohol, Prunus Amygdalus Dulcis Oil, Dimethicone, Tocopheryl Acetate, Sodium Cetearyl Sulfate, Carbomer, Phenoxyethanol."
+  },
+  "bis-4": {
+    id: "bis-4",
+    name: "Protector Solar Corporal SPF 50+ en Spray Resistente al Agua",
+    brand: "Isdin",
+    price: 155,
+    category: "Protectores Solares",
+    description: "Spray solar de rápida absorción con protección muy alta.",
+    images: [
+      "https://images.unsplash.com/photo-1556228994-7be8d82c30a9?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1556228841-a3c527ebefe5?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1556228994-22d86adf57e6?w=600&h=600&fit=crop",
+    ],
+    fullDescription: "Spray solar corporal con textura ultraligera de absorción inmediata. Protección muy alta SPF50+ de amplio espectro UVA/UVB. Enriquecido con vitamina E antioxidante. Fórmula muy resistente al agua (hasta 80 minutos) y al sudor, ideal para actividades acuáticas. No deja residuo blanco. Sin perfume. Testado dermatológicamente.",
+    howToUse: "1. Agita antes de usar.\n2. Aplica generosamente 30 minutos antes de la exposición.\n3. Reaplicar cada 2 horas.\n4. Reaplicar después de nadar o sudar.\n5. Mantén alejado de ojos.\n6. Apto para toda la familia.",
+    ingredients: "Alcohol Denat, Octocrylene, C12-15 Alkyl Benzoate, Butyl Methoxydibenzoylmethane, Dibutyl Adipate, Dicaprylyl Carbonate, Ethylhexyl Salicylate, Bis-Ethylhexyloxyphenol Methoxyphenyl Triazine, Tocopheryl Acetate."
+  },
+  "bis-5": {
+    id: "bis-5",
+    name: "Mascarilla Facial Hidratante Overnight con Ácido Hialurónico",
+    brand: "Neutrogena",
+    price: 65,
+    originalPrice: 80,
+    category: "Mascarillas",
+    description: "Mascarilla de noche que hidrata intensamente mientras duermes.",
+    images: [
+      "https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1567721913486-6585f069b332?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1556229012-50c74f5c9f25?w=600&h=600&fit=crop",
+    ],
+    fullDescription: "Mascarilla facial de noche con tecnología de liberación prolongada de ácido hialurónico purificado. Trabaja mientras duermes para proporcionar hidratación intensiva y duradera. Su fórmula con ingredientes hidratantes de última generación restaura el equilibrio de hidratación de la piel. Textura gel-crema fresca que se funde con la piel. Despierta con piel suave, flexible y radiante.",
+    howToUse: "1. Aplica generosamente por la noche.\n2. Usa sobre piel limpia y seca.\n3. Masajea suavemente hasta absorción.\n4. No enjuagues, deja actuar toda la noche.\n5. Usa 2-3 veces por semana o según necesidad.\n6. Apta para todo tipo de piel.",
+    ingredients: "Aqua, Glycerin, Dimethicone, Cetearyl Olivate, Polyacrylamide, Sorbitan Olivate, C13-14 Isoparaffin, Sodium Hyaluronate, Laureth-7, Allantoin, Panthenol, Tocopheryl Acetate, DMDM Hydantoin."
+  },
+  "bis-6": {
+    id: "bis-6",
+    name: "Aceite Limpiador Desmaquillante Facial Suave Bifásico",
+    brand: "La Roche-Posay",
+    price: 135,
+    category: "Desmaquillantes",
+    description: "Aceite limpiador que elimina maquillaje resistente sin resecar.",
+    images: [
+      "https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=600&h=600&fit=crop",
+    ],
+    fullDescription: "Aceite limpiador desmaquillante bifásico que elimina eficazmente todo tipo de maquillaje, incluso waterproof y de larga duración. Su fórmula con aceites botánicos se transforma en una emulsión lechosa al contacto con agua, arrastrando impurezas sin dejar sensación grasa. Enriquecido con Agua Termal de La Roche-Posay. No irrita ojos. Testado oftalmológicamente.",
+    howToUse: "1. Agita bien antes de usar.\n2. Aplica sobre piel seca con movimientos circulares.\n3. Emulsiona con agua tibia.\n4. Enjuaga abundantemente.\n5. Continúa con limpiador si deseas.\n6. Apto para piel sensible y uso diario.",
+    ingredients: "Isohexadecane, Isopropyl Palmitate, Caprylic/Capric Triglyceride, Sorbeth-30 Tetraoleate, La Roche-Posay Thermal Spring Water, Helianthus Annuus Seed Oil, Tocopherol, Fragrance."
+  },
+  "bis-7": {
+    id: "bis-7",
+    name: "Base de Maquillaje Líquida Cobertura Media a Buildable SPF 15",
+    brand: "Vichy",
+    price: 185,
+    originalPrice: 220,
+    category: "Maquillaje",
+    description: "Base de maquillaje con acabado natural y protección solar.",
+    images: [
+      "https://images.unsplash.com/photo-1631214524020-7e18db9a8f92?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1512303452766-a48f2bc60dcd?w=600&h=600&fit=crop",
+    ],
+    fullDescription: "Base de maquillaje fluida enriquecida con Agua Volcánica Mineralizante de Vichy que proporciona cobertura media modulable y acabado natural luminoso. Su fórmula con SPF 15 protege del daño solar mientras unifica el tono y disimula imperfecciones. Textura ligera y sedosa que se funde con la piel. Larga duración de hasta 16 horas sin transferencia. No comedogénica.",
+    howToUse: "1. Aplica después de tu cuidado facial.\n2. Usa esponja o brocha para mejor difuminado.\n3. Extiende desde el centro hacia fuera.\n4. Construye cobertura según necesidad.\n5. Fija con polvo translúcido si deseas.\n6. Disponible en múltiples tonos.",
+    ingredients: "Aqua, Cyclopentasiloxane, Dimethicone, Glycerin, Ethylhexyl Methoxycinnamate, PEG-9 Polydimethylsiloxyethyl Dimethicone, Titanium Dioxide, Nylon-12, Vichy Volcanic Water, Tocopherol, Sodium Chloride, Phenoxyethanol, CI 77491, CI 77492, CI 77499."
+  },
+  "bis-8": {
+    id: "bis-8",
+    name: "Champú Tratante Anticaída Fortificante con Cafeína",
+    brand: "Eucerin",
+    price: 98,
+    category: "Capilar",
+    description: "Champú fortificante que reduce la caída del cabello y estimula el crecimiento.",
+    images: [
+      "https://images.unsplash.com/photo-1535585209827-a15fcdbc4c2d?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=600&h=600&fit=crop",
+    ],
+    fullDescription: "Champú anticaída enriquecido con Cafeína activa que fortalece las raíces del cabello desde la primera aplicación. Su complejo con carnitina y creatina estimula la microcirculación del cuero cabelludo, prolonga la fase de crecimiento y reduce la caída prematura. La cafeína permanece activa hasta 24 horas. Resultados visibles en 3 meses de uso regular. Apto para uso diario.",
+    howToUse: "1. Aplica sobre cabello húmedo.\n2. Masajea suavemente el cuero cabelludo.\n3. Deja actuar 2 minutos.\n4. Enjuaga abundantemente.\n5. Usa diariamente para mejores resultados.\n6. Complementa con tónico anticaída.",
+    ingredients: "Aqua, Sodium Laureth Sulfate, Laureth-2, Disodium Laureth Sulfosuccinate, Sodium Lauroyl Glutamate, Caffeine, Panthenol, Glycerin, Carnitine Tartrate, Creatine, Hydrolyzed Wheat Protein, Polyquaternium-10, PEG-120 Methyl Glucose Dioleate, Citric Acid."
   }
 };
 

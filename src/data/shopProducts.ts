@@ -420,6 +420,95 @@ export const shopProducts: ShopProduct[] = [
     price: 85,
     description: "Tónico purificante natural con té verde y hamamelis. Equilibra y refresca la piel.",
     image: "https://images.unsplash.com/photo-1512303452766-a48f2bc60dcd?w=400&h=400&fit=crop"
+  },
+  // Productos De Vuelta en Stock
+  {
+    id: "bis-1",
+    name: "Agua Micelar Desmaquillante Todo en Uno para Piel Sensible",
+    brand: "Bioderma",
+    category: "Desmaquillantes",
+    subcategory: "Agua Micelar",
+    price: 125,
+    originalPrice: 145,
+    description: "Agua micelar ultra suave que limpia, desmaquilla y tonifica sin necesidad de enjuague. Ideal para piel sensible.",
+    image: "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=400&h=400&fit=crop",
+    discount: 14
+  },
+  {
+    id: "bis-2",
+    name: "Exfoliante Facial Químico con AHA y BHA Anti-Imperfecciones",
+    brand: "The Ordinary",
+    category: "Exfoliantes faciales",
+    subcategory: "Quimicos",
+    price: 95,
+    description: "Exfoliante químico suave que renueva la piel, minimiza poros y mejora la textura. Uso nocturno.",
+    image: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=400&h=400&fit=crop"
+  },
+  {
+    id: "bis-3",
+    name: "Crema Hidratante Corporal Nutritiva con Manteca de Karité",
+    brand: "Nivea",
+    category: "Hidratantes Corporales",
+    subcategory: "Crema",
+    price: 78,
+    originalPrice: 95,
+    description: "Crema corporal intensiva con manteca de karité que nutre profundamente la piel muy seca. Textura rica.",
+    image: "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?w=400&h=400&fit=crop",
+    discount: 18
+  },
+  {
+    id: "bis-4",
+    name: "Protector Solar Corporal SPF 50+ en Spray Resistente al Agua",
+    brand: "Isdin",
+    category: "Protectores Solares",
+    subcategory: "Corporales",
+    price: 155,
+    description: "Spray solar de rápida absorción con protección muy alta. Resistente al agua y sudor para toda la familia.",
+    image: "https://images.unsplash.com/photo-1556228994-7be8d82c30a9?w=400&h=400&fit=crop"
+  },
+  {
+    id: "bis-5",
+    name: "Mascarilla Facial Hidratante Overnight con Ácido Hialurónico",
+    brand: "Neutrogena",
+    category: "Mascarillas",
+    subcategory: "",
+    price: 65,
+    originalPrice: 80,
+    description: "Mascarilla de noche que hidrata intensamente mientras duermes. Despierta con piel radiante y suave.",
+    image: "https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=400&h=400&fit=crop",
+    discount: 19
+  },
+  {
+    id: "bis-6",
+    name: "Aceite Limpiador Desmaquillante Facial Suave Bifásico",
+    brand: "La Roche-Posay",
+    category: "Desmaquillantes",
+    subcategory: "Aceite Limpiador",
+    price: 135,
+    description: "Aceite limpiador que elimina maquillaje resistente al agua sin resecar. Deja la piel suave y limpia.",
+    image: "https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=400&h=400&fit=crop"
+  },
+  {
+    id: "bis-7",
+    name: "Base de Maquillaje Líquida Cobertura Media a Buildable SPF 15",
+    brand: "Vichy",
+    category: "Maquillaje",
+    subcategory: "Base",
+    price: 185,
+    originalPrice: 220,
+    description: "Base de maquillaje con acabado natural y protección solar. Larga duración y cobertura modulable.",
+    image: "https://images.unsplash.com/photo-1631214524020-7e18db9a8f92?w=400&h=400&fit=crop",
+    discount: 16
+  },
+  {
+    id: "bis-8",
+    name: "Champú Tratante Anticaída Fortificante con Cafeína",
+    brand: "Eucerin",
+    category: "Capilar",
+    subcategory: "",
+    price: 98,
+    description: "Champú fortificante que reduce la caída del cabello y estimula el crecimiento. Con cafeína activa.",
+    image: "https://images.unsplash.com/photo-1535585209827-a15fcdbc4c2d?w=400&h=400&fit=crop"
   }
 ];
 
