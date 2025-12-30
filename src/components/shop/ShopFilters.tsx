@@ -16,10 +16,12 @@ interface ShopFiltersProps {
     brand: string | null;
     category: string | null;
     subcategory: string | null;
+    status: string | null;
   }) => void;
   initialBrandFilter?: string | null;
   initialCategoryFilter?: string | null;
   initialSubcategoryFilter?: string | null;
+  initialStatusFilter?: string | null;
   resetFiltersTimestamp?: number | null;
 }
 
@@ -28,12 +30,14 @@ const ShopFilters = ({
   initialBrandFilter = null,
   initialCategoryFilter = null,
   initialSubcategoryFilter = null,
+  initialStatusFilter = null,
   resetFiltersTimestamp = null
 }: ShopFiltersProps) => {
   const [maxPrice, setMaxPrice] = useState<string>("");
   const [selectedBrand, setSelectedBrand] = useState<string | null>(initialBrandFilter);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(initialCategoryFilter);
   const [selectedSubcategory, setSelectedSubcategory] = useState<string | null>(initialSubcategoryFilter);
+  const [selectedStatus, setSelectedStatus] = useState<string | null>(initialStatusFilter);
   const [subcategories, setSubcategories] = useState<string[]>([]);
 
   // Update filters when initial filter props change
@@ -41,7 +45,8 @@ const ShopFilters = ({
     setSelectedBrand(initialBrandFilter);
     setSelectedCategory(initialCategoryFilter);
     setSelectedSubcategory(initialSubcategoryFilter);
-  }, [initialBrandFilter, initialCategoryFilter, initialSubcategoryFilter]);
+    setSelectedStatus(initialStatusFilter);
+  }, [initialBrandFilter, initialCategoryFilter, initialSubcategoryFilter, initialStatusFilter]);
 
   // Reset all filter states when resetFiltersTimestamp changes
   useEffect(() => {
@@ -50,6 +55,7 @@ const ShopFilters = ({
       setSelectedBrand(null);
       setSelectedCategory(null);
       setSelectedSubcategory(null);
+      setSelectedStatus(null);
     }
   }, [resetFiltersTimestamp]);
 
@@ -68,8 +74,9 @@ const ShopFilters = ({
       brand: selectedBrand,
       category: selectedCategory,
       subcategory: selectedSubcategory,
+      status: selectedStatus,
     });
-  }, [maxPrice, selectedBrand, selectedCategory, selectedSubcategory, onFiltersChange]);
+  }, [maxPrice, selectedBrand, selectedCategory, selectedSubcategory, selectedStatus, onFiltersChange]);
 
   const handleBrandChange = (brand: string | null) => {
     setSelectedBrand(brand);
@@ -94,9 +101,10 @@ const ShopFilters = ({
     setSelectedBrand(null);
     setSelectedCategory(null);
     setSelectedSubcategory(null);
+    setSelectedStatus(null);
   };
 
-  const hasActiveFilters = maxPrice || selectedBrand || selectedCategory || selectedSubcategory;
+  const hasActiveFilters = maxPrice || selectedBrand || selectedCategory || selectedSubcategory || selectedStatus;
 
   return (
     <div
@@ -116,7 +124,7 @@ const ShopFilters = ({
           )}
         </div>
 
-        {/* Precio Máximo */}
+        {/* Fila 1: Precio Máximo y Estado */}
         <div className="grid grid-cols-2 lg:grid-cols-1 gap-2 mb-2 md:gap-3 md:mb-3">
           <div>
             <label className="block text-sm md:text-xs text-[#666] mb-1.5 md:mb-1">Precio Máximo</label>
@@ -130,26 +138,42 @@ const ShopFilters = ({
             />
           </div>
 
-          {/* Marca */}
+          {/* Estado de Producto */}
           <div>
-            <label className="block text-sm md:text-xs text-[#666] mb-1.5 md:mb-1">Marca</label>
-            <Select value={selectedBrand || "all"} onValueChange={(value) => handleBrandChange(value === "all" ? null : value)}>
+            <label className="block text-sm md:text-xs text-[#666] mb-1.5 md:mb-1">Estado</label>
+            <Select value={selectedStatus || "all"} onValueChange={(value) => setSelectedStatus(value === "all" ? null : value)}>
               <SelectTrigger className="w-full h-10 md:h-10 rounded-xl border-[#eaeaea] text-base md:text-sm">
-                <SelectValue placeholder="Todas" />
+                <SelectValue placeholder="Todos" />
               </SelectTrigger>
               <SelectContent className="rounded-xl">
-                <SelectItem value="all" className="text-base md:text-sm">Todas</SelectItem>
-                {brands.map((brand) => (
-                  <SelectItem key={brand} value={brand} className="text-base md:text-sm">
-                    {brand}
-                  </SelectItem>
-                ))}
+                <SelectItem value="all" className="text-base md:text-sm">Todos</SelectItem>
+                <SelectItem value="best-seller" className="text-base md:text-sm">Más Vendidos</SelectItem>
+                <SelectItem value="featured" className="text-base md:text-sm">Destacados</SelectItem>
+                <SelectItem value="back-in-stock" className="text-base md:text-sm">De Vuelta en Stock</SelectItem>
               </SelectContent>
             </Select>
           </div>
         </div>
 
-        {/* Row 2: Categoría */}
+        {/* Fila 2: Marca */}
+        <div className="mb-2 md:mb-3">
+          <label className="block text-sm md:text-xs text-[#666] mb-1.5 md:mb-1">Marca</label>
+          <Select value={selectedBrand || "all"} onValueChange={(value) => handleBrandChange(value === "all" ? null : value)}>
+            <SelectTrigger className="w-full h-10 md:h-10 rounded-xl border-[#eaeaea] text-base md:text-sm">
+              <SelectValue placeholder="Todas" />
+            </SelectTrigger>
+            <SelectContent className="rounded-xl">
+              <SelectItem value="all" className="text-base md:text-sm">Todas</SelectItem>
+              {brands.map((brand) => (
+                <SelectItem key={brand} value={brand} className="text-base md:text-sm">
+                  {brand}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        {/* Fila 3: Categoría */}
         <div className="mb-3 md:mb-3">
           <label className="block text-sm md:text-xs text-[#666] mb-1.5 md:mb-1">Categoría</label>
           <Select value={selectedCategory || "all"} onValueChange={(value) => handleCategoryChange(value === "all" ? null : value)}>
@@ -167,7 +191,7 @@ const ShopFilters = ({
           </Select>
         </div>
 
-        {/* Row 3: Subcategorías (solo visible cuando hay categoría seleccionada) */}
+        {/* Fila 4: Subcategorías (solo visible cuando hay categoría seleccionada) */}
         {selectedCategory && subcategories.length > 0 && (
           <div className="animate-in fade-in slide-in-from-top-2 duration-200">
             <label className="block text-sm md:text-xs text-[#666] mb-1.5 md:mb-1">Tipo de Producto</label>

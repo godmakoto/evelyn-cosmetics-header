@@ -12,6 +12,7 @@ interface ProductGridProps {
   initialSubcategoryFilter?: string | null;
   resetFiltersTimestamp?: number | null;
   searchQuery?: string | null;
+  statusFilter?: string | null;
 }
 
 const ProductGrid = ({
@@ -19,7 +20,8 @@ const ProductGrid = ({
   initialCategoryFilter = null,
   initialSubcategoryFilter = null,
   resetFiltersTimestamp = null,
-  searchQuery = null
+  searchQuery = null,
+  statusFilter = null
 }: ProductGridProps) => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -31,6 +33,7 @@ const ProductGrid = ({
     brand: initialBrandFilter,
     category: initialCategoryFilter,
     subcategory: initialSubcategoryFilter,
+    status: statusFilter,
   });
   const [isFirstRender, setIsFirstRender] = useState(true);
 
@@ -63,6 +66,7 @@ const ProductGrid = ({
         brand: null,
         category: null,
         subcategory: null,
+        status: null,
       });
     }
   }, [resetFiltersTimestamp]);
@@ -78,7 +82,7 @@ const ProductGrid = ({
       }, 200);
       return () => clearTimeout(scrollTimeout);
     }
-  }, [filters.brand, filters.category, filters.subcategory, filters.maxPrice, isFirstRender]);
+  }, [filters.brand, filters.category, filters.subcategory, filters.maxPrice, filters.status, isFirstRender]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -123,6 +127,14 @@ const ProductGrid = ({
       if (filters.subcategory) {
         result = result.filter((p) => p.subcategory === filters.subcategory);
       }
+      if (filters.status) {
+        result = result.filter((p) => {
+          if (filters.status === 'best-seller') return p.isBestSeller;
+          if (filters.status === 'featured') return p.isFeatured;
+          if (filters.status === 'back-in-stock') return p.isBackInStock;
+          return true;
+        });
+      }
 
       console.log('Filtered products:', { count: result.length, filters });
       setFilteredProducts(result);
@@ -142,7 +154,8 @@ const ProductGrid = ({
       newFilters.brand !== currentFilters.brand ||
       newFilters.category !== currentFilters.category ||
       newFilters.subcategory !== currentFilters.subcategory ||
-      newFilters.maxPrice !== currentFilters.maxPrice;
+      newFilters.maxPrice !== currentFilters.maxPrice ||
+      newFilters.status !== currentFilters.status;
 
     if (!filtersChanged) {
       console.log('Filters did not change, skipping');
@@ -204,6 +217,7 @@ const ProductGrid = ({
           initialBrandFilter={initialBrandFilter}
           initialCategoryFilter={initialCategoryFilter}
           initialSubcategoryFilter={initialSubcategoryFilter}
+          initialStatusFilter={statusFilter}
           resetFiltersTimestamp={resetFiltersTimestamp}
         />
       </div>
@@ -235,6 +249,7 @@ const ProductGrid = ({
                 initialBrandFilter={initialBrandFilter}
                 initialCategoryFilter={initialCategoryFilter}
                 initialSubcategoryFilter={initialSubcategoryFilter}
+                initialStatusFilter={statusFilter}
                 resetFiltersTimestamp={resetFiltersTimestamp}
               />
             </div>

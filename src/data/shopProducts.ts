@@ -9,6 +9,10 @@ export interface ShopProduct {
   description: string;
   image: string;
   discount?: number;
+  // Estados de producto
+  isBestSeller?: boolean;
+  isFeatured?: boolean;
+  isBackInStock?: boolean;
 }
 
 export const shopProducts: ShopProduct[] = [
@@ -299,7 +303,8 @@ export const shopProducts: ShopProduct[] = [
     originalPrice: 100,
     description: "Óleo bifásico que nutre y realza la vitalidad del cabello, controla el frizz, protección térmica y blindaje anti-humedad - 110ml",
     image: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=400&h=400&fit=crop",
-    discount: 15
+    discount: 15,
+    isFeatured: true
   },
   {
     id: "2",
@@ -309,7 +314,8 @@ export const shopProducts: ShopProduct[] = [
     subcategory: "Piel Mixta a Grasa",
     price: 180,
     description: "Gel limpiador facial con Ácido salicílico, Ácido glicólico y Gluconato de Zinc. Limpia, purifica y reduce el tamaño de los poros - 532g",
-    image: "https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?w=400&h=400&fit=crop"
+    image: "https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?w=400&h=400&fit=crop",
+    isFeatured: true
   },
   {
     id: "3",
@@ -321,7 +327,8 @@ export const shopProducts: ShopProduct[] = [
     originalPrice: 150,
     description: "Protector solar facial anti-brillo y toque seco para piel mixta y grasa. Tono dorado con cobertura alta - 40ml",
     image: "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=400&h=400&fit=crop",
-    discount: 20
+    discount: 20,
+    isFeatured: true
   },
   {
     id: "4",
@@ -331,7 +338,8 @@ export const shopProducts: ShopProduct[] = [
     subcategory: "Quimicos",
     price: 95,
     description: "Limpiador despigmentante crema-espuma facial y corporal. Limpia y exfolia suavemente, reduce manchas oscuras - 200ml",
-    image: "https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=400&h=400&fit=crop"
+    image: "https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=400&h=400&fit=crop",
+    isFeatured: true
   },
   {
     id: "5",
@@ -343,7 +351,8 @@ export const shopProducts: ShopProduct[] = [
     originalPrice: 250,
     description: "Con Retinol y Péptidos. Reduce ojeras, bolsas y líneas de expresión. Hidratación 24h - 15ml",
     image: "https://images.unsplash.com/photo-1570194065650-d99fb4b38b15?w=400&h=400&fit=crop",
-    discount: 20
+    discount: 20,
+    isFeatured: true
   },
   {
     id: "6",
@@ -353,7 +362,8 @@ export const shopProducts: ShopProduct[] = [
     subcategory: "Piel normal a seca",
     price: 75,
     description: "Con Ceramidas y Ácido Hialurónico. Limpia sin resecar, restaura la barrera cutánea - 473ml",
-    image: "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=400&h=400&fit=crop"
+    image: "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=400&h=400&fit=crop",
+    isFeatured: true
   },
   {
     id: "7",
@@ -365,7 +375,8 @@ export const shopProducts: ShopProduct[] = [
     originalPrice: 55,
     description: "Con Ácido Hialurónico. Hidratación intensa durante la noche, despierta con piel suave - 50ml",
     image: "https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=400&h=400&fit=crop",
-    discount: 18
+    discount: 18,
+    isFeatured: true
   },
   {
     id: "8",
@@ -375,7 +386,8 @@ export const shopProducts: ShopProduct[] = [
     subcategory: "Vitamina C",
     price: 160,
     description: "Aceite facial nutritivo y regenerador. Reduce cicatrices, manchas y líneas finas - 30ml",
-    image: "https://images.unsplash.com/photo-1617897903246-719242758050?w=400&h=400&fit=crop"
+    image: "https://images.unsplash.com/photo-1617897903246-719242758050?w=400&h=400&fit=crop",
+    isFeatured: true
   },
   {
     id: "bs-1",
@@ -387,7 +399,8 @@ export const shopProducts: ShopProduct[] = [
     originalPrice: 120,
     description: "Crema hidratante para pieles secas con ácido hialurónico y vitamina E. Hidratación profunda 24h.",
     image: "https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=400&h=400&fit=crop",
-    discount: 21
+    discount: 21,
+    isBestSeller: true
   },
   {
     id: "bs-2",
@@ -397,7 +410,8 @@ export const shopProducts: ShopProduct[] = [
     subcategory: "Retinol",
     price: 220,
     description: "Sérum anti-edad con retinol y niacinamida. Repara y regenera la piel durante la noche.",
-    image: "https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=400&h=400&fit=crop"
+    image: "https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=400&h=400&fit=crop",
+    isBestSeller: true
   },
   {
     id: "bs-3",
@@ -409,7 +423,8 @@ export const shopProducts: ShopProduct[] = [
     originalPrice: 165,
     description: "Protector solar con antioxidantes, resistente al agua. Protección muy alta UVA/UVB.",
     image: "https://images.unsplash.com/photo-1526947425960-945c6e72858f?w=400&h=400&fit=crop",
-    discount: 18
+    discount: 18,
+    isBestSeller: true
   },
   {
     id: "bs-4",
@@ -419,7 +434,8 @@ export const shopProducts: ShopProduct[] = [
     subcategory: "",
     price: 85,
     description: "Tónico purificante natural con té verde y hamamelis. Equilibra y refresca la piel.",
-    image: "https://images.unsplash.com/photo-1512303452766-a48f2bc60dcd?w=400&h=400&fit=crop"
+    image: "https://images.unsplash.com/photo-1512303452766-a48f2bc60dcd?w=400&h=400&fit=crop",
+    isBestSeller: true
   },
   // Productos De Vuelta en Stock
   {
@@ -432,7 +448,8 @@ export const shopProducts: ShopProduct[] = [
     originalPrice: 145,
     description: "Agua micelar ultra suave que limpia, desmaquilla y tonifica sin necesidad de enjuague. Ideal para piel sensible.",
     image: "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=400&h=400&fit=crop",
-    discount: 14
+    discount: 14,
+    isBackInStock: true
   },
   {
     id: "bis-2",
@@ -442,7 +459,8 @@ export const shopProducts: ShopProduct[] = [
     subcategory: "Quimicos",
     price: 95,
     description: "Exfoliante químico suave que renueva la piel, minimiza poros y mejora la textura. Uso nocturno.",
-    image: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=400&h=400&fit=crop"
+    image: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=400&h=400&fit=crop",
+    isBackInStock: true
   },
   {
     id: "bis-3",
@@ -454,7 +472,8 @@ export const shopProducts: ShopProduct[] = [
     originalPrice: 95,
     description: "Crema corporal intensiva con manteca de karité que nutre profundamente la piel muy seca. Textura rica.",
     image: "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?w=400&h=400&fit=crop",
-    discount: 18
+    discount: 18,
+    isBackInStock: true
   },
   {
     id: "bis-4",
@@ -464,7 +483,8 @@ export const shopProducts: ShopProduct[] = [
     subcategory: "Corporales",
     price: 155,
     description: "Spray solar de rápida absorción con protección muy alta. Resistente al agua y sudor para toda la familia.",
-    image: "https://images.unsplash.com/photo-1556228994-7be8d82c30a9?w=400&h=400&fit=crop"
+    image: "https://images.unsplash.com/photo-1556228994-7be8d82c30a9?w=400&h=400&fit=crop",
+    isBackInStock: true
   },
   {
     id: "bis-5",
@@ -476,7 +496,8 @@ export const shopProducts: ShopProduct[] = [
     originalPrice: 80,
     description: "Mascarilla de noche que hidrata intensamente mientras duermes. Despierta con piel radiante y suave.",
     image: "https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=400&h=400&fit=crop",
-    discount: 19
+    discount: 19,
+    isBackInStock: true
   },
   {
     id: "bis-6",
@@ -486,7 +507,8 @@ export const shopProducts: ShopProduct[] = [
     subcategory: "Aceite Limpiador",
     price: 135,
     description: "Aceite limpiador que elimina maquillaje resistente al agua sin resecar. Deja la piel suave y limpia.",
-    image: "https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=400&h=400&fit=crop"
+    image: "https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=400&h=400&fit=crop",
+    isBackInStock: true
   },
   {
     id: "bis-7",
@@ -498,7 +520,8 @@ export const shopProducts: ShopProduct[] = [
     originalPrice: 220,
     description: "Base de maquillaje con acabado natural y protección solar. Larga duración y cobertura modulable.",
     image: "https://images.unsplash.com/photo-1631214524020-7e18db9a8f92?w=400&h=400&fit=crop",
-    discount: 16
+    discount: 16,
+    isBackInStock: true
   },
   {
     id: "bis-8",
@@ -508,7 +531,8 @@ export const shopProducts: ShopProduct[] = [
     subcategory: "",
     price: 98,
     description: "Champú fortificante que reduce la caída del cabello y estimula el crecimiento. Con cafeína activa.",
-    image: "https://images.unsplash.com/photo-1535585209827-a15fcdbc4c2d?w=400&h=400&fit=crop"
+    image: "https://images.unsplash.com/photo-1535585209827-a15fcdbc4c2d?w=400&h=400&fit=crop",
+    isBackInStock: true
   }
 ];
 

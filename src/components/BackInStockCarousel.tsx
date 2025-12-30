@@ -262,7 +262,10 @@ export const BackInStockCarousel = () => {
         </div>
 
         <div className="flex justify-center mt-8">
-          <Button className="px-8 lg:px-16 rounded-full bg-foreground text-background hover:bg-foreground/90">
+          <Button
+            onClick={() => navigate('/tienda?status=back-in-stock')}
+            className="px-8 lg:px-16 rounded-full bg-foreground text-background hover:bg-foreground/90"
+          >
             Ver más
           </Button>
         </div>
