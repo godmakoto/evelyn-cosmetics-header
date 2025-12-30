@@ -437,6 +437,54 @@ export const shopProducts: ShopProduct[] = [
     image: "https://images.unsplash.com/photo-1512303452766-a48f2bc60dcd?w=400&h=400&fit=crop",
     isBestSeller: true
   },
+  {
+    id: "bs-5",
+    name: "Contorno de Ojos Anti-ojeras con Cafeína y Péptidos Reafirmantes Intensivo",
+    brand: "Vichy",
+    category: "Serums",
+    subcategory: "Retinol",
+    price: 180,
+    originalPrice: 220,
+    description: "Contorno de ojos intensivo que reduce ojeras, bolsas y signos de fatiga. Con cafeína activadora y péptidos reafirmantes.",
+    image: "https://images.unsplash.com/photo-1612817288484-6f916006741a?w=400&h=400&fit=crop",
+    discount: 18,
+    isBestSeller: true
+  },
+  {
+    id: "bs-6",
+    name: "Gel Limpiador Facial Suave para Todo Tipo de Piel con Ceramidas",
+    brand: "CeraVe",
+    category: "Limpiadores",
+    subcategory: "Piel normal a seca",
+    price: 65,
+    description: "Gel limpiador suave que limpia sin resecar. Con ceramidas esenciales para restaurar la barrera protectora de la piel.",
+    image: "https://images.unsplash.com/photo-1556229010-6c3f2c9ca5f8?w=400&h=400&fit=crop",
+    isBestSeller: true
+  },
+  {
+    id: "bs-7",
+    name: "Mascarilla Facial Detox con Arcilla Verde y Carbón Activado Purificante",
+    brand: "Neutrogena",
+    category: "Mascarillas",
+    subcategory: "",
+    price: 55,
+    originalPrice: 70,
+    description: "Mascarilla purificante con arcilla verde y carbón activado. Elimina impurezas profundas y minimiza poros.",
+    image: "https://images.unsplash.com/photo-1567721913486-6585f069b332?w=400&h=400&fit=crop",
+    discount: 21,
+    isBestSeller: true
+  },
+  {
+    id: "bs-8",
+    name: "Aceite Facial Regenerador con Rosa Mosqueta y Vitamina C Iluminador",
+    brand: "The Ordinary",
+    category: "Serums",
+    subcategory: "Vitamina C",
+    price: 145,
+    description: "Aceite facial regenerador con rosa mosqueta y vitamina C. Ilumina, regenera y reduce cicatrices y manchas.",
+    image: "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?w=400&h=400&fit=crop",
+    isBestSeller: true
+  },
   // Productos De Vuelta en Stock
   {
     id: "bis-1",

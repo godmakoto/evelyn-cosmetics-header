@@ -218,6 +218,72 @@ export const productDetails: Record<string, ProductDetail> = {
     howToUse: "1. Usa después de limpiar el rostro.\n2. Aplica con un algodón sobre rostro y cuello.\n3. No enjuagues.\n4. Continúa con tu sérum y crema habitual.\n5. Usa mañana y noche.\n6. Evita el contorno de ojos.",
     ingredients: "Aqua, Glycerin, Camellia Sinensis Leaf Extract, Hamamelis Virginiana Water, Niacinamide, Panthenol, Allantoin, Citric Acid, Sodium Benzoate, Potassium Sorbate."
   },
+  "bs-5": {
+    id: "bs-5",
+    name: "Contorno de Ojos Anti-ojeras con Cafeína y Péptidos Reafirmantes Intensivo",
+    brand: "Vichy",
+    price: 180,
+    originalPrice: 220,
+    category: "Contorno de Ojos",
+    description: "Contorno de ojos intensivo que reduce ojeras, bolsas y signos de fatiga. Con cafeína activadora y péptidos reafirmantes.",
+    images: [
+      "https://images.unsplash.com/photo-1612817288484-6f916006741a?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1570194065650-d99fb4b38b15?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=600&h=600&fit=crop",
+    ],
+    fullDescription: "Tratamiento intensivo para el contorno de ojos con cafeína pura y péptidos reafirmantes de última generación. Reduce visiblemente las ojeras, disminuye las bolsas causadas por retención de líquidos y suaviza los signos de fatiga. Su fórmula con efecto frío inmediato proporciona una sensación refrescante al instante.",
+    howToUse: "1. Aplica por la mañana sobre el contorno de ojos limpio.\n2. Toma una pequeña cantidad con el dedo anular.\n3. Aplica con toques suaves desde el ángulo interno al externo.\n4. Realiza ligeros masajes circulares para activar la microcirculación.\n5. Deja absorber completamente antes del maquillaje.\n6. Puede usarse también por la noche.",
+    ingredients: "Aqua, Glycerin, Caffeine, Palmitoyl Tetrapeptide-7, Palmitoyl Oligopeptide, Escin, Niacinamide, Hyaluronic Acid, Adenosine, Tocopheryl Acetate, Panthenol, Citric Acid."
+  },
+  "bs-6": {
+    id: "bs-6",
+    name: "Gel Limpiador Facial Suave para Todo Tipo de Piel con Ceramidas",
+    brand: "CeraVe",
+    price: 65,
+    category: "Limpiadores",
+    description: "Gel limpiador suave que limpia sin resecar. Con ceramidas esenciales para restaurar la barrera protectora de la piel.",
+    images: [
+      "https://images.unsplash.com/photo-1556229010-6c3f2c9ca5f8?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?w=600&h=600&fit=crop",
+    ],
+    fullDescription: "Gel limpiador facial formulado con 3 ceramidas esenciales (1, 3, 6-II) que ayudan a restaurar y mantener la barrera protectora natural de la piel. Su textura en gel espumoso elimina eficazmente el maquillaje, la suciedad y el exceso de grasa sin alterar el equilibrio natural de la piel. Apto para todo tipo de piel, incluyendo piel sensible.",
+    howToUse: "1. Humedece el rostro con agua tibia.\n2. Aplica el gel limpiador sobre rostro y cuello.\n3. Masajea suavemente con movimientos circulares.\n4. Presta especial atención a la zona T.\n5. Enjuaga abundantemente con agua tibia.\n6. Seca con toques suaves.\n7. Usa mañana y noche.",
+    ingredients: "Aqua, Glycerin, Ceramide NP, Ceramide AP, Ceramide EOP, Carbomer, Hyaluronic Acid, Cholesterol, Sodium Lauroyl Lactylate, Xanthan Gum, Polysorbate 20, Citric Acid."
+  },
+  "bs-7": {
+    id: "bs-7",
+    name: "Mascarilla Facial Detox con Arcilla Verde y Carbón Activado Purificante",
+    brand: "Neutrogena",
+    price: 55,
+    originalPrice: 70,
+    category: "Mascarillas",
+    description: "Mascarilla purificante con arcilla verde y carbón activado. Elimina impurezas profundas y minimiza poros.",
+    images: [
+      "https://images.unsplash.com/photo-1567721913486-6585f069b332?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=600&h=600&fit=crop",
+    ],
+    fullDescription: "Mascarilla detoxificante de doble acción formulada con arcilla verde francesa y carbón activado de bambú. La arcilla verde absorbe el exceso de grasa y purifica los poros, mientras que el carbón activado actúa como un imán atrayendo impurezas, toxinas y partículas contaminantes. Deja la piel profundamente limpia, fresca y con poros visiblemente minimizados.",
+    howToUse: "1. Limpia y seca tu rostro antes de aplicar.\n2. Aplica una capa uniforme sobre rostro evitando el contorno de ojos.\n3. Deja actuar 10-15 minutos hasta que se seque.\n4. Enjuaga con agua tibia usando movimientos circulares.\n5. Seca con toques suaves.\n6. Aplica tu crema hidratante habitual.\n7. Usa 1-2 veces por semana.",
+    ingredients: "Kaolin, Bentonite, Charcoal Powder, Glycerin, Aqua, Salicylic Acid, Eucalyptus Globulus Leaf Oil, Mentha Piperita Oil, Titanium Dioxide, Citric Acid."
+  },
+  "bs-8": {
+    id: "bs-8",
+    name: "Aceite Facial Regenerador con Rosa Mosqueta y Vitamina C Iluminador",
+    brand: "The Ordinary",
+    price: 145,
+    category: "Aceites Faciales",
+    description: "Aceite facial regenerador con rosa mosqueta y vitamina C. Ilumina, regenera y reduce cicatrices y manchas.",
+    images: [
+      "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1617897903246-719242758050?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=600&h=600&fit=crop",
+    ],
+    fullDescription: "Aceite facial premium 100% puro de rosa mosqueta prensado en frío, enriquecido con vitamina C estable. Rico en ácidos grasos esenciales (omega 3, 6 y 9) y vitamina A natural, este aceite ayuda a regenerar la piel, reducir la apariencia de cicatrices, manchas oscuras y líneas finas. Su alto contenido en antioxidantes protege contra el daño ambiental mientras ilumina el tono de la piel.",
+    howToUse: "1. Usa por la noche sobre piel limpia.\n2. Calienta 3-4 gotas entre tus palmas.\n3. Presiona suavemente sobre rostro y cuello.\n4. Masajea con movimientos ascendentes hasta absorción.\n5. Puede usarse solo o mezclado con tu crema habitual.\n6. Evita el contorno de ojos.\n7. Usa diariamente para mejores resultados.",
+    ingredients: "Rosa Canina Fruit Oil, Ascorbyl Tetraisopalmitate (Vitamin C), Tocopherol (Vitamin E), Helianthus Annuus Seed Oil, Rosmarinus Officinalis Leaf Extract."
+  },
   // Productos de la tienda
   "shop-0": {
     id: "shop-0",
