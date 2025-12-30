@@ -3,6 +3,9 @@ import useEmblaCarousel from "embla-carousel-react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
+import heroTienda from "@/assets/hero-tienda.jpg";
+import heroMaquillaje from "@/assets/hero-maquillaje.jpg";
+import heroKits from "@/assets/hero-kits.jpg";
 
 interface Slide {
   id: number;
@@ -16,27 +19,27 @@ interface Slide {
 const slides: Slide[] = [
   {
     id: 1,
-    headline: "Cuida tu piel",
-    subtitle: "Descubre nuestra línea de dermocosmética premium",
-    ctaText: "Explorar",
-    ctaLink: "#",
-    imageUrl: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=1920&q=80",
+    headline: "Explora nuestra tienda",
+    subtitle: "Descubre toda nuestra colección de productos de belleza y cuidado personal",
+    ctaText: "Ver tienda",
+    ctaLink: "/tienda",
+    imageUrl: heroTienda,
   },
   {
     id: 2,
-    headline: "Belleza natural",
-    subtitle: "Productos formulados con ingredientes de alta calidad",
-    ctaText: "Ver productos",
-    ctaLink: "#",
-    imageUrl: "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=1920&q=80",
+    headline: "Maquillaje profesional",
+    subtitle: "Los mejores productos para realzar tu belleza natural",
+    ctaText: "Ver maquillaje",
+    ctaLink: "/tienda?category=Maquillaje",
+    imageUrl: heroMaquillaje,
   },
   {
     id: 3,
-    headline: "Rutina perfecta",
-    subtitle: "Encuentra los productos ideales para tu tipo de piel",
-    ctaText: "Comprar ahora",
-    ctaLink: "#",
-    imageUrl: "https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=1920&q=80",
+    headline: "Kits exclusivos",
+    subtitle: "Sets completos con todo lo que necesitas para tu rutina de belleza",
+    ctaText: "Ver kits",
+    ctaLink: "/tienda?category=Kits",
+    imageUrl: heroKits,
   },
 ];
 
