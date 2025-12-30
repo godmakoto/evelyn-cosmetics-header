@@ -1,7 +1,25 @@
 import { useState, useEffect, useCallback } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
-import { ChevronLeft, ChevronRight, Droplet, Sun, Droplets, SprayCan, Beaker, Heart, Sparkles, Smile, Package, Paintbrush, CircleDot } from "lucide-react";
+import { 
+  ChevronLeft, 
+  ChevronRight, 
+  Droplet, 
+  Sun, 
+  Droplets, 
+  SprayCan, 
+  FlaskConical, 
+  Sparkles, 
+  Gift, 
+  Palette, 
+  Waves, 
+  Eraser, 
+  Scissors, 
+  Wind, 
+  Cherry,
+  CircleDashed,
+  Leaf
+} from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
@@ -18,7 +36,7 @@ const categories: Category[] = [
   {
     id: "limpiadores",
     name: "Limpiadores",
-    icon: <Sparkles className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
+    icon: <Waves className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
     categoryFilter: "Limpiadores"
   },
   {
@@ -30,7 +48,7 @@ const categories: Category[] = [
   {
     id: "hidratantes-corporales",
     name: "Hidratantes Corporales",
-    icon: <Heart className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
+    icon: <Leaf className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
     categoryFilter: "Hidratantes Corporales"
   },
   {
@@ -48,25 +66,25 @@ const categories: Category[] = [
   {
     id: "exfoliantes-faciales",
     name: "Exfoliantes faciales",
-    icon: <CircleDot className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
+    icon: <CircleDashed className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
     categoryFilter: "Exfoliantes faciales"
   },
   {
     id: "exfoliantes-corporales",
     name: "Exfoliantes Corporales",
-    icon: <CircleDot className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
+    icon: <Sparkles className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
     categoryFilter: "Exfoliantes Corporales"
   },
   {
     id: "desmaquillantes",
     name: "Desmaquillantes",
-    icon: <Sparkles className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
+    icon: <Eraser className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
     categoryFilter: "Desmaquillantes"
   },
   {
     id: "tonicos-esencias",
     name: "Tonicos y Esencias",
-    icon: <Beaker className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
+    icon: <FlaskConical className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
     categoryFilter: "Tonicos y Esencias"
   },
   {
@@ -78,31 +96,31 @@ const categories: Category[] = [
   {
     id: "capilar",
     name: "Capilar",
-    icon: <Sparkles className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
+    icon: <Scissors className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
     categoryFilter: "Capilar"
   },
   {
     id: "maquillaje",
     name: "Maquillaje",
-    icon: <Paintbrush className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
+    icon: <Palette className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
     categoryFilter: "Maquillaje"
   },
   {
     id: "kits",
     name: "Kits",
-    icon: <Package className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
+    icon: <Gift className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
     categoryFilter: "Kits"
   },
   {
     id: "labios",
     name: "Labios",
-    icon: <Smile className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
+    icon: <Cherry className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
     categoryFilter: "Labios"
   },
   {
     id: "mascarillas",
     name: "Mascarillas",
-    icon: <Heart className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
+    icon: <Wind className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
     categoryFilter: "Mascarillas"
   }
 ];
