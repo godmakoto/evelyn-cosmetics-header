@@ -124,38 +124,20 @@ const ShopFilters = ({
           )}
         </div>
 
-        {/* Fila 1: Precio Máximo y Estado */}
-        <div className="grid grid-cols-2 lg:grid-cols-1 gap-2 mb-2 md:gap-3 md:mb-3">
-          <div>
-            <label className="block text-sm md:text-xs text-[#666] mb-1.5 md:mb-1">Precio Máximo</label>
-            <input
-              type="number"
-              value={maxPrice}
-              onChange={(e) => setMaxPrice(e.target.value)}
-              placeholder="Ej: 200"
-              className="w-full h-10 md:h-10 px-3 md:px-3 rounded-xl border border-[#eaeaea] bg-white text-[#222] text-base md:text-sm
-                focus:outline-none focus:border-[#222] transition-colors"
-            />
-          </div>
-
-          {/* Estado de Producto */}
-          <div>
-            <label className="block text-sm md:text-xs text-[#666] mb-1.5 md:mb-1">Estado</label>
-            <Select value={selectedStatus || "all"} onValueChange={(value) => setSelectedStatus(value === "all" ? null : value)}>
-              <SelectTrigger className="w-full h-10 md:h-10 rounded-xl border-[#eaeaea] text-base md:text-sm">
-                <SelectValue placeholder="Todos" />
-              </SelectTrigger>
-              <SelectContent className="rounded-xl">
-                <SelectItem value="all" className="text-base md:text-sm">Todos</SelectItem>
-                <SelectItem value="best-seller" className="text-base md:text-sm">Más Vendidos</SelectItem>
-                <SelectItem value="featured" className="text-base md:text-sm">Destacados</SelectItem>
-                <SelectItem value="back-in-stock" className="text-base md:text-sm">De Vuelta en Stock</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+        {/* Precio Máximo */}
+        <div className="mb-2 md:mb-3">
+          <label className="block text-sm md:text-xs text-[#666] mb-1.5 md:mb-1">Precio Máximo</label>
+          <input
+            type="number"
+            value={maxPrice}
+            onChange={(e) => setMaxPrice(e.target.value)}
+            placeholder="Ej: 200"
+            className="w-full h-10 md:h-10 px-3 md:px-3 rounded-xl border border-[#eaeaea] bg-white text-[#222] text-base md:text-sm
+              focus:outline-none focus:border-[#222] transition-colors"
+          />
         </div>
 
-        {/* Fila 2: Marca */}
+        {/* Marca */}
         <div className="mb-2 md:mb-3">
           <label className="block text-sm md:text-xs text-[#666] mb-1.5 md:mb-1">Marca</label>
           <Select value={selectedBrand || "all"} onValueChange={(value) => handleBrandChange(value === "all" ? null : value)}>
@@ -173,7 +155,7 @@ const ShopFilters = ({
           </Select>
         </div>
 
-        {/* Fila 3: Categoría */}
+        {/* Categoría */}
         <div className="mb-3 md:mb-3">
           <label className="block text-sm md:text-xs text-[#666] mb-1.5 md:mb-1">Categoría</label>
           <Select value={selectedCategory || "all"} onValueChange={(value) => handleCategoryChange(value === "all" ? null : value)}>
@@ -191,7 +173,7 @@ const ShopFilters = ({
           </Select>
         </div>
 
-        {/* Fila 4: Subcategorías (solo visible cuando hay categoría seleccionada) */}
+        {/* Subcategorías (solo visible cuando hay categoría seleccionada) */}
         {selectedCategory && subcategories.length > 0 && (
           <div className="animate-in fade-in slide-in-from-top-2 duration-200">
             <label className="block text-sm md:text-xs text-[#666] mb-1.5 md:mb-1">Tipo de Producto</label>
