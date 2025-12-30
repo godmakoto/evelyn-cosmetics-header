@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { brands, categories, getSubcategories } from "@/data/shopProducts";
+import { brands } from "@/data/shopProducts";
+import { categories, getSubcategories } from "@/data/categories";
 import { ChevronDown } from "lucide-react";
 import {
   Select,
@@ -158,8 +159,8 @@ const ShopFilters = ({
             <SelectContent className="rounded-xl">
               <SelectItem value="all" className="text-base md:text-sm">Todas</SelectItem>
               {categories.map((category) => (
-                <SelectItem key={category} value={category} className="text-base md:text-sm">
-                  {category}
+                <SelectItem key={category.name} value={category.name} className="text-base md:text-sm">
+                  {category.name}
                 </SelectItem>
               ))}
             </SelectContent>

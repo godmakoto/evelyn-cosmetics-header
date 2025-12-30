@@ -263,8 +263,23 @@ const ProductGrid = ({
 
             {!isLoading && !isFiltering && filteredProducts.length === 0 && (
               <div className="text-center py-16">
-                <p className="text-[#666] text-lg mb-2">No se encontraron productos</p>
-                <p className="text-[#999] text-sm">Intenta ajustar los filtros de búsqueda</p>
+                <p className="text-[#666] text-lg mb-2">
+                  {filters.subcategory
+                    ? `Sin productos en esta subcategoría`
+                    : filters.category
+                    ? `Sin productos en esta categoría`
+                    : filters.brand
+                    ? `Sin productos de esta marca`
+                    : activeSearchQuery
+                    ? `No se encontraron productos para "${activeSearchQuery}"`
+                    : 'No se encontraron productos'}
+                </p>
+                <p className="text-[#999] text-sm">
+                  {filters.subcategory && `"${filters.subcategory}" en ${filters.category}`}
+                  {filters.category && !filters.subcategory && `"${filters.category}"`}
+                  {filters.brand && `"${filters.brand}"`}
+                  {!filters.subcategory && !filters.category && !filters.brand && 'Intenta ajustar los filtros de búsqueda'}
+                </p>
               </div>
             )}
           </div>
