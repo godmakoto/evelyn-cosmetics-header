@@ -5,6 +5,7 @@ import { ProductCarousel } from "@/components/ProductCarousel";
 import { BestSellersCarousel } from "@/components/BestSellersCarousel";
 import { BackInStockCarousel } from "@/components/BackInStockCarousel";
 import { BrandsCarousel } from "@/components/BrandsCarousel";
+import { SaleBanner } from "@/components/SaleBanner";
 import Footer from "@/components/Footer";
 
 const Index = () => {
@@ -23,6 +24,9 @@ const Index = () => {
 
       {/* Product Carousel */}
       <ProductCarousel />
+
+      {/* Sale Banner */}
+      <SaleBanner />
 
       {/* Back In Stock Carousel */}
       <BackInStockCarousel />
