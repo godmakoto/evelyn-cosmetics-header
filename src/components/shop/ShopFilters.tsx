@@ -144,7 +144,7 @@ const ShopFilters = ({
             <SelectTrigger className="w-full h-10 md:h-10 rounded-xl border-[#eaeaea] text-base md:text-sm">
               <SelectValue placeholder="Todas" />
             </SelectTrigger>
-            <SelectContent className="rounded-xl">
+            <SelectContent side="bottom" className="rounded-xl">
               <SelectItem value="all" className="text-base md:text-sm">Todas</SelectItem>
               {brands.map((brand) => (
                 <SelectItem key={brand} value={brand} className="text-base md:text-sm">
@@ -162,7 +162,7 @@ const ShopFilters = ({
             <SelectTrigger className="w-full h-10 md:h-10 rounded-xl border-[#eaeaea] text-base md:text-sm">
               <SelectValue placeholder="Todas" />
             </SelectTrigger>
-            <SelectContent className="rounded-xl">
+            <SelectContent side="bottom" className="rounded-xl">
               <SelectItem value="all" className="text-base md:text-sm">Todas</SelectItem>
               {categories.map((category) => (
                 <SelectItem key={category.name} value={category.name} className="text-base md:text-sm">
@@ -181,7 +181,7 @@ const ShopFilters = ({
               <SelectTrigger className="w-full h-10 md:h-10 rounded-xl border-[#eaeaea] text-base md:text-sm">
                 <SelectValue placeholder="Todos" />
               </SelectTrigger>
-              <SelectContent className="rounded-xl">
+              <SelectContent side="bottom" className="rounded-xl">
                 <SelectItem value="all" className="text-base md:text-sm">Todos</SelectItem>
                 {subcategories.map((sub) => (
                   <SelectItem key={sub} value={sub} className="text-base md:text-sm">
