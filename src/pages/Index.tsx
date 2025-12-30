@@ -18,14 +18,14 @@ const Index = () => {
       {/* Best Sellers Carousel */}
       <BestSellersCarousel />
 
-      {/* Back In Stock Carousel */}
-      <BackInStockCarousel />
-
       {/* Categories Carousel */}
       <CategoriesCarousel />
 
       {/* Product Carousel */}
       <ProductCarousel />
+
+      {/* Back In Stock Carousel */}
+      <BackInStockCarousel />
 
       {/* Brands Carousel */}
       <BrandsCarousel />
