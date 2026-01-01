@@ -1,7 +1,7 @@
 -- Parte 5 de la importación de productos
 -- Ejecuta cada parte en orden (parte-1, parte-2, etc.)
 
- (productos 401-450)
+-- Lote (productos 401-450)
 INSERT INTO products (product_id, title, offer_price, regular_price, description, images, is_featured, is_back_in_stock, is_best_seller, is_on_sale, stock, low_stock_threshold, in_stock)
 VALUES
   ('1745204063936-hrbcR', 'Skin 1004 Centella Hyalu-cica Moisture Cream - Crema hidratante ligera en gel - Con Ac. Hialurónico, Extracto de Centella Asiática y Extractos vegetales calmantes - Todo tipo de piel - 75ml', NULL, 280, 'Esta crema hidratante de Skin1004 combina el poder calmante de la centella asiática con la capacidad de retención de agua del ácido hialurónico, logrando un equilibrio perfecto para todo tipo de pieles, especialmente aquellas sensibles, mixtas, secas o propensas a la deshidratación. Su textura ligera en gel se absorbe rápidamente, dejando la piel suave, elástica y sin residuos grasos. Ideal para el uso diario, incluso en climas cálidos o húmedos.
@@ -1224,9 +1224,7 @@ Este stock solar tiene una función de praimer que rellena las irregularidades a
 Certificado vegano y libre de crueldad animal
 
 No contiene sustancias químicas que puede dañar los arrecifes', '["https://firebasestorage.stagebeta.kyte.site/v0/b/kyte-7c484.appspot.com/o/hrbcR0RO9GPXbw1gOcXitOn7dez1%2F96d117e1-633d-4f77-87da-99fcad003127.jpg?alt=media","https://firebasestorage.stagebeta.kyte.site/v0/b/kyte-7c484.appspot.com/o/hrbcR0RO9GPXbw1gOcXitOn7dez1%2F93e92575-ee71-4f8f-844e-247563952101.jpg?alt=media","https://firebasestorage.stagebeta.kyte.site/v0/b/kyte-7c484.appspot.com/o/hrbcR0RO9GPXbw1gOcXitOn7dez1%2F86540389-ad99-4725-bb65-273aea5c7ada.jpg?alt=media","https://firebasestorage.stagebeta.kyte.site/v0/b/kyte-7c484.appspot.com/o/hrbcR0RO9GPXbw1gOcXitOn7dez1%2F3d9e6086-d701-4275-bb31-4a50b801f25f.jpg?alt=media","https://firebasestorage.stagebeta.kyte.site/v0/b/kyte-7c484.appspot.com/o/hrbcR0RO9GPXbw1gOcXitOn7dez1%2F2fcd9948-f9f3-400f-b205-b3b6de1e89dc.jpg?alt=media","https://firebasestorage.stagebeta.kyte.site/v0/b/kyte-7c484.appspot.com/o/hrbcR0RO9GPXbw1gOcXitOn7dez1%2Ff1759729-8e5a-4b35-8df7-95a05f8df2b5.jpg?alt=media"]'::jsonb, false, false, false, false, 10, 5, true);
-
-
- (productos 451-476)
+-- Lote (productos 451-476)
 INSERT INTO products (product_id, title, offer_price, regular_price, description, images, is_featured, is_back_in_stock, is_best_seller, is_on_sale, stock, low_stock_threshold, in_stock)
 VALUES
   ('1755117082372-hrbcR', 'Tocobo Juicy Berry Plumping Lip Oil 00 Frozen Berry | 4g', 175, 180, '', '["https://firebasestorage.stagebeta.kyte.site/v0/b/kyte-7c484.appspot.com/o/hrbcR0RO9GPXbw1gOcXitOn7dez1%2F69c00f58-6188-4195-9a6d-ccd92e11efd0.jpg?alt=media","https://firebasestorage.stagebeta.kyte.site/v0/b/kyte-7c484.appspot.com/o/hrbcR0RO9GPXbw1gOcXitOn7dez1%2Fefdeeb02-fb67-4233-b61c-bb3a9d3e0935.jpg?alt=media","https://firebasestorage.stagebeta.kyte.site/v0/b/kyte-7c484.appspot.com/o/hrbcR0RO9GPXbw1gOcXitOn7dez1%2Fe66c04c5-0377-4a3a-80e7-caa17dda60b4.jpg?alt=media"]'::jsonb, false, false, false, false, 10, 5, true),
@@ -1645,4 +1643,3 @@ Ideal para mujeres que buscan una fragancia versátil, Yara Rosa pastel es perfe
 
 Opiniones de Usuarios
 Las usuarias destacan su aroma dulce pero no empalagoso, su larga duración y la elegancia de su presentación. Es considerada una fragancia adictiva y versátil, adecuada para diversas ocasiones.', '["https://firebasestorage.stagebeta.kyte.site/v0/b/kyte-7c484.appspot.com/o/hrbcR0RO9GPXbw1gOcXitOn7dez1%2F1186f15e-bf08-48dd-ae1c-5d3f40e146cb.jpg?alt=media","https://firebasestorage.stagebeta.kyte.site/v0/b/kyte-7c484.appspot.com/o/hrbcR0RO9GPXbw1gOcXitOn7dez1%2Ff42acbc3-287c-4ccc-80e0-52d230c12108.jpg?alt=media","https://firebasestorage.stagebeta.kyte.site/v0/b/kyte-7c484.appspot.com/o/hrbcR0RO9GPXbw1gOcXitOn7dez1%2Ff54f1e0c-2020-4b3e-bc36-d6266c2349af.jpg?alt=media","https://firebasestorage.stagebeta.kyte.site/v0/b/kyte-7c484.appspot.com/o/hrbcR0RO9GPXbw1gOcXitOn7dez1%2Fc9e6d9cf-1eac-42b0-94cc-c44ea3a582bf.jpg?alt=media","https://firebasestorage.stagebeta.kyte.site/v0/b/kyte-7c484.appspot.com/o/hrbcR0RO9GPXbw1gOcXitOn7dez1%2Fde2877eb-789e-401a-b835-e69a6906d0b1.jpg?alt=media"]'::jsonb, false, false, false, false, 10, 5, true);
-

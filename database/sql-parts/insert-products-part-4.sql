@@ -1,7 +1,7 @@
 -- Parte 4 de la importación de productos
 -- Ejecuta cada parte en orden (parte-1, parte-2, etc.)
 
- (productos 301-350)
+-- Lote (productos 301-350)
 INSERT INTO products (product_id, title, offer_price, regular_price, description, images, is_featured, is_back_in_stock, is_best_seller, is_on_sale, stock, low_stock_threshold, in_stock)
 VALUES
   ('1744321239559-hrbcR', 'Neutrogena Loción hidratante Fórmula Noruega Sin fragancia - Con Avena prebiotica, Glicerina y Tecnología TRIPLELIP™ Reparadora - Todo tipo de piel, piel sensible - 400ml', 170, 195, 'Loción corporal hidratante intensiva, ideal para todo tipo de piel, incluso las más secas, extrasecas y sensibles. Hidrata profundamente formando una capa protectora que repara la barrera cutánea y reequilibra la microbiota de la piel. Con fórmula no oleosa y de rápida absorción, proporciona hidratación inmediata y prolongada, minimizando el aspecto blanquecino y la descamación causados por la resequedad excesiva.
@@ -623,9 +623,7 @@ NIVEA LUMINOUS 630® Crema Corporal Anti-Marcas 200ml es una crema hidratante qu
 ‼️Uso externo. No utilizar en la cara. 
 
 https://www.nivea.com.br/produtos/nivea-luminous-630%c2%ae-creme-corporal-antimarcas-200ml-40060000589310033.html?_gl=1*1dmsztq*_up*MQ..&gclid=CjwKCAjw59q2BhBOEiwAKc0ijSXDYlVIef7uficPQbnXAP_gtrIT_q4YoxPPplY6uoK6vv8RQu3VXBoCal0QAvD_BwE', '["https://firebasestorage.stagebeta.kyte.site/v0/b/kyte-7c484.appspot.com/o/hrbcR0RO9GPXbw1gOcXitOn7dez1%2Fe3c3c4f4-f887-4189-b815-dba7a74f60d8.jpg?alt=media","https://firebasestorage.stagebeta.kyte.site/v0/b/kyte-7c484.appspot.com/o/hrbcR0RO9GPXbw1gOcXitOn7dez1%2Fd632adad-91ba-47f6-b18d-d55f0c602e6d.jpg?alt=media","https://firebasestorage.stagebeta.kyte.site/v0/b/kyte-7c484.appspot.com/o/hrbcR0RO9GPXbw1gOcXitOn7dez1%2Ffb9b7200-5c83-4f94-85c2-4b5c6cb0303c.jpg?alt=media","https://firebasestorage.stagebeta.kyte.site/v0/b/kyte-7c484.appspot.com/o/hrbcR0RO9GPXbw1gOcXitOn7dez1%2Fa5dc836c-70db-423e-8b9a-615ec65bed36.jpg?alt=media","https://firebasestorage.stagebeta.kyte.site/v0/b/kyte-7c484.appspot.com/o/hrbcR0RO9GPXbw1gOcXitOn7dez1%2Fc4a60194-9815-432d-931a-1000bc97f9cc.jpg?alt=media","https://firebasestorage.stagebeta.kyte.site/v0/b/kyte-7c484.appspot.com/o/hrbcR0RO9GPXbw1gOcXitOn7dez1%2F107ac1b4-7e70-4d9d-8fe6-3841845425b7.jpg?alt=media","https://firebasestorage.stagebeta.kyte.site/v0/b/kyte-7c484.appspot.com/o/hrbcR0RO9GPXbw1gOcXitOn7dez1%2F9f7d49b2-682b-44f1-a8dd-5fbba36f06e8.jpg?alt=media"]'::jsonb, false, false, false, false, 10, 5, true);
-
-
- (productos 351-400)
+-- Lote (productos 351-400)
 INSERT INTO products (product_id, title, offer_price, regular_price, description, images, is_featured, is_back_in_stock, is_best_seller, is_on_sale, stock, low_stock_threshold, in_stock)
 VALUES
   ('1727790502706-hrbcR', 'Nivea Q10 Doble Acción Anti-arrugas Expert Sérum - Reduce arrugas existentes y previene la formación de nuevas - Con Tecnología Anti-Glicación potenciada por Q10 puro y GLYCOSTOP - Todo tipo de piel - 30ml', 150, 190, 'Serum Q10 Doble Acción Anti-Arrugas Expert con Tecnología Anti-Glicación potenciada por Q10 puro y GLYCOSTOP reduce incluso las arrugas más profundas y previene las nuevas causadas por la glicación.
@@ -1899,4 +1897,3 @@ Ingrediente estrella en la cosmética coreana por sus propiedades regeneradoras,
 
 • Ceramidas
 Cuando los niveles de Ceramidas son bajos, la barrera de la piel se debilita, permitiendo que la hidratación se escape de la piel y esta se vuelva seca, reactiva o irritada. Aplicar Ceramidas directamente en la piel ayuda a restaurar la barrera y mantener la hidratación.', '["https://firebasestorage.stagebeta.kyte.site/v0/b/kyte-7c484.appspot.com/o/hrbcR0RO9GPXbw1gOcXitOn7dez1%2F784c66c6-2dba-4ce6-b402-1ed29b45e355.jpg?alt=media","https://firebasestorage.stagebeta.kyte.site/v0/b/kyte-7c484.appspot.com/o/hrbcR0RO9GPXbw1gOcXitOn7dez1%2F4f3965b0-f85c-4b4d-bfa4-be3cccc59c8a.jpg?alt=media"]'::jsonb, false, false, false, false, 10, 5, true);
-

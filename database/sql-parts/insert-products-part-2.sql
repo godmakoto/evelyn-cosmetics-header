@@ -1,7 +1,7 @@
 -- Parte 2 de la importación de productos
 -- Ejecuta cada parte en orden (parte-1, parte-2, etc.)
 
- (productos 101-150)
+-- Lote (productos 101-150)
 INSERT INTO products (product_id, title, offer_price, regular_price, description, images, is_featured, is_back_in_stock, is_best_seller, is_on_sale, stock, low_stock_threshold, in_stock)
 VALUES
   ('1716574343956-hrbcR', 'Eucerin Aquaphor Pomada reparadora - Con Pantenol, Bisabolol y Glicerina - Repara, protege y calma la piel seca, dañada, agrietada o irritada - Todo tipo de piel - 220ml', 380, 410, 'Acelera la regeneración de la piel
@@ -1062,9 +1062,7 @@ Indredientes:
 AGUA, GLICERINA, NIACINAMIDA, ALCOHOL ETÍLICO, ISONONANOATO DE ISONONILO, CARBÓMERO DE SODIO, EXTRACTO DE FRUTO DE LIMÓN (CITRUS LIMON), HIDRÓXIDO DE SODIO, DIÓXIDO DE SILICIO, SILILATO DE SÍLICE, ASCORBYL GLUCOSIDE, CAPRILILGLICOL, TRISSÓDICO EDTA (DISSUCCINATO DE ETILENODIAMINA TRISSÓDICO), GOMA XANTANA, POLIGLICERIL-2 ISOESTEARATO, ÁCIDO SALICÍLICO, CLORFENESINA, AMARILLO TARTRAZINA, AZUL BRILLANTE, LINALOOL, GERANIOL, LIMONENO, PERFUME.
 
 https://www.garnier.com.br/loja/pele/necessidade/hidratacao/hidratante-facial-toque-seco-antiacne', '["https://firebasestorage.stagebeta.kyte.site/v0/b/kyte-7c484.appspot.com/o/hrbcR0RO9GPXbw1gOcXitOn7dez1%2Fb01596d2-84a6-44e6-81bd-1f1dd9a8e6a5.jpg?alt=media","https://firebasestorage.stagebeta.kyte.site/v0/b/kyte-7c484.appspot.com/o/hrbcR0RO9GPXbw1gOcXitOn7dez1%2F490b3f7f-96b7-4844-a5d1-2ec5e114c517.jpg?alt=media","https://firebasestorage.stagebeta.kyte.site/v0/b/kyte-7c484.appspot.com/o/hrbcR0RO9GPXbw1gOcXitOn7dez1%2Fa97de217-b634-4b2f-b406-c3d75cd7e162.jpg?alt=media","https://firebasestorage.stagebeta.kyte.site/v0/b/kyte-7c484.appspot.com/o/hrbcR0RO9GPXbw1gOcXitOn7dez1%2Fae4389c3-97f3-4757-8055-ea1ba7408d82.jpg?alt=media"]'::jsonb, false, false, false, false, 10, 5, true);
-
-
- (productos 151-200)
+-- Lote (productos 151-200)
 INSERT INTO products (product_id, title, offer_price, regular_price, description, images, is_featured, is_back_in_stock, is_best_seller, is_on_sale, stock, low_stock_threshold, in_stock)
 VALUES
   ('1747720373440-hrbcR', 'Garnier Toque seco Vitamina C Hidratante facial Anti-manchas - Con 4% de Vitamina C*, Niacinamida y Ac. Hialurónico, Glicerina - Piel mixta y grasa - 85g', 120, 135, 'El Hidratante Facial Garnier Antimanchas Toque Seco garantiza hidratación con acabado seco y control de la oleosidad sin dejar sensación pesada en la piel.
@@ -1746,4 +1744,3 @@ Si detectamos un solo caso, volvemos al laboratorio y reformulamos.
 
 
 https://www.laroche-posay.es/anthelios/anthelios-age-correct-spf-50-cc-crema', '["https://firebasestorage.stagebeta.kyte.site/v0/b/kyte-7c484.appspot.com/o/hrbcR0RO9GPXbw1gOcXitOn7dez1%2F56611829-ad20-41ef-ab46-3b081e0a826f.jpg?alt=media","https://firebasestorage.stagebeta.kyte.site/v0/b/kyte-7c484.appspot.com/o/hrbcR0RO9GPXbw1gOcXitOn7dez1%2Fefdf1584-fc37-4e16-917f-4630419d61c4.jpg?alt=media","https://firebasestorage.stagebeta.kyte.site/v0/b/kyte-7c484.appspot.com/o/hrbcR0RO9GPXbw1gOcXitOn7dez1%2F9c30e202-e124-4618-9b36-b5b4dd7443c4.jpg?alt=media","https://firebasestorage.stagebeta.kyte.site/v0/b/kyte-7c484.appspot.com/o/hrbcR0RO9GPXbw1gOcXitOn7dez1%2F86ca9628-31bf-485e-aa4c-48d54a268232.jpg?alt=media"]'::jsonb, false, false, false, false, 10, 5, true);
-

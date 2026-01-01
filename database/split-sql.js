@@ -18,10 +18,15 @@ let partNumber = 1;
 for (let i = 0; i < batchesContent.length; i += filesPerPart) {
   const partContent = batchesContent.slice(i, i + filesPerPart);
 
+  let cleanedContent = partContent.join('\n').trim();
+
+  // Asegurar que todos los comentarios de lote tengan el prefijo --
+  cleanedContent = cleanedContent.replace(/^\s*\(productos.*\)$/gm, (match) => `-- Lote ${match.trim()}`);
+
   const sqlContent = `-- Parte ${partNumber} de la importación de productos
 -- Ejecuta cada parte en orden (parte-1, parte-2, etc.)
 
-${partContent.join('\n')}`;
+${cleanedContent}`;
 
   fs.writeFileSync(`./database/sql-parts/insert-products-part-${partNumber}.sql`, sqlContent);
   console.log(`✅ Creada parte ${partNumber} (~${filesPerPart * 50} productos)`);

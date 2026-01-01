@@ -1,7 +1,7 @@
 -- Parte 1 de la importación de productos
 -- Ejecuta cada parte en orden (parte-1, parte-2, etc.)
 
- (productos 1-50)
+-- Lote (productos 1-50)
 INSERT INTO products (product_id, title, offer_price, regular_price, description, images, is_featured, is_back_in_stock, is_best_seller, is_on_sale, stock, low_stock_threshold, in_stock)
 VALUES
   ('1749578142478-hrbcR', 'Abib Quick Sunstick Proteccion Bar SPF50+ PA++++ Protector solar facial en barra - 22g', NULL, 270, '', '["https://firebasestorage.stagebeta.kyte.site/v0/b/kyte-7c484.appspot.com/o/hrbcR0RO9GPXbw1gOcXitOn7dez1%2F0bf6a251-9672-48f1-80fb-a4d12444fbf0.jpg?alt=media","https://firebasestorage.stagebeta.kyte.site/v0/b/kyte-7c484.appspot.com/o/hrbcR0RO9GPXbw1gOcXitOn7dez1%2F0979f095-27fc-47d1-ba39-fc0bf2349757.jpg?alt=media","https://firebasestorage.stagebeta.kyte.site/v0/b/kyte-7c484.appspot.com/o/hrbcR0RO9GPXbw1gOcXitOn7dez1%2F8e60469d-0f97-46d0-a674-c58958ae6353.jpg?alt=media"]'::jsonb, false, false, false, false, 10, 5, true),
@@ -1501,9 +1501,7 @@ Acerca de la marca :
 Byphasse, es una marca familiar de cosmética que vio la luz en Barcelona en el año 2000, especialistas en higiene y cuidado personal, con más de 175 productos para el rostro, el cuerpo, el cabello, los pies, las manos y también de cuidado para el bebé.
 
 Productos fabricados en la Unión Europea, unas formulaciones ricas en ingredientes de origen natural que despiertan los sentidos con unos aromas frescos y unas texturas suaves, un packaging de diseño en constante renovación y unos precios imbatibles. Estos son los elementos esenciales para disfrutar del bienestar que todos merecemos, sentirnos bien por fuera para poder cultivar también nuestra belleza interior, sin pagar más y sin tener que irse muy lejos.', '["https://firebasestorage.stagebeta.kyte.site/v0/b/kyte-7c484.appspot.com/o/hrbcR0RO9GPXbw1gOcXitOn7dez1%2FUzf657dujH5tZiNXytxCw%3D%3D.jpg?alt=media"]'::jsonb, false, false, false, false, 10, 5, true);
-
-
- (productos 51-100)
+-- Lote (productos 51-100)
 INSERT INTO products (product_id, title, offer_price, regular_price, description, images, is_featured, is_back_in_stock, is_best_seller, is_on_sale, stock, low_stock_threshold, in_stock)
 VALUES
   ('1750996128885-hrbcR', 'Byphasse Agua Micelar Removedor Maquillaje a Prueba De Agua - 500ml - Ind. Española', NULL, 129, 'Una piel limpia, desmaquillada, suave y revitalizada.
@@ -2294,4 +2292,3 @@ Principales Resultados
 98% Se absorbe inmediatamente
 
 https://www.eucerin.com.mx/productos/anti-pigment/sensitive-areas-body-serum', '["https://firebasestorage.stagebeta.kyte.site/v0/b/kyte-7c484.appspot.com/o/hrbcR0RO9GPXbw1gOcXitOn7dez1%2Fbecdd8f8-570c-410a-82f8-6274d4ffd355.jpg?alt=media","https://firebasestorage.stagebeta.kyte.site/v0/b/kyte-7c484.appspot.com/o/hrbcR0RO9GPXbw1gOcXitOn7dez1%2Fb4d19d98-3430-46f1-b8a7-59cac6954a1f.jpg?alt=media","https://firebasestorage.stagebeta.kyte.site/v0/b/kyte-7c484.appspot.com/o/hrbcR0RO9GPXbw1gOcXitOn7dez1%2F669aea1b-8a1a-4927-869c-a5285a61db3f.jpg?alt=media","https://firebasestorage.stagebeta.kyte.site/v0/b/kyte-7c484.appspot.com/o/hrbcR0RO9GPXbw1gOcXitOn7dez1%2Ff88bf9c4-8973-4a9f-970b-8e0cac370536.jpg?alt=media"]'::jsonb, false, false, false, false, 10, 5, true);
-

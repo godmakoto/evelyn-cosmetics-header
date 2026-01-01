@@ -1,7 +1,7 @@
 -- Parte 3 de la importación de productos
 -- Ejecuta cada parte en orden (parte-1, parte-2, etc.)
 
- (productos 201-250)
+-- Lote (productos 201-250)
 INSERT INTO products (product_id, title, offer_price, regular_price, description, images, is_featured, is_back_in_stock, is_best_seller, is_on_sale, stock, low_stock_threshold, in_stock)
 VALUES
   ('1643719044744-hrbcR', 'La Roche Posay Age Correct FPS50 - Protector solar anti-edad y anti-manchas - Todo tipo de piel - SIN COLOR - 50ml', 310, 330, '- Protección diaria para prevenir y corregir los signos de la edad.
@@ -1043,9 +1043,7 @@ Antes de arrancar cualquier rutina de cuidado facial recomendamos limpiarse la c
 https://www.lorealparis.com.ar/revitalift/acido-hialuronico/crema-de-dia-fps-20', '["https://firebasestorage.stagebeta.kyte.site/v0/b/kyte-7c484.appspot.com/o/hrbcR0RO9GPXbw1gOcXitOn7dez1%2F9a9285f7-c286-40df-a1e7-0f6c761187e3.jpg?alt=media","https://firebasestorage.stagebeta.kyte.site/v0/b/kyte-7c484.appspot.com/o/hrbcR0RO9GPXbw1gOcXitOn7dez1%2Fe48556ee-80a3-472f-90fc-69eb8eeb8311.jpg?alt=media","https://firebasestorage.stagebeta.kyte.site/v0/b/kyte-7c484.appspot.com/o/hrbcR0RO9GPXbw1gOcXitOn7dez1%2Fb87f6eeb-f733-447e-a878-d85bf2e9d41e.jpg?alt=media","https://firebasestorage.stagebeta.kyte.site/v0/b/kyte-7c484.appspot.com/o/hrbcR0RO9GPXbw1gOcXitOn7dez1%2F89f1aae8-7aac-4afe-a1e7-cc8b1692adac.jpg?alt=media"]'::jsonb, false, false, false, false, 10, 5, true),
   ('1757570547178-hrbcR', 'Loreal Revitalift crema Día FPS20 - Con Ac. Hialurónico - Hidrata intensamente y rellena líneas de expresión - Todo tipo de piel - Ind. Mexicana - 50ml', 210, 220, '', '["https://firebasestorage.stagebeta.kyte.site/v0/b/kyte-7c484.appspot.com/o/hrbcR0RO9GPXbw1gOcXitOn7dez1%2F1f9059a1-8d98-4252-b82a-ba9369ace134.jpg?alt=media"]'::jsonb, false, false, false, false, 10, 5, true),
   ('1755577488734-hrbcR', 'Loreal Revitalift Crema Hidratante Facial Pro Retinol Anti Arrugas + Extra Firmeza Día Fps30 - 49g', 140, 160, '', '["https://firebasestorage.stagebeta.kyte.site/v0/b/kyte-7c484.appspot.com/o/hrbcR0RO9GPXbw1gOcXitOn7dez1%2F145004a0-fefd-4f65-8eff-f8fb3443dee6.jpg?alt=media"]'::jsonb, false, false, false, false, 10, 5, true);
-
-
- (productos 251-300)
+-- Lote (productos 251-300)
 INSERT INTO products (product_id, title, offer_price, regular_price, description, images, is_featured, is_back_in_stock, is_best_seller, is_on_sale, stock, low_stock_threshold, in_stock)
 VALUES
   ('1755577825158-hrbcR', 'Loreal Revitalift Crema Hidratante Facial Pro Retinol Anti Arrugas + Extra Firmeza Nocturno - 49g', 140, 160, '', '["https://firebasestorage.stagebeta.kyte.site/v0/b/kyte-7c484.appspot.com/o/hrbcR0RO9GPXbw1gOcXitOn7dez1%2F94eac767-35a8-4a38-879d-7bbbd48a6d96.jpg?alt=media"]'::jsonb, false, false, false, false, 10, 5, true),
@@ -1565,4 +1563,3 @@ Uso externo. Evite el contacto con los ojos. Si esto sucede, enjuáguelos con 
 
 https://www.neutrogena.com.br/protecao-solar/protetores-solares/protetor-solar-fps-30-sun-fresh-derm-care', '["https://firebasestorage.stagebeta.kyte.site/v0/b/kyte-7c484.appspot.com/o/hrbcR0RO9GPXbw1gOcXitOn7dez1%2F923ceb6a-c0e4-43e1-936f-f2cdb98ef394.jpg?alt=media","https://firebasestorage.stagebeta.kyte.site/v0/b/kyte-7c484.appspot.com/o/hrbcR0RO9GPXbw1gOcXitOn7dez1%2F7160527c-66eb-41ca-b6d5-a48bdcbc1323.jpg?alt=media","https://firebasestorage.stagebeta.kyte.site/v0/b/kyte-7c484.appspot.com/o/hrbcR0RO9GPXbw1gOcXitOn7dez1%2F62ac9bf6-0a44-49da-8eb1-6d782516bd5a.jpg?alt=media"]'::jsonb, false, false, false, false, 10, 5, true),
   ('1695170921929-hrbcR', 'Neutrogena Kit: Sun Fresh FPS70, Protector solar facial Anti-brillo y Toque seco - Piel mixta y grasa x40g + Sun Fresh FPS70, Protector solar facial y corporal, Ultraligero y humectante, Todo tipo de piel x200ml', 330, 350, '', '["https://firebasestorage.stagebeta.kyte.site/v0/b/kyte-7c484.appspot.com/o/hrbcR0RO9GPXbw1gOcXitOn7dez1%2F1f3c339a-151e-4e04-a3a8-748b3c276afb.jpg?alt=media","https://firebasestorage.stagebeta.kyte.site/v0/b/kyte-7c484.appspot.com/o/hrbcR0RO9GPXbw1gOcXitOn7dez1%2F1d8bcbc5-e922-45db-ba06-c90c7ef9a457.jpg?alt=media","https://firebasestorage.stagebeta.kyte.site/v0/b/kyte-7c484.appspot.com/o/hrbcR0RO9GPXbw1gOcXitOn7dez1%2F23041a95-45ea-409d-a1be-b627908939d0.jpg?alt=media","https://firebasestorage.stagebeta.kyte.site/v0/b/kyte-7c484.appspot.com/o/hrbcR0RO9GPXbw1gOcXitOn7dez1%2Fd3a904a9-1646-4d6b-a026-63922f38b825.jpg?alt=media","https://firebasestorage.stagebeta.kyte.site/v0/b/kyte-7c484.appspot.com/o/hrbcR0RO9GPXbw1gOcXitOn7dez1%2F947fd348-3787-4f25-91aa-27c0aa0f4615.jpg?alt=media","https://firebasestorage.stagebeta.kyte.site/v0/b/kyte-7c484.appspot.com/o/hrbcR0RO9GPXbw1gOcXitOn7dez1%2F45b6503c-fa46-4641-bdd0-ddd8038f7759.jpg?alt=media","https://firebasestorage.stagebeta.kyte.site/v0/b/kyte-7c484.appspot.com/o/hrbcR0RO9GPXbw1gOcXitOn7dez1%2F1709dc50-b588-4619-9a68-e561fa7c6b7c.jpg?alt=media"]'::jsonb, false, false, false, false, 10, 5, true);
-
