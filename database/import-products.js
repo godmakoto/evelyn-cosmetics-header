@@ -62,7 +62,7 @@ async function importProducts() {
   console.log('🚀 Iniciando importación de productos...\n');
 
   const products = [];
-  const csvFilePath = '../products_all_images.csv';
+  const csvFilePath = './products_all_images.csv';
 
   // Verificar que el archivo existe
   if (!fs.existsSync(csvFilePath)) {
