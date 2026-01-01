@@ -40,7 +40,7 @@ npm run import:products
 ```
 
 Este comando:
-- 📖 Lee el archivo `products_all_images.csv`
+- 📖 Lee el archivo `products_all_images.csv` (476 productos)
 - 🔄 Procesa los datos y los formatea para la base de datos
 - 📦 Importa los productos en lotes de 100 para optimizar el proceso
 - ✅ Muestra el progreso en tiempo real
