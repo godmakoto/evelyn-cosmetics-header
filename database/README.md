@@ -22,7 +22,7 @@ VITE_SUPABASE_ANON_KEY=tu_clave_anon_de_supabase
 
 1. Ve a tu proyecto en [Supabase](https://supabase.com)
 2. Navega a **SQL Editor**
-3. Copia y pega el contenido del archivo `supabase-schema.sql`
+3. Copia y pega el contenido del archivo `database/schema.sql`
 4. Ejecuta el script
 
 Esto creará:
@@ -94,8 +94,8 @@ El archivo `src/lib/supabase.ts` incluye funciones helper para interactuar con l
 
 ## 📝 Notas
 - Los productos se importan con valores por defecto para stock (10 unidades)
-- El estado "en oferta" se detecta automáticamente si existe un precio de oferta menor al precio regular
-- Los otros estados (destacado, más vendido, de vuelta en stock) se pueden actualizar manualmente después
+- Todos los estados (destacado, más vendido, de vuelta en stock, en oferta) se establecen en `false` por defecto
+- Puedes actualizar manualmente estos estados después de la importación según tus necesidades
 - Las políticas de seguridad permiten lectura pública pero escritura solo autenticada
 
 ## Estado

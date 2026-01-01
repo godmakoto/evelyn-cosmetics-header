@@ -9,7 +9,7 @@
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
     "preview": "vite preview",
-    "import:products": "node scripts/import-products.js"
+    "import:products": "node database/import-products.js"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
