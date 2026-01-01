@@ -36,6 +36,9 @@ function processCSVRow(row) {
     ? parseFloat(row['Regular Price'])
     : offerPrice || 0;
 
+  // Detectar automáticamente si está en oferta
+  const isOnSale = offerPrice !== null && offerPrice < regularPrice;
+
   return {
     product_id: row['Product ID'].trim(),
     title: row['Title'].trim(),
@@ -48,6 +51,7 @@ function processCSVRow(row) {
     is_featured: false,
     is_back_in_stock: false,
     is_best_seller: false,
+    is_on_sale: isOnSale,
 
     // Inventario por defecto
     stock: 10, // Stock inicial por defecto

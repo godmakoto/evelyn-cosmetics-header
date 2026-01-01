@@ -23,6 +23,7 @@ export interface Product {
   is_featured: boolean;
   is_back_in_stock: boolean;
   is_best_seller: boolean;
+  is_on_sale: boolean;
 
   // Gestión de inventario
   stock: number;
@@ -79,6 +80,19 @@ export const productsAPI = {
       .from('products')
       .select('*')
       .eq('is_back_in_stock', true)
+      .eq('in_stock', true)
+      .limit(10);
+
+    if (error) throw error;
+    return data as Product[];
+  },
+
+  // Obtener productos en oferta
+  async getOnSale() {
+    const { data, error } = await supabase
+      .from('products')
+      .select('*')
+      .eq('is_on_sale', true)
       .eq('in_stock', true)
       .limit(10);
 

@@ -67,6 +67,7 @@ products (
   is_featured BOOLEAN        -- Producto destacado
   is_back_in_stock BOOLEAN   -- De vuelta en stock
   is_best_seller BOOLEAN     -- Más vendido
+  is_on_sale BOOLEAN         -- En oferta
 
   -- Gestión de inventario
   stock INTEGER              -- Cantidad disponible
@@ -86,13 +87,15 @@ El archivo `src/lib/supabase.ts` incluye funciones helper para interactuar con l
 - `productsAPI.getFeatured()` - Productos destacados
 - `productsAPI.getBestSellers()` - Más vendidos
 - `productsAPI.getBackInStock()` - De vuelta en stock
+- `productsAPI.getOnSale()` - Productos en oferta
 - `productsAPI.getById(id)` - Producto por ID
 - `productsAPI.search(query)` - Buscar productos
 - `productsAPI.getWithFilters(filters)` - Filtrar productos
 
 ## 📝 Notas
 - Los productos se importan con valores por defecto para stock (10 unidades)
-- Los estados (destacado, más vendido, etc.) se pueden actualizar manualmente después
+- El estado "en oferta" se detecta automáticamente si existe un precio de oferta menor al precio regular
+- Los otros estados (destacado, más vendido, de vuelta en stock) se pueden actualizar manualmente después
 - Las políticas de seguridad permiten lectura pública pero escritura solo autenticada
 
 ## Estado

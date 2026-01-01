@@ -14,6 +14,7 @@ CREATE TABLE IF NOT EXISTS products (
   is_featured BOOLEAN DEFAULT false,
   is_back_in_stock BOOLEAN DEFAULT false,
   is_best_seller BOOLEAN DEFAULT false,
+  is_on_sale BOOLEAN DEFAULT false,
 
   -- Gestión de inventario
   stock INTEGER DEFAULT 0,
@@ -29,6 +30,7 @@ CREATE INDEX IF NOT EXISTS idx_products_product_id ON products(product_id);
 CREATE INDEX IF NOT EXISTS idx_products_is_featured ON products(is_featured) WHERE is_featured = true;
 CREATE INDEX IF NOT EXISTS idx_products_is_best_seller ON products(is_best_seller) WHERE is_best_seller = true;
 CREATE INDEX IF NOT EXISTS idx_products_is_back_in_stock ON products(is_back_in_stock) WHERE is_back_in_stock = true;
+CREATE INDEX IF NOT EXISTS idx_products_is_on_sale ON products(is_on_sale) WHERE is_on_sale = true;
 CREATE INDEX IF NOT EXISTS idx_products_in_stock ON products(in_stock) WHERE in_stock = true;
 
 -- Función para actualizar updated_at automáticamente
