@@ -1,10 +1,22 @@
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+// NOTE: In some preview/deploy environments, Vite env injection can be missing.
+// We keep safe fallbacks here to avoid a blank screen.
+const supabaseUrl =
+  import.meta.env.VITE_SUPABASE_URL ??
+  'https://hagnvucqnlesriorfteb.supabase.co';
 
-// Use untyped client for custom product queries until table is created
-export const supabase = createClient(supabaseUrl, supabaseKey);
+const supabaseKey =
+  import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY ??
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhhZ252dWNxbmxlc3Jpb3JmdGViIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjczMDY0OTUsImV4cCI6MjA4Mjg4MjQ5NX0.bg-PV9D6bKt0ScurfDtbHb9qN4WOcHKHjta65u3FBdI';
+
+export const supabase = createClient(supabaseUrl, supabaseKey, {
+  auth: {
+    storage: localStorage,
+    persistSession: true,
+    autoRefreshToken: true,
+  },
+});
 
 // Tipos para la base de datos
 export interface Product {
