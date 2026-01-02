@@ -130,3 +130,36 @@ export const useBackInStockProducts = () => {
 
   return { products, loading, error };
 };
+
+export const useProduct = (productId: string | undefined) => {
+  const [product, setProduct] = useState<Product | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!productId) {
+      setProduct(null);
+      setLoading(false);
+      return;
+    }
+
+    const fetchProduct = async () => {
+      try {
+        setLoading(true);
+        const data = await productsAPI.getById(productId);
+        setProduct(data);
+        setError(null);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Error al cargar producto');
+        console.error('Error fetching product:', err);
+        setProduct(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProduct();
+  }, [productId]);
+
+  return { product, loading, error };
+};

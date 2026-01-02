@@ -14,7 +14,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { cn } from "@/lib/utils";
-import { getProductById, getRelatedProducts } from "@/data/productDetails";
+import { useProduct, useFeaturedProducts } from "@/hooks/useProducts";
 
 const ProductPage = () => {
   const { id } = useParams();
@@ -31,25 +31,59 @@ const ProductPage = () => {
   const startX = useRef(0);
   const dragDistance = useRef(0);
 
-  // Obtener el producto por ID
-  const product = getProductById(id || "1");
+  // Obtener el producto por ID desde Supabase
+  const { product: supabaseProduct, loading } = useProduct(id);
+
+  // Obtener productos destacados para "productos relacionados"
+  const { products: featuredProducts } = useFeaturedProducts();
+
+  // Convertir producto de Supabase al formato esperado
+  const product = supabaseProduct ? {
+    id: supabaseProduct.product_id,
+    name: supabaseProduct.title,
+    brand: supabaseProduct.title.split(' ')[0] || "Producto",
+    price: supabaseProduct.offer_price || supabaseProduct.regular_price,
+    originalPrice: supabaseProduct.offer_price ? supabaseProduct.regular_price : undefined,
+    category: "Productos",
+    description: supabaseProduct.description || "Producto de alta calidad",
+    images: supabaseProduct.images.length > 0 ? supabaseProduct.images : ["https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=600&h=600&fit=crop"],
+    fullDescription: supabaseProduct.description || "Producto de alta calidad para tu cuidado personal.",
+    howToUse: "Aplicar según las indicaciones del producto.",
+    ingredients: "Consultar el empaque del producto para información detallada sobre ingredientes."
+  } : null;
+
+  // Convertir productos destacados al formato esperado (excluyendo el producto actual)
+  const relatedProducts = featuredProducts
+    .filter(p => p.product_id !== id)
+    .slice(0, 6)
+    .map(p => ({
+      id: p.product_id,
+      name: p.title,
+      brand: p.title.split(' ')[0] || "",
+      price: p.offer_price || p.regular_price,
+      originalPrice: p.offer_price ? p.regular_price : undefined,
+      images: p.images.length > 0 ? p.images : ["https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=600&h=600&fit=crop"]
+    }));
 
   // Si el producto no existe, redirigir a la página principal
   useEffect(() => {
-    if (!product) {
+    if (!loading && !product) {
       navigate("/");
     }
-  }, [product, navigate]);
+  }, [product, loading, navigate]);
 
-  // Si el producto no existe, no renderizar nada (se redirigirá)
-  if (!product) {
-    return null;
+  // Si está cargando o el producto no existe, mostrar loading
+  if (loading || !product) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-muted-foreground">Cargando producto...</p>
+        </div>
+      </div>
+    );
   }
 
   const isInCart = items.some(item => item.id === product.id);
-
-  // Obtener productos relacionados por categoría
-  const relatedProducts = getRelatedProducts(product.category, product.id, 6);
 
   // Reset selected image and scroll to top when product changes
   useEffect(() => {
