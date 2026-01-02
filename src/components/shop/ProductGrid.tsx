@@ -1,10 +1,12 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { X } from "lucide-react";
+import { X, Loader2 } from "lucide-react";
 import { shopProducts, ShopProduct } from "@/data/shopProducts";
 import ShopFilters from "./ShopFilters";
 import ProductCard from "./ProductCard";
 import ProductSkeleton from "./ProductSkeleton";
+
+const PRODUCTS_PER_PAGE = 20;
 
 interface ProductGridProps {
   initialBrandFilter?: string | null;
@@ -27,7 +29,10 @@ const ProductGrid = ({
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(true);
   const [isFiltering, setIsFiltering] = useState(false);
-  const [filteredProducts, setFilteredProducts] = useState<ShopProduct[]>(shopProducts);
+  const [filteredProducts, setFilteredProducts] = useState<ShopProduct[]>([]);
+  const [displayedProducts, setDisplayedProducts] = useState<ShopProduct[]>([]);
+  const [visibleCount, setVisibleCount] = useState(PRODUCTS_PER_PAGE);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [filters, setFilters] = useState({
     maxPrice: null as number | null,
     brand: initialBrandFilter,
@@ -36,6 +41,7 @@ const ProductGrid = ({
     status: statusFilter,
   });
   const [isFirstRender, setIsFirstRender] = useState(true);
+  const loadMoreRef = useRef<HTMLDivElement>(null);
 
   // Usar location.state directamente como fuente de verdad para búsqueda
   const activeSearchQuery = location.state?.searchQuery || null;
@@ -46,7 +52,44 @@ const ProductGrid = ({
     filtersRef.current = filters;
   }, [filters]);
 
-  console.log('ProductGrid render - activeSearchQuery:', activeSearchQuery, 'location.state:', location.state);
+  // Update displayed products when filtered products or visible count changes
+  useEffect(() => {
+    setDisplayedProducts(filteredProducts.slice(0, visibleCount));
+  }, [filteredProducts, visibleCount]);
+
+  // Reset visible count when filters change
+  useEffect(() => {
+    setVisibleCount(PRODUCTS_PER_PAGE);
+  }, [filters, activeSearchQuery]);
+
+  // Infinite scroll observer
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const first = entries[0];
+        if (first.isIntersecting && !isLoadingMore && displayedProducts.length < filteredProducts.length) {
+          setIsLoadingMore(true);
+          // Simulate loading delay for smooth UX
+          setTimeout(() => {
+            setVisibleCount((prev) => Math.min(prev + PRODUCTS_PER_PAGE, filteredProducts.length));
+            setIsLoadingMore(false);
+          }, 300);
+        }
+      },
+      { threshold: 0.1, rootMargin: "100px" }
+    );
+
+    const currentRef = loadMoreRef.current;
+    if (currentRef) {
+      observer.observe(currentRef);
+    }
+
+    return () => {
+      if (currentRef) {
+        observer.unobserve(currentRef);
+      }
+    };
+  }, [displayedProducts.length, filteredProducts.length, isLoadingMore]);
 
   // Update filters when initial filter props change
   useEffect(() => {
@@ -76,7 +119,6 @@ const ProductGrid = ({
     if (isFirstRender) {
       setIsFirstRender(false);
     } else {
-      // Delay el scroll para que coincida con el delay del filtrado
       const scrollTimeout = setTimeout(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }, 200);
@@ -92,9 +134,6 @@ const ProductGrid = ({
   }, []);
 
   useEffect(() => {
-    console.log('Filter effect triggered', { filters, isFirstRender, isLoading, activeSearchQuery });
-
-    // Mostrar loading state cuando cambian los filtros (excepto en first render)
     if (!isFirstRender && !isLoading) {
       setIsFiltering(true);
     }
@@ -102,7 +141,6 @@ const ProductGrid = ({
     const filterTimeout = setTimeout(() => {
       let result = [...shopProducts];
 
-      // Search query filter - usar activeSearchQuery en lugar de searchQuery
       if (activeSearchQuery) {
         const query = activeSearchQuery.toLowerCase();
         result = result.filter((p) => {
@@ -136,20 +174,16 @@ const ProductGrid = ({
         });
       }
 
-      console.log('Filtered products:', { count: result.length, filters });
       setFilteredProducts(result);
-      console.log('Setting isFiltering to FALSE');
       setIsFiltering(false);
-    }, 150); // Pequeño delay para suavizar la transición
+    }, 150);
 
     return () => clearTimeout(filterTimeout);
   }, [filters, activeSearchQuery, isFirstRender, isLoading]);
 
   const handleFiltersChange = useCallback((newFilters: typeof filters) => {
     const currentFilters = filtersRef.current;
-    console.log('handleFiltersChange called', { newFilters, currentFilters, activeSearchQuery });
 
-    // Verificar si los filtros realmente cambiaron
     const filtersChanged =
       newFilters.brand !== currentFilters.brand ||
       newFilters.category !== currentFilters.category ||
@@ -158,14 +192,10 @@ const ProductGrid = ({
       newFilters.status !== currentFilters.status;
 
     if (!filtersChanged) {
-      console.log('Filters did not change, skipping');
       return;
     }
 
-    // Los filtros cambiaron - es una acción del usuario
     if (activeSearchQuery) {
-      // Hay búsqueda activa, navegar para limpiarla
-      console.log('Clearing search and applying filters');
       navigate('/tienda', {
         state: {
           brandFilter: newFilters.brand,
@@ -175,8 +205,6 @@ const ProductGrid = ({
         replace: true
       });
     } else {
-      // No hay búsqueda activa, solo actualizar estado local
-      console.log('Setting filters to:', newFilters);
       setFilters(newFilters);
     }
   }, [navigate, activeSearchQuery]);
@@ -189,9 +217,11 @@ const ProductGrid = ({
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const hasMoreProducts = displayedProducts.length < filteredProducts.length;
+
   return (
     <div className="bg-white lg:bg-[#f9f9f9] min-h-screen">
-      {/* Mobile: Search Results Header - Debajo de la barra de búsqueda */}
+      {/* Mobile: Search Results Header */}
       {activeSearchQuery && (
         <div className="lg:hidden bg-white border-b border-[#e5e5e5] px-4 py-3">
           <div className="flex items-center justify-between">
@@ -227,7 +257,6 @@ const ProductGrid = ({
           {/* Desktop: Filtros en columna izquierda */}
           <aside className="hidden lg:block lg:w-[300px] lg:flex-shrink-0">
             <div className="sticky top-0">
-              {/* Desktop: Search Results Header - Encima de los filtros */}
               {activeSearchQuery && (
                 <div className="bg-white rounded-lg border border-[#e5e5e5] p-4 mb-4">
                   <div className="mb-3">
@@ -257,6 +286,13 @@ const ProductGrid = ({
 
           {/* Productos */}
           <div className="flex-1">
+            {/* Product count indicator */}
+            {!isLoading && !isFiltering && filteredProducts.length > 0 && (
+              <div className="px-4 lg:px-0 py-2 text-sm text-[#666]">
+                Mostrando {displayedProducts.length} de {filteredProducts.length} productos
+              </div>
+            )}
+
             <div className="grid grid-cols-1 gap-0 lg:gap-4">
               {(isLoading || isFiltering)
                 ? Array.from({ length: 6 }).map((_, index) => (
@@ -266,7 +302,7 @@ const ProductGrid = ({
                       </div>
                     </div>
                   ))
-                : filteredProducts.map((product) => (
+                : displayedProducts.map((product) => (
                     <div key={product.id} className="border-b border-b-[#eee] last:border-b-0 lg:border-b-0">
                       <div className="py-4 lg:py-0">
                         <ProductCard product={product} />
@@ -274,6 +310,25 @@ const ProductGrid = ({
                     </div>
                   ))}
             </div>
+
+            {/* Infinite scroll trigger */}
+            {!isLoading && !isFiltering && hasMoreProducts && (
+              <div ref={loadMoreRef} className="py-8 flex justify-center">
+                {isLoadingMore && (
+                  <div className="flex items-center gap-2 text-[#666]">
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                    <span className="text-sm">Cargando más productos...</span>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* End of products indicator */}
+            {!isLoading && !isFiltering && !hasMoreProducts && filteredProducts.length > PRODUCTS_PER_PAGE && (
+              <div className="py-8 text-center text-sm text-[#999]">
+                Has visto todos los {filteredProducts.length} productos
+              </div>
+            )}
 
             {!isLoading && !isFiltering && filteredProducts.length === 0 && (
               <div className="text-center py-16">
