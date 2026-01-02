@@ -32,37 +32,45 @@ const ProductPage = () => {
   const dragDistance = useRef(0);
 
   // Obtener el producto por ID desde Supabase
-  const { product: supabaseProduct, loading } = useProduct(id);
+  const { product: supabaseProduct, loading, error } = useProduct(id);
 
   // Obtener productos destacados para "productos relacionados"
   const { products: featuredProducts } = useFeaturedProducts();
 
+  // Debug logging
+  useEffect(() => {
+    console.log('ProductPage - ID:', id);
+    console.log('ProductPage - Loading:', loading);
+    console.log('ProductPage - Error:', error);
+    console.log('ProductPage - Supabase Product:', supabaseProduct);
+  }, [id, loading, error, supabaseProduct]);
+
   // Convertir producto de Supabase al formato esperado
   const product = supabaseProduct ? {
     id: supabaseProduct.product_id,
-    name: supabaseProduct.title,
-    brand: supabaseProduct.title.split(' ')[0] || "Producto",
+    name: supabaseProduct.title || "Producto",
+    brand: (supabaseProduct.title || "").split(' ')[0] || "Producto",
     price: supabaseProduct.offer_price || supabaseProduct.regular_price,
     originalPrice: supabaseProduct.offer_price ? supabaseProduct.regular_price : undefined,
     category: "Productos",
     description: supabaseProduct.description || "Producto de alta calidad",
-    images: supabaseProduct.images.length > 0 ? supabaseProduct.images : ["https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=600&h=600&fit=crop"],
+    images: (supabaseProduct.images && supabaseProduct.images.length > 0) ? supabaseProduct.images : ["https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=600&h=600&fit=crop"],
     fullDescription: supabaseProduct.description || "Producto de alta calidad para tu cuidado personal.",
     howToUse: "Aplicar según las indicaciones del producto.",
     ingredients: "Consultar el empaque del producto para información detallada sobre ingredientes."
   } : null;
 
   // Convertir productos destacados al formato esperado (excluyendo el producto actual)
-  const relatedProducts = featuredProducts
-    .filter(p => p.product_id !== id)
+  const relatedProducts = (featuredProducts || [])
+    .filter(p => p && p.product_id !== id)
     .slice(0, 6)
     .map(p => ({
       id: p.product_id,
-      name: p.title,
-      brand: p.title.split(' ')[0] || "",
+      name: p.title || "Producto",
+      brand: (p.title || "").split(' ')[0] || "",
       price: p.offer_price || p.regular_price,
       originalPrice: p.offer_price ? p.regular_price : undefined,
-      images: p.images.length > 0 ? p.images : ["https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=600&h=600&fit=crop"]
+      images: (p.images && p.images.length > 0) ? p.images : ["https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=600&h=600&fit=crop"]
     }));
 
   // Si el producto no existe, redirigir a la página principal
@@ -72,8 +80,8 @@ const ProductPage = () => {
     }
   }, [product, loading, navigate]);
 
-  // Si está cargando o el producto no existe, mostrar loading
-  if (loading || !product) {
+  // Si está cargando, mostrar loading
+  if (loading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
@@ -81,6 +89,28 @@ const ProductPage = () => {
         </div>
       </div>
     );
+  }
+
+  // Si hay un error, mostrar mensaje
+  if (error) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Header />
+        <div className="flex items-center justify-center min-h-[50vh]">
+          <div className="text-center">
+            <p className="text-destructive mb-4">Error al cargar el producto</p>
+            <p className="text-muted-foreground mb-4">{error}</p>
+            <Button onClick={() => navigate('/')}>Volver al inicio</Button>
+          </div>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  // Si el producto no existe, redirigir
+  if (!product) {
+    return null;
   }
 
   const isInCart = items.some(item => item.id === product.id);
