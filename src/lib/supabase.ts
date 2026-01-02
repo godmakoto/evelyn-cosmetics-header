@@ -1,20 +1,10 @@
 import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+const supabaseKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 
-// Logging para debugging en producción
-console.log('Supabase URL exists:', !!supabaseUrl);
-console.log('Supabase Key exists:', !!supabaseAnonKey);
-
-if (!supabaseUrl || !supabaseAnonKey) {
-  console.error('Missing Supabase environment variables!');
-  console.error('VITE_SUPABASE_URL:', supabaseUrl ? 'SET' : 'MISSING');
-  console.error('VITE_SUPABASE_ANON_KEY:', supabaseAnonKey ? 'SET' : 'MISSING');
-  throw new Error('Missing Supabase environment variables. Check Vercel environment variables configuration.');
-}
-
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+// Use untyped client for custom product queries until table is created
+export const supabase = createClient(supabaseUrl, supabaseKey);
 
 // Tipos para la base de datos
 export interface Product {
