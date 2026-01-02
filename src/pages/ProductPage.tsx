@@ -37,6 +37,22 @@ const ProductPage = () => {
   // Obtener productos destacados para "productos relacionados"
   const { products: featuredProducts } = useFeaturedProducts();
 
+  // Image gallery carousel for mobile - DEBE estar antes de cualquier return
+  const [imageEmblaRef, imageEmblaApi] = useEmblaCarousel({
+    loop: false,
+    align: "start",
+    slidesToScroll: 1,
+    containScroll: "trimSnaps"
+  });
+
+  // Related products carousel setup - DEBE estar antes de cualquier return
+  const [emblaRef, emblaApi] = useEmblaCarousel({
+    loop: true,
+    align: "start",
+    slidesToScroll: 1,
+    containScroll: false
+  });
+
   // Debug logging
   useEffect(() => {
     console.log('ProductPage - ID:', id);
@@ -44,6 +60,58 @@ const ProductPage = () => {
     console.log('ProductPage - Error:', error);
     console.log('ProductPage - Supabase Product:', supabaseProduct);
   }, [id, loading, error, supabaseProduct]);
+
+  // Detect tablet - DEBE estar antes de cualquier return
+  useEffect(() => {
+    const checkTablet = () => {
+      const width = window.innerWidth;
+      setIsTablet(width >= 768 && width < 1024);
+    };
+    checkTablet();
+    window.addEventListener("resize", checkTablet);
+    return () => window.removeEventListener("resize", checkTablet);
+  }, []);
+
+  // Reset selected image and scroll to top when product changes
+  useEffect(() => {
+    setSelectedImage(0);
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, [id]);
+
+  // Image carousel callbacks
+  const onImageSelect = useCallback(() => {
+    if (!imageEmblaApi) return;
+    setSelectedImage(imageEmblaApi.selectedScrollSnap());
+  }, [imageEmblaApi]);
+
+  useEffect(() => {
+    if (!imageEmblaApi) return;
+    imageEmblaApi.on("select", onImageSelect);
+    onImageSelect();
+    return () => {
+      imageEmblaApi.off("select", onImageSelect);
+    };
+  }, [imageEmblaApi, onImageSelect]);
+
+  // Related products carousel callbacks
+  const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
+  const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
+  const scrollTo = useCallback((index: number) => emblaApi?.scrollTo(index), [emblaApi]);
+
+  const onSelect = useCallback(() => {
+    if (!emblaApi) return;
+    setSelectedCarouselIndex(emblaApi.selectedScrollSnap());
+  }, [emblaApi]);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    setScrollSnaps(emblaApi.scrollSnapList());
+    emblaApi.on("select", onSelect);
+    onSelect();
+    return () => {
+      emblaApi.off("select", onSelect);
+    };
+  }, [emblaApi, onSelect]);
 
   // Convertir producto de Supabase al formato esperado (con useMemo para evitar recreación)
   const product = useMemo(() => {
@@ -64,17 +132,19 @@ const ProductPage = () => {
   }, [supabaseProduct]);
 
   // Convertir productos destacados al formato esperado (excluyendo el producto actual)
-  const relatedProducts = (featuredProducts || [])
-    .filter(p => p && p.product_id !== id)
-    .slice(0, 6)
-    .map(p => ({
-      id: p.product_id,
-      name: p.title || "Producto",
-      brand: (p.title || "").split(' ')[0] || "",
-      price: p.offer_price || p.regular_price,
-      originalPrice: p.offer_price ? p.regular_price : undefined,
-      images: (p.images && p.images.length > 0) ? p.images : ["https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=600&h=600&fit=crop"]
-    }));
+  const relatedProducts = useMemo(() => {
+    return (featuredProducts || [])
+      .filter(p => p && p.product_id !== id)
+      .slice(0, 6)
+      .map(p => ({
+        id: p.product_id,
+        name: p.title || "Producto",
+        brand: (p.title || "").split(' ')[0] || "",
+        price: p.offer_price || p.regular_price,
+        originalPrice: p.offer_price ? p.regular_price : undefined,
+        images: (p.images && p.images.length > 0) ? p.images : ["https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=600&h=600&fit=crop"]
+      }));
+  }, [featuredProducts, id]);
 
   // Si el producto no existe después de cargar, redirigir (solo si hay error)
   useEffect(() => {
@@ -83,6 +153,83 @@ const ProductPage = () => {
       return () => clearTimeout(timer);
     }
   }, [loading, product, error, navigate]);
+
+  // Desktop image gallery mouse drag handlers
+  const handleDragStart = useCallback((e: React.MouseEvent) => {
+    isDragging.current = true;
+    dragDistance.current = 0;
+    startX.current = e.clientX;
+  }, []);
+
+  const handleDragMove = useCallback((e: React.MouseEvent) => {
+    if (!isDragging.current) return;
+    dragDistance.current = e.clientX - startX.current;
+  }, []);
+
+  const handleDragEnd = useCallback(() => {
+    if (!isDragging.current || !product) return;
+    isDragging.current = false;
+
+    const threshold = 50;
+
+    if (Math.abs(dragDistance.current) > threshold) {
+      if (dragDistance.current > 0) {
+        // Dragged right - go to previous image
+        setSelectedImage(prev => prev > 0 ? prev - 1 : product.images.length - 1);
+      } else {
+        // Dragged left - go to next image
+        setSelectedImage(prev => prev < product.images.length - 1 ? prev + 1 : 0);
+      }
+    }
+
+    dragDistance.current = 0;
+  }, [product]);
+
+  const handleAddToCart = useCallback(() => {
+    if (!product) return;
+    const isInCart = items.some(item => item.id === product.id);
+    if (isInCart) {
+      setIsCartOpen(true);
+    } else {
+      addItem({
+        id: product.id,
+        name: product.name,
+        image: product.images[0],
+        originalPrice: product.originalPrice || product.price,
+        discountedPrice: product.originalPrice ? product.price : undefined
+      });
+    }
+  }, [product, items, addItem, setIsCartOpen]);
+
+  const handleRelatedProductAddToCart = useCallback((relatedProduct: typeof relatedProducts[0]) => {
+    const isRelatedInCart = items.some(item => item.id === relatedProduct.id);
+    if (isRelatedInCart) {
+      setIsCartOpen(true);
+    } else {
+      addItem({
+        id: relatedProduct.id,
+        name: relatedProduct.name,
+        image: relatedProduct.images[0],
+        originalPrice: relatedProduct.originalPrice || relatedProduct.price,
+        discountedPrice: relatedProduct.originalPrice ? relatedProduct.price : undefined
+      });
+    }
+  }, [items, addItem, setIsCartOpen]);
+
+  const isProductInCart = useCallback((productId: string) => {
+    return items.some(item => item.id === productId);
+  }, [items]);
+
+  const handleRelatedCardClick = useCallback((productId: string) => {
+    navigate(`/producto/${productId}`);
+  }, [navigate]);
+
+  const handleBrandClick = useCallback(() => {
+    if (!product) return;
+    navigate('/tienda', { state: { brandFilter: product.brand } });
+  }, [product, navigate]);
+
+  // AHORA SÍ, TODOS LOS HOOKS ESTÁN ARRIBA. Ahora podemos hacer los returns condicionales
 
   // Si está cargando, mostrar loading
   if (loading) {
@@ -118,144 +265,6 @@ const ProductPage = () => {
   }
 
   const isInCart = items.some(item => item.id === product.id);
-
-  // Reset selected image and scroll to top when product changes
-  useEffect(() => {
-    setSelectedImage(0);
-    window.scrollTo({ top: 0, behavior: 'instant' });
-  }, [id]);
-
-  // Detect tablet
-  useEffect(() => {
-    const checkTablet = () => {
-      const width = window.innerWidth;
-      setIsTablet(width >= 768 && width < 1024);
-    };
-    checkTablet();
-    window.addEventListener("resize", checkTablet);
-    return () => window.removeEventListener("resize", checkTablet);
-  }, []);
-
-  // Image gallery carousel for mobile
-  const [imageEmblaRef, imageEmblaApi] = useEmblaCarousel({
-    loop: false,
-    align: "start",
-    slidesToScroll: 1,
-    containScroll: "trimSnaps"
-  });
-
-  const onImageSelect = useCallback(() => {
-    if (!imageEmblaApi) return;
-    setSelectedImage(imageEmblaApi.selectedScrollSnap());
-  }, [imageEmblaApi]);
-
-  useEffect(() => {
-    if (!imageEmblaApi) return;
-    imageEmblaApi.on("select", onImageSelect);
-    onImageSelect();
-    return () => {
-      imageEmblaApi.off("select", onImageSelect);
-    };
-  }, [imageEmblaApi, onImageSelect]);
-
-  // Related products carousel setup
-  const [emblaRef, emblaApi] = useEmblaCarousel({
-    loop: true,
-    align: "start",
-    slidesToScroll: 1,
-    containScroll: false
-  });
-
-  const scrollPrev = () => emblaApi?.scrollPrev();
-  const scrollNext = () => emblaApi?.scrollNext();
-  const scrollTo = useCallback((index: number) => emblaApi?.scrollTo(index), [emblaApi]);
-
-  const onSelect = useCallback(() => {
-    if (!emblaApi) return;
-    setSelectedCarouselIndex(emblaApi.selectedScrollSnap());
-  }, [emblaApi]);
-
-  useEffect(() => {
-    if (!emblaApi) return;
-    setScrollSnaps(emblaApi.scrollSnapList());
-    emblaApi.on("select", onSelect);
-    onSelect();
-    return () => {
-      emblaApi.off("select", onSelect);
-    };
-  }, [emblaApi, onSelect]);
-
-  const handleAddToCart = () => {
-    if (isInCart) {
-      setIsCartOpen(true);
-    } else {
-      addItem({
-        id: product.id,
-        name: product.name,
-        image: product.images[0],
-        originalPrice: product.originalPrice || product.price,
-        discountedPrice: product.originalPrice ? product.price : undefined
-      });
-    }
-  };
-
-  const handleRelatedProductAddToCart = (relatedProduct: typeof relatedProducts[0]) => {
-    const isRelatedInCart = items.some(item => item.id === relatedProduct.id);
-    if (isRelatedInCart) {
-      setIsCartOpen(true);
-    } else {
-      addItem({
-        id: relatedProduct.id,
-        name: relatedProduct.name,
-        image: relatedProduct.images[0],
-        originalPrice: relatedProduct.originalPrice || relatedProduct.price,
-        discountedPrice: relatedProduct.originalPrice ? relatedProduct.price : undefined
-      });
-    }
-  };
-
-  const isProductInCart = (productId: string) => {
-    return items.some(item => item.id === productId);
-  };
-
-  const handleRelatedCardClick = (productId: string) => {
-    navigate(`/producto/${productId}`);
-  };
-
-  const handleBrandClick = () => {
-    navigate('/tienda', { state: { brandFilter: product.brand } });
-  };
-
-  // Desktop image gallery mouse drag handlers
-  const handleDragStart = (e: React.MouseEvent) => {
-    isDragging.current = true;
-    dragDistance.current = 0;
-    startX.current = e.clientX;
-  };
-
-  const handleDragMove = (e: React.MouseEvent) => {
-    if (!isDragging.current) return;
-    dragDistance.current = e.clientX - startX.current;
-  };
-
-  const handleDragEnd = () => {
-    if (!isDragging.current) return;
-    isDragging.current = false;
-
-    const threshold = 50;
-
-    if (Math.abs(dragDistance.current) > threshold) {
-      if (dragDistance.current > 0) {
-        // Dragged right - go to previous image
-        setSelectedImage(prev => prev > 0 ? prev - 1 : product.images.length - 1);
-      } else {
-        // Dragged left - go to next image
-        setSelectedImage(prev => prev < product.images.length - 1 ? prev + 1 : 0);
-      }
-    }
-
-    dragDistance.current = 0;
-  };
 
   return (
     <div className="min-h-screen bg-background">
