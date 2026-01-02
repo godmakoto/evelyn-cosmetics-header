@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useRef } from "react";
+import { useState, useCallback, useEffect, useRef, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -45,20 +45,23 @@ const ProductPage = () => {
     console.log('ProductPage - Supabase Product:', supabaseProduct);
   }, [id, loading, error, supabaseProduct]);
 
-  // Convertir producto de Supabase al formato esperado
-  const product = supabaseProduct ? {
-    id: supabaseProduct.product_id,
-    name: supabaseProduct.title || "Producto",
-    brand: (supabaseProduct.title || "").split(' ')[0] || "Producto",
-    price: supabaseProduct.offer_price || supabaseProduct.regular_price,
-    originalPrice: supabaseProduct.offer_price ? supabaseProduct.regular_price : undefined,
-    category: "Productos",
-    description: supabaseProduct.description || "Producto de alta calidad",
-    images: (supabaseProduct.images && supabaseProduct.images.length > 0) ? supabaseProduct.images : ["https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=600&h=600&fit=crop"],
-    fullDescription: supabaseProduct.description || "Producto de alta calidad para tu cuidado personal.",
-    howToUse: "Aplicar según las indicaciones del producto.",
-    ingredients: "Consultar el empaque del producto para información detallada sobre ingredientes."
-  } : null;
+  // Convertir producto de Supabase al formato esperado (con useMemo para evitar recreación)
+  const product = useMemo(() => {
+    if (!supabaseProduct) return null;
+    return {
+      id: supabaseProduct.product_id,
+      name: supabaseProduct.title || "Producto",
+      brand: (supabaseProduct.title || "").split(' ')[0] || "Producto",
+      price: supabaseProduct.offer_price || supabaseProduct.regular_price,
+      originalPrice: supabaseProduct.offer_price ? supabaseProduct.regular_price : undefined,
+      category: "Productos",
+      description: supabaseProduct.description || "Producto de alta calidad",
+      images: (supabaseProduct.images && supabaseProduct.images.length > 0) ? supabaseProduct.images : ["https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=600&h=600&fit=crop"],
+      fullDescription: supabaseProduct.description || "Producto de alta calidad para tu cuidado personal.",
+      howToUse: "Aplicar según las indicaciones del producto.",
+      ingredients: "Consultar el empaque del producto para información detallada sobre ingredientes."
+    };
+  }, [supabaseProduct]);
 
   // Convertir productos destacados al formato esperado (excluyendo el producto actual)
   const relatedProducts = (featuredProducts || [])
@@ -73,12 +76,13 @@ const ProductPage = () => {
       images: (p.images && p.images.length > 0) ? p.images : ["https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=600&h=600&fit=crop"]
     }));
 
-  // Si el producto no existe, redirigir a la página principal
+  // Si el producto no existe después de cargar, redirigir (solo si hay error)
   useEffect(() => {
-    if (!loading && !product) {
-      navigate("/");
+    if (!loading && !product && error) {
+      const timer = setTimeout(() => navigate("/"), 3000);
+      return () => clearTimeout(timer);
     }
-  }, [product, loading, navigate]);
+  }, [loading, product, error, navigate]);
 
   // Si está cargando, mostrar loading
   if (loading) {
