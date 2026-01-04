@@ -4,6 +4,7 @@ import { ChevronLeft, ChevronRight, ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/contexts/CartContext";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useBestSellers } from "@/hooks/useProducts";
 import { cn } from "@/lib/utils";
 
 interface Product {
@@ -15,72 +16,10 @@ interface Product {
   originalPrice?: number;
 }
 
-const bestSellerProducts: Product[] = [
-  {
-    id: "bs-1",
-    name: "Crema Hidratante Facial con Ácido Hialurónico y Vitamina E para Pieles Secas",
-    brand: "Nivea",
-    image: "https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=400&h=400&fit=crop",
-    price: 95,
-    originalPrice: 120
-  },
-  {
-    id: "bs-2",
-    name: "Sérum Concentrado Reparador Nocturno con Retinol y Niacinamida Anti-edad",
-    brand: "La Roche-Posay",
-    image: "https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=400&h=400&fit=crop",
-    price: 220
-  },
-  {
-    id: "bs-3",
-    name: "Protector Solar Facial SPF 50+ Resistente al Agua con Antioxidantes",
-    brand: "Eucerin",
-    image: "https://images.unsplash.com/photo-1526947425960-945c6e72858f?w=400&h=400&fit=crop",
-    price: 135,
-    originalPrice: 165
-  },
-  {
-    id: "bs-4",
-    name: "Tónico Facial Purificante con Extracto de Té Verde y Hamamelis Natural",
-    brand: "Bioderma",
-    image: "https://images.unsplash.com/photo-1512303452766-a48f2bc60dcd?w=400&h=400&fit=crop",
-    price: 85
-  },
-  {
-    id: "bs-5",
-    name: "Contorno de Ojos Anti-ojeras con Cafeína y Péptidos Reafirmantes Intensivo",
-    brand: "Vichy",
-    image: "https://images.unsplash.com/photo-1612817288484-6f916006741a?w=400&h=400&fit=crop",
-    price: 180,
-    originalPrice: 220
-  },
-  {
-    id: "bs-6",
-    name: "Gel Limpiador Facial Suave para Todo Tipo de Piel con Ceramidas",
-    brand: "CeraVe",
-    image: "https://images.unsplash.com/photo-1556229010-6c3f2c9ca5f8?w=400&h=400&fit=crop",
-    price: 65
-  },
-  {
-    id: "bs-7",
-    name: "Mascarilla Facial Detox con Arcilla Verde y Carbón Activado Purificante",
-    brand: "Neutrogena",
-    image: "https://images.unsplash.com/photo-1567721913486-6585f069b332?w=400&h=400&fit=crop",
-    price: 55,
-    originalPrice: 70
-  },
-  {
-    id: "bs-8",
-    name: "Aceite Facial Regenerador con Rosa Mosqueta y Vitamina C Iluminador",
-    brand: "The Ordinary",
-    image: "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?w=400&h=400&fit=crop",
-    price: 145
-  }
-];
-
 export const BestSellersCarousel = () => {
   const isMobile = useIsMobile();
   const [isTablet, setIsTablet] = useState(false);
+  const { products: supabaseProducts, loading } = useBestSellers();
   const {
     items,
     addItem,
@@ -88,6 +27,15 @@ export const BestSellersCarousel = () => {
   } = useCart();
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
+
+  // Convertir productos de Supabase al formato del componente
+  const bestSellerProducts: Product[] = supabaseProducts.map(p => ({
+    id: p.product_id,
+    name: p.title,
+    image: p.images[0] || "https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=400&h=400&fit=crop",
+    price: p.offer_price || p.regular_price,
+    originalPrice: p.offer_price ? p.regular_price : undefined
+  }));
 
   useEffect(() => {
     const checkTablet = () => {
@@ -144,6 +92,23 @@ export const BestSellersCarousel = () => {
   const isInCart = (productId: string) => {
     return items.some(item => item.id === productId);
   };
+
+  if (loading) {
+    return (
+      <section className="py-6 md:py-8 bg-background">
+        <div className="max-w-7xl mx-auto px-4 md:px-6">
+          <h2 className="md:text-4xl lg:text-5xl font-display font-semibold text-foreground text-center mb-8 md:mb-12 text-3xl">
+            Mas Vendidos
+          </h2>
+          <div className="text-center text-muted-foreground">Cargando productos...</div>
+        </div>
+      </section>
+    );
+  }
+
+  if (bestSellerProducts.length === 0) {
+    return null;
+  }
 
   return (
     <section className="py-6 md:py-8 bg-background">
