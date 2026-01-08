@@ -213,11 +213,11 @@ const Header = () => {
 
         {/* Mobile Search - Estática debajo del spacer */}
         {!isCheckoutPage && (
-          <div className="md:hidden px-4 py-3 bg-[hsl(0,0%,85%)]">
+          <div className="md:hidden px-4 py-[11.4px] bg-[hsl(0,0%,85%)]">
             <div className="search-container">
               <input type="text" placeholder="¿Qué estás buscando?" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} onKeyDown={handleSearchKeyDown} className="search-input" />
               <button onClick={handleSearch} className="search-button">
-                <Search className="w-5 h-5" />
+                <Search className="w-[19px] h-[19px]" />
               </button>
             </div>
           </div>

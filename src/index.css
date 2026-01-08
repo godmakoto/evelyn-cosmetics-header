@@ -328,6 +328,22 @@
     @apply flex items-center justify-center h-full text-sm;
     color: hsl(0 0% 55%);
   }
+
+  /* Mobile Search - Reducción del 5% en todos los elementos */
+  @media (max-width: 767px) {
+    .search-input {
+      height: 41.8px; /* 95% de 44px */
+      padding-left: 19px; /* 95% de 20px */
+      padding-right: 53.2px; /* 95% de 56px */
+      font-size: 13.3px; /* 95% de 14px (text-sm) */
+    }
+
+    .search-button {
+      height: 30.4px; /* 95% de 32px */
+      width: 30.4px; /* 95% de 32px */
+      right: 5.7px; /* 95% de 6px */
+    }
+  }
 }
 
 /* ============================================
