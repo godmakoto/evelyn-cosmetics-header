@@ -1,4 +1,5 @@
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { useCart } from "@/contexts/CartContext";
@@ -9,6 +10,7 @@ import { cn } from "@/lib/utils";
 const Checkout = () => {
   const navigate = useNavigate();
   const { items, addItem, removeItem, updateQuantity, subtotal, totalDiscount, finalTotal } = useCart();
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
 
   const handleWhatsAppCheckout = () => {
     // Build order message for WhatsApp
@@ -230,10 +232,38 @@ const Checkout = () => {
               </div>
             </div>
 
+            {/* Terms and Conditions Checkbox */}
+            <div className="mb-4">
+              <label className="flex items-start gap-3 cursor-pointer group">
+                <input
+                  type="checkbox"
+                  checked={acceptedTerms}
+                  onChange={(e) => setAcceptedTerms(e.target.checked)}
+                  className="mt-0.5 w-4 h-4 rounded border-[#ddd] text-[#222] focus:ring-2 focus:ring-[#222] focus:ring-offset-0 cursor-pointer"
+                />
+                <span className="text-sm text-[#666] leading-relaxed">
+                  Estoy de acuerdo con los{" "}
+                  <Link
+                    to="/terminos-y-condiciones"
+                    className="text-[#222] font-semibold underline hover:text-[#e02b2b] transition-colors"
+                    target="_blank"
+                  >
+                    términos y condiciones
+                  </Link>
+                </span>
+              </label>
+            </div>
+
             {/* WhatsApp Button */}
             <Button
               onClick={handleWhatsAppCheckout}
-              className="w-full bg-[#25D366] hover:bg-[#20BD5A] text-white rounded-full py-6 text-base font-semibold transition-colors"
+              disabled={!acceptedTerms}
+              className={cn(
+                "w-full rounded-full py-6 text-base font-semibold transition-all",
+                acceptedTerms
+                  ? "bg-[#25D366] hover:bg-[#20BD5A] text-white cursor-pointer"
+                  : "bg-[#ddd] text-[#999] cursor-not-allowed"
+              )}
             >
               <svg
                 viewBox="0 0 24 24"
