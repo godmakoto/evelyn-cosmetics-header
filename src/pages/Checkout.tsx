@@ -239,7 +239,7 @@ const Checkout = () => {
                   type="checkbox"
                   checked={acceptedTerms}
                   onChange={(e) => setAcceptedTerms(e.target.checked)}
-                  className="mt-0.5 w-4 h-4 rounded border-[#ddd] text-[#222] focus:ring-2 focus:ring-[#222] focus:ring-offset-0 cursor-pointer"
+                  className="mt-0.5 w-4 h-4 rounded border-[#ccc] accent-[#222] focus:outline-none focus:ring-0 cursor-pointer"
                 />
                 <span className="text-sm text-[#666] leading-relaxed">
                   Estoy de acuerdo con los{" "}
