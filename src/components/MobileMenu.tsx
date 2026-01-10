@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import {
   Sheet,
@@ -8,15 +8,20 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
+import { categories } from "@/data/categories";
 
-const categories = [
-  { name: "Serums", subcategories: [] },
-  { name: "Protectores Solares", subcategories: [] },
-  { name: "Hidratantes", subcategories: [] },
-  { name: "Sprays", subcategories: [] },
-  { name: "Tónicos y Esencias", subcategories: [] },
-  { name: "Coreano", subcategories: [] },
-  { name: "Limpiadores", subcategories: [] }
+const brands = [
+  "Avène",
+  "Bioderma",
+  "CeraVe",
+  "Eucerin",
+  "Isdin",
+  "La Roche-Posay",
+  "Neutrogena",
+  "Nivea",
+  "SkinCeuticals",
+  "The Ordinary",
+  "Vichy"
 ];
 
 interface MobileMenuProps {
@@ -26,17 +31,40 @@ interface MobileMenuProps {
 
 const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
   const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
+  const [isBrandsOpen, setIsBrandsOpen] = useState(false);
   const [expandedSubcategory, setExpandedSubcategory] = useState<string | null>(null);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleTiendaClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    // Navegar a tienda sin filtros (resetear todo) usando timestamp para forzar reset
+    navigate('/tienda', { state: { resetFiltersTimestamp: Date.now() }, replace: location.pathname === '/tienda' });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    onClose(); // Cerrar el menú móvil
+  };
 
   const toggleCategories = () => {
     setIsCategoriesOpen((prev) => !prev);
     if (isCategoriesOpen) {
       setExpandedSubcategory(null);
+    } else {
+      // Cerrar marcas cuando se abren categorías
+      setIsBrandsOpen(false);
     }
   };
 
   const toggleSubcategory = (categoryName: string) => {
     setExpandedSubcategory((prev) => (prev === categoryName ? null : categoryName));
+  };
+
+  const toggleBrands = () => {
+    setIsBrandsOpen((prev) => !prev);
+    if (!isBrandsOpen) {
+      // Cerrar categorías cuando se abren marcas
+      setIsCategoriesOpen(false);
+      setExpandedSubcategory(null);
+    }
   };
 
   return (
@@ -70,50 +98,79 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
             <div
               className={cn(
                 "overflow-hidden transition-all duration-300 ease-in-out",
-                isCategoriesOpen ? "max-h-[1000px] opacity-100 mt-1" : "max-h-0 opacity-0"
+                isCategoriesOpen ? "max-h-[500px] opacity-100 mt-1" : "max-h-0 opacity-0"
               )}
             >
-              <div className="ml-3 space-y-0.5">
+              <div className="ml-3 space-y-0.5 max-h-[440px] overflow-y-auto">
                 {categories.map((category) => (
                   <div key={category.name}>
                     {category.subcategories.length > 0 ? (
                       <>
-                        <button
-                          onClick={() => toggleSubcategory(category.name)}
+                        <div
                           className={cn(
-                            "w-full flex items-center justify-between px-3 py-2.5 text-sm font-medium text-foreground rounded-lg transition-all duration-200",
-                            expandedSubcategory === category.name 
-                              ? "bg-secondary/70" 
+                            "w-full flex items-center justify-between rounded-lg transition-all duration-200",
+                            expandedSubcategory === category.name
+                              ? "bg-secondary/70"
                               : "hover:bg-secondary/40"
                           )}
                         >
-                          {category.name}
-                          <ChevronRight
-                            className={cn(
-                              "w-4 h-4 text-muted-foreground transition-transform duration-200",
-                              expandedSubcategory === category.name && "rotate-90"
-                            )}
-                          />
-                        </button>
+                          <button
+                            onClick={(e) => {
+                              e.preventDefault();
+                              navigate('/tienda', {
+                                state: {
+                                  categoryFilter: category.name
+                                },
+                                replace: location.pathname === '/tienda'
+                              });
+                              onClose();
+                              window.scrollTo({ top: 0, behavior: 'smooth' });
+                            }}
+                            className="flex-1 text-left px-3 py-2.5 text-sm font-medium text-foreground"
+                          >
+                            {category.name}
+                          </button>
+                          <button
+                            onClick={() => toggleSubcategory(category.name)}
+                            className="px-3 py-2.5"
+                          >
+                            <ChevronRight
+                              className={cn(
+                                "w-4 h-4 text-muted-foreground transition-transform duration-200",
+                                expandedSubcategory === category.name && "rotate-90"
+                              )}
+                            />
+                          </button>
+                        </div>
 
                         <div
                           className={cn(
                             "overflow-hidden transition-all duration-250 ease-in-out",
-                            expandedSubcategory === category.name 
-                              ? "max-h-[500px] opacity-100 mt-0.5" 
+                            expandedSubcategory === category.name
+                              ? "max-h-[500px] opacity-100 mt-0.5"
                               : "max-h-0 opacity-0"
                           )}
                         >
                           <div className="ml-4 pl-3 border-l border-border/50 space-y-0.5">
                             {category.subcategories.map((sub) => (
-                              <a
+                              <button
                                 key={sub}
-                                href="#"
-                                className="block px-3 py-2 text-xs text-muted-foreground hover:text-foreground hover:bg-secondary/30 rounded-lg transition-all duration-200"
-                                onClick={onClose}
+                                className="w-full text-left block px-3 py-2 text-xs text-muted-foreground hover:text-foreground hover:bg-secondary/30 rounded-lg transition-all duration-200"
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  navigate('/tienda', {
+                                    state: {
+                                      categoryFilter: category.name,
+                                      subcategoryFilter: sub
+                                    },
+                                    replace: location.pathname === '/tienda'
+                                  });
+                                  onClose();
+                                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                                }}
                               >
                                 {sub}
-                              </a>
+                              </button>
                             ))}
                           </div>
                         </div>
@@ -133,29 +190,74 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
             </div>
           </div>
 
+          {/* Marcas Dropdown */}
+          <div className="mt-2 px-4">
+            <button
+              onClick={toggleBrands}
+              className="w-full flex items-center justify-between px-3 py-3 text-sm font-semibold text-foreground hover:bg-secondary rounded-lg transition-colors"
+            >
+              Marcas
+              <ChevronDown
+                className={cn(
+                  "w-4 h-4 transition-transform",
+                  isBrandsOpen && "rotate-180"
+                )}
+              />
+            </button>
+
+            <div
+              className={cn(
+                "transition-all duration-300 ease-in-out",
+                isBrandsOpen ? "max-h-[500px] opacity-100 mt-1" : "max-h-0 opacity-0 overflow-hidden"
+              )}
+            >
+              <div className="ml-3 space-y-0.5 max-h-[440px] overflow-y-auto">
+                {brands.map((brand) => (
+                  <button
+                    key={brand}
+                    className="w-full text-left block px-3 py-2.5 text-sm font-medium text-foreground hover:bg-secondary/40 rounded-lg transition-all duration-200"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      navigate('/tienda', {
+                        state: {
+                          brandFilter: brand
+                        },
+                        replace: location.pathname === '/tienda'
+                      });
+                      onClose();
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
+                  >
+                    {brand}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+
           {/* Other Nav Items */}
           <div className="mt-2 px-4 space-y-1">
             <Link
               to="/tienda"
               className="block px-3 py-3 text-sm font-medium text-foreground hover:bg-secondary rounded-lg transition-colors"
-              onClick={onClose}
+              onClick={handleTiendaClick}
             >
               Tienda
             </Link>
-            <a
-              href="#"
+            <Link
+              to="/blog"
               className="block px-3 py-3 text-sm font-medium text-foreground hover:bg-secondary rounded-lg transition-colors"
               onClick={onClose}
             >
               Blog
-            </a>
-            <a
-              href="#"
+            </Link>
+            <Link
+              to="/terminos-y-condiciones"
               className="block px-3 py-3 text-sm font-medium text-foreground hover:bg-secondary rounded-lg transition-colors"
               onClick={onClose}
             >
               Términos y condiciones
-            </a>
+            </Link>
           </div>
         </nav>
       </SheetContent>

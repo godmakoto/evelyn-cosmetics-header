@@ -1,63 +1,132 @@
 import { useState, useEffect, useCallback } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
-import { ChevronLeft, ChevronRight, Droplet, Sun, Droplets, SprayCan, Beaker, Heart, Sparkles } from "lucide-react";
+import { 
+  ChevronLeft, 
+  ChevronRight, 
+  Droplet, 
+  Sun, 
+  Droplets, 
+  SprayCan, 
+  FlaskConical, 
+  Sparkles, 
+  Gift, 
+  Brush, 
+  Waves, 
+  Eraser, 
+  Scissors, 
+  Wind,
+  Cherry,
+  CircleDashed,
+  Leaf
+} from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
+import { useNavigate } from "react-router-dom";
 
 interface Category {
   id: string;
   name: string;
   icon: React.ReactNode;
-  href: string;
+  categoryFilter?: string;
+  subcategoryFilter?: string;
 }
 
 const categories: Category[] = [
   {
-    id: "serums",
-    name: "Serums",
-    icon: <Droplet className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
-    href: "#serums"
+    id: "limpiadores",
+    name: "Limpiadores",
+    icon: <Waves className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
+    categoryFilter: "Limpiadores"
+  },
+  {
+    id: "hidratantes-faciales",
+    name: "Hidratantes Faciales",
+    icon: <Droplets className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
+    categoryFilter: "Hidratantes Faciales"
+  },
+  {
+    id: "hidratantes-corporales",
+    name: "Hidratantes Corporales",
+    icon: <Leaf className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
+    categoryFilter: "Hidratantes Corporales"
   },
   {
     id: "protectores-solares",
     name: "Protectores Solares",
     icon: <Sun className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
-    href: "#protectores-solares"
+    categoryFilter: "Protectores Solares"
   },
   {
-    id: "hidratantes",
-    name: "Hidratantes",
-    icon: <Droplets className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
-    href: "#hidratantes"
+    id: "serums",
+    name: "Serums",
+    icon: <Droplet className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
+    categoryFilter: "Serums"
   },
   {
-    id: "sprays",
-    name: "Sprays",
-    icon: <SprayCan className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
-    href: "#sprays"
+    id: "exfoliantes-faciales",
+    name: "Exfoliantes faciales",
+    icon: <CircleDashed className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
+    categoryFilter: "Exfoliantes faciales"
+  },
+  {
+    id: "exfoliantes-corporales",
+    name: "Exfoliantes Corporales",
+    icon: <Sparkles className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
+    categoryFilter: "Exfoliantes Corporales"
+  },
+  {
+    id: "desmaquillantes",
+    name: "Desmaquillantes",
+    icon: <Eraser className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
+    categoryFilter: "Desmaquillantes"
   },
   {
     id: "tonicos-esencias",
-    name: "Tónicos y Esencias",
-    icon: <Beaker className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
-    href: "#tonicos-esencias"
+    name: "Tonicos y Esencias",
+    icon: <FlaskConical className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
+    categoryFilter: "Tonicos y Esencias"
   },
   {
-    id: "coreano",
-    name: "Coreano",
-    icon: <Heart className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
-    href: "#coreano"
+    id: "agua-termal-mist",
+    name: "Agua Termal y Mist",
+    icon: <SprayCan className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
+    categoryFilter: "Agua Termal y Mist"
   },
   {
-    id: "limpiadores",
-    name: "Limpiadores",
-    icon: <Sparkles className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
-    href: "#limpiadores"
+    id: "capilar",
+    name: "Capilar",
+    icon: <Scissors className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
+    categoryFilter: "Capilar"
+  },
+  {
+    id: "maquillaje",
+    name: "Maquillaje",
+    icon: <Brush className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
+    categoryFilter: "Maquillaje"
+  },
+  {
+    id: "kits",
+    name: "Kits",
+    icon: <Gift className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
+    categoryFilter: "Kits"
+  },
+  {
+    id: "labios",
+    name: "Labios",
+    icon: <Cherry className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
+    categoryFilter: "Labios"
+  },
+  {
+    id: "mascarillas",
+    name: "Mascarillas",
+    icon: <Wind className="w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />,
+    categoryFilter: "Mascarillas"
   }
 ];
 
 export const CategoriesCarousel = () => {
+  const navigate = useNavigate();
   const isMobile = useIsMobile();
   const [isTablet, setIsTablet] = useState(false);
 
@@ -117,15 +186,25 @@ export const CategoriesCarousel = () => {
                   key={category.id}
                   className={cn(
                     "flex-shrink-0",
-                    isMobile 
-                      ? "w-1/3 px-2" 
-                      : isTablet 
-                        ? "w-1/4 px-3" 
+                    isMobile
+                      ? "w-1/3 px-2"
+                      : isTablet
+                        ? "w-1/4 px-3"
                         : "w-1/5 px-4"
                   )}
                 >
-                  <a
-                    href={category.href}
+                  <div
+                    onClick={() => {
+                      if (category.categoryFilter || category.subcategoryFilter) {
+                        navigate('/tienda', {
+                          state: {
+                            categoryFilter: category.categoryFilter || null,
+                            subcategoryFilter: category.subcategoryFilter || null
+                          }
+                        });
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      }
+                    }}
                     className="flex flex-col items-center gap-3 md:gap-4 py-4 md:py-6 group cursor-pointer"
                   >
                     <div className="w-16 h-16 md:w-20 md:h-20 flex items-center justify-center rounded-full border border-border bg-background group-hover:bg-secondary group-hover:border-foreground/20 transition-all duration-300">
@@ -136,7 +215,7 @@ export const CategoriesCarousel = () => {
                     <span className="text-xs md:text-sm text-center text-muted-foreground group-hover:text-foreground transition-colors duration-300 font-medium">
                       {category.name}
                     </span>
-                  </a>
+                  </div>
                 </div>
               ))}
             </div>

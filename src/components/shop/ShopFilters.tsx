@@ -1,6 +1,14 @@
 import { useState, useEffect } from "react";
-import { brands, categories, getSubcategories } from "@/data/shopProducts";
+import { brands } from "@/data/shopProducts";
+import { categories, getSubcategories } from "@/data/categories";
 import { ChevronDown } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface ShopFiltersProps {
   onFiltersChange: (filters: {
@@ -8,15 +16,48 @@ interface ShopFiltersProps {
     brand: string | null;
     category: string | null;
     subcategory: string | null;
+    status: string | null;
   }) => void;
+  initialBrandFilter?: string | null;
+  initialCategoryFilter?: string | null;
+  initialSubcategoryFilter?: string | null;
+  initialStatusFilter?: string | null;
+  resetFiltersTimestamp?: number | null;
 }
 
-const ShopFilters = ({ onFiltersChange }: ShopFiltersProps) => {
+const ShopFilters = ({
+  onFiltersChange,
+  initialBrandFilter = null,
+  initialCategoryFilter = null,
+  initialSubcategoryFilter = null,
+  initialStatusFilter = null,
+  resetFiltersTimestamp = null
+}: ShopFiltersProps) => {
   const [maxPrice, setMaxPrice] = useState<string>("");
-  const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [selectedSubcategory, setSelectedSubcategory] = useState<string | null>(null);
+  const [selectedBrand, setSelectedBrand] = useState<string | null>(initialBrandFilter);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(initialCategoryFilter);
+  const [selectedSubcategory, setSelectedSubcategory] = useState<string | null>(initialSubcategoryFilter);
+  const [selectedStatus, setSelectedStatus] = useState<string | null>(initialStatusFilter);
   const [subcategories, setSubcategories] = useState<string[]>([]);
+
+  // Update filters when initial filter props change
+  useEffect(() => {
+    setSelectedBrand(initialBrandFilter);
+    setSelectedCategory(initialCategoryFilter);
+    setSelectedSubcategory(initialSubcategoryFilter);
+    setSelectedStatus(initialStatusFilter);
+  }, [initialBrandFilter, initialCategoryFilter, initialSubcategoryFilter, initialStatusFilter]);
+
+  // Reset all filter states when resetFiltersTimestamp changes
+  useEffect(() => {
+    if (resetFiltersTimestamp) {
+      setMaxPrice("");
+      setSelectedBrand(null);
+      setSelectedCategory(null);
+      setSelectedSubcategory(null);
+      setSelectedStatus(null);
+    }
+  }, [resetFiltersTimestamp]);
 
   useEffect(() => {
     if (selectedCategory) {
@@ -33,8 +74,9 @@ const ShopFilters = ({ onFiltersChange }: ShopFiltersProps) => {
       brand: selectedBrand,
       category: selectedCategory,
       subcategory: selectedSubcategory,
+      status: selectedStatus,
     });
-  }, [maxPrice, selectedBrand, selectedCategory, selectedSubcategory, onFiltersChange]);
+  }, [maxPrice, selectedBrand, selectedCategory, selectedSubcategory, selectedStatus, onFiltersChange]);
 
   const handleBrandChange = (brand: string | null) => {
     setSelectedBrand(brand);
@@ -59,9 +101,10 @@ const ShopFilters = ({ onFiltersChange }: ShopFiltersProps) => {
     setSelectedBrand(null);
     setSelectedCategory(null);
     setSelectedSubcategory(null);
+    setSelectedStatus(null);
   };
 
-  const hasActiveFilters = maxPrice || selectedBrand || selectedCategory || selectedSubcategory;
+  const hasActiveFilters = maxPrice || selectedBrand || selectedCategory || selectedSubcategory || selectedStatus;
 
   return (
     <div
@@ -82,82 +125,71 @@ const ShopFilters = ({ onFiltersChange }: ShopFiltersProps) => {
         </div>
 
         {/* Precio Máximo */}
-        <div className="grid grid-cols-2 lg:grid-cols-1 gap-2 mb-2 md:gap-3 md:mb-3">
-          <div>
-            <label className="block text-sm md:text-xs text-[#666] mb-1.5 md:mb-1">Precio Máximo</label>
-            <input
-              type="number"
-              value={maxPrice}
-              onChange={(e) => setMaxPrice(e.target.value)}
-              placeholder="Ej: 200"
-              className="w-full h-10 md:h-10 px-3 md:px-3 rounded-xl border border-[#eaeaea] bg-white text-[#222] text-base md:text-sm
-                focus:outline-none focus:border-[#222] transition-colors"
-            />
-          </div>
-
-          {/* Marca */}
-          <div>
-            <label className="block text-sm md:text-xs text-[#666] mb-1.5 md:mb-1">Marca</label>
-            <div className="relative">
-              <select
-                value={selectedBrand || ""}
-                onChange={(e) => handleBrandChange(e.target.value || null)}
-                className="w-full h-10 md:h-10 px-3 md:px-3 pr-8 rounded-xl border border-[#eaeaea] bg-white text-[#222] text-base md:text-sm
-                  appearance-none focus:outline-none focus:border-[#222] transition-colors cursor-pointer"
-              >
-                <option value="">Todas</option>
-                {brands.map((brand) => (
-                  <option key={brand} value={brand}>
-                    {brand}
-                  </option>
-                ))}
-              </select>
-              <ChevronDown className="absolute right-3 md:right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#666] pointer-events-none" />
-            </div>
-          </div>
+        <div className="mb-2 md:mb-3">
+          <label className="block text-sm md:text-xs text-[#666] mb-1.5 md:mb-1">Precio Máximo</label>
+          <input
+            type="number"
+            value={maxPrice}
+            onChange={(e) => setMaxPrice(e.target.value)}
+            placeholder="Ej: 200"
+            className="w-full h-10 md:h-10 px-3 md:px-3 rounded-xl border border-[#eaeaea] bg-white text-[#222] text-base md:text-sm
+              focus:outline-none focus:border-[#222] transition-colors"
+          />
         </div>
 
-        {/* Row 2: Categoría */}
+        {/* Marca */}
+        <div className="mb-2 md:mb-3">
+          <label className="block text-sm md:text-xs text-[#666] mb-1.5 md:mb-1">Marca</label>
+          <Select value={selectedBrand || "all"} onValueChange={(value) => handleBrandChange(value === "all" ? null : value)}>
+            <SelectTrigger className="w-full h-10 md:h-10 rounded-xl border-[#eaeaea] text-base md:text-sm">
+              <SelectValue placeholder="Todas" />
+            </SelectTrigger>
+            <SelectContent side="bottom" align="start" avoidCollisions={false} className="rounded-xl">
+              <SelectItem value="all" className="text-base md:text-sm">Todas</SelectItem>
+              {brands.map((brand) => (
+                <SelectItem key={brand} value={brand} className="text-base md:text-sm">
+                  {brand}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        {/* Categoría */}
         <div className="mb-3 md:mb-3">
           <label className="block text-sm md:text-xs text-[#666] mb-1.5 md:mb-1">Categoría</label>
-          <div className="relative">
-            <select
-              value={selectedCategory || ""}
-              onChange={(e) => handleCategoryChange(e.target.value || null)}
-              className="w-full h-10 md:h-10 px-3 md:px-3 pr-8 rounded-xl border border-[#eaeaea] bg-white text-[#222] text-base md:text-sm
-                appearance-none focus:outline-none focus:border-[#222] transition-colors cursor-pointer"
-            >
-              <option value="">Todas</option>
+          <Select value={selectedCategory || "all"} onValueChange={(value) => handleCategoryChange(value === "all" ? null : value)}>
+            <SelectTrigger className="w-full h-10 md:h-10 rounded-xl border-[#eaeaea] text-base md:text-sm">
+              <SelectValue placeholder="Todas" />
+            </SelectTrigger>
+            <SelectContent side="bottom" align="start" avoidCollisions={false} className="rounded-xl">
+              <SelectItem value="all" className="text-base md:text-sm">Todas</SelectItem>
               {categories.map((category) => (
-                <option key={category} value={category}>
-                  {category}
-                </option>
+                <SelectItem key={category.name} value={category.name} className="text-base md:text-sm">
+                  {category.name}
+                </SelectItem>
               ))}
-            </select>
-            <ChevronDown className="absolute right-2 md:right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#666] pointer-events-none" />
-          </div>
+            </SelectContent>
+          </Select>
         </div>
 
-        {/* Row 3: Subcategorías (solo visible cuando hay categoría seleccionada) */}
+        {/* Subcategorías (solo visible cuando hay categoría seleccionada) */}
         {selectedCategory && subcategories.length > 0 && (
           <div className="animate-in fade-in slide-in-from-top-2 duration-200">
             <label className="block text-sm md:text-xs text-[#666] mb-1.5 md:mb-1">Tipo de Producto</label>
-            <div className="relative">
-              <select
-                value={selectedSubcategory || ""}
-                onChange={(e) => setSelectedSubcategory(e.target.value || null)}
-                className="w-full h-10 md:h-10 px-3 md:px-3 pr-8 rounded-xl border border-[#eaeaea] bg-white text-[#222] text-base md:text-sm
-                  appearance-none focus:outline-none focus:border-[#222] transition-colors cursor-pointer"
-              >
-                <option value="">Todos</option>
+            <Select value={selectedSubcategory || "all"} onValueChange={(value) => setSelectedSubcategory(value === "all" ? null : value)}>
+              <SelectTrigger className="w-full h-10 md:h-10 rounded-xl border-[#eaeaea] text-base md:text-sm">
+                <SelectValue placeholder="Todos" />
+              </SelectTrigger>
+              <SelectContent side="bottom" align="start" avoidCollisions={false} className="rounded-xl">
+                <SelectItem value="all" className="text-base md:text-sm">Todos</SelectItem>
                 {subcategories.map((sub) => (
-                  <option key={sub} value={sub}>
+                  <SelectItem key={sub} value={sub} className="text-base md:text-sm">
                     {sub}
-                  </option>
+                  </SelectItem>
                 ))}
-              </select>
-              <ChevronDown className="absolute right-2 md:right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#666] pointer-events-none" />
-            </div>
+              </SelectContent>
+            </Select>
           </div>
         )}
       </div>

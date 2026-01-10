@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useCart } from "@/contexts/CartContext";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
+import { useNavigate } from "react-router-dom";
 interface Product {
   id: string;
   name: string;
@@ -67,6 +68,7 @@ const products: Product[] = [{
   price: 160
 }];
 export const ProductCarousel = () => {
+  const navigate = useNavigate();
   const isMobile = useIsMobile();
   const [isTablet, setIsTablet] = useState(false);
   const {
@@ -126,6 +128,10 @@ export const ProductCarousel = () => {
   const isInCart = (productId: string) => {
     return items.some(item => item.id === productId);
   };
+
+  const handleCardClick = (productId: string) => {
+    navigate(`/producto/${productId}`);
+  };
   return <section className="py-6 md:py-8 bg-background">
       <div className="max-w-7xl mx-auto px-4 md:px-6">
         {/* Section Title */}
@@ -149,7 +155,10 @@ export const ProductCarousel = () => {
           <div className="overflow-hidden" ref={emblaRef}>
             <div className="flex">
               {products.map(product => <div key={product.id} className={cn("flex-shrink-0 px-2", isMobile ? "w-[72%]" : isTablet ? "w-[38%]" : "lg:w-[30%] xl:w-[28%] w-1/3")}>
-                  <div className="bg-background border border-border rounded-xl h-full flex flex-col overflow-hidden">
+                  <div
+                    className="bg-background border border-border rounded-xl h-full flex flex-col overflow-hidden cursor-pointer"
+                    onClick={() => handleCardClick(product.id)}
+                  >
                     {/* Product Image */}
                     <div className="overflow-hidden bg-secondary aspect-square">
                       <img src={product.image} alt={product.name} className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
@@ -178,7 +187,14 @@ export const ProductCarousel = () => {
                       </div>
 
                       {/* Add Button */}
-                      <Button variant={isInCart(product.id) ? "outline" : "default"} className="w-full rounded-full gap-2" onClick={() => handleAddToCart(product)}>
+                      <Button
+                        variant={isInCart(product.id) ? "outline" : "default"}
+                        className="w-full rounded-full gap-2"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleAddToCart(product);
+                        }}
+                      >
                         <ShoppingBag className="w-4 h-4" />
                         {isInCart(product.id) ? "Ver carrito" : "Agregar"}
                       </Button>
@@ -196,7 +212,10 @@ export const ProductCarousel = () => {
 
         {/* Ver más Button */}
         <div className="flex justify-center mt-8">
-          <Button className="px-8 lg:px-16 rounded-full bg-foreground text-background hover:bg-foreground/90">
+          <Button
+            onClick={() => navigate('/tienda?status=featured')}
+            className="px-8 lg:px-16 rounded-full bg-foreground text-background hover:bg-foreground/90"
+          >
             Ver más
           </Button>
         </div>

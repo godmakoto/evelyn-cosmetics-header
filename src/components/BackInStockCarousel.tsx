@@ -16,70 +16,70 @@ interface Product {
   originalPrice?: number;
 }
 
-const bestSellerProducts: Product[] = [
+const backInStockProducts: Product[] = [
   {
-    id: "bs-1",
-    name: "Crema Hidratante Facial con Ácido Hialurónico y Vitamina E para Pieles Secas",
-    brand: "Nivea",
-    image: "https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=400&h=400&fit=crop",
-    price: 95,
-    originalPrice: 120
+    id: "bis-1",
+    name: "Agua Micelar Desmaquillante Todo en Uno para Piel Sensible",
+    brand: "Bioderma",
+    image: "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=400&h=400&fit=crop",
+    price: 125,
+    originalPrice: 145
   },
   {
-    id: "bs-2",
-    name: "Sérum Concentrado Reparador Nocturno con Retinol y Niacinamida Anti-edad",
+    id: "bis-2",
+    name: "Exfoliante Facial Químico con AHA y BHA Anti-Imperfecciones",
+    brand: "The Ordinary",
+    image: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=400&h=400&fit=crop",
+    price: 95
+  },
+  {
+    id: "bis-3",
+    name: "Crema Hidratante Corporal Nutritiva con Manteca de Karité",
+    brand: "Nivea",
+    image: "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?w=400&h=400&fit=crop",
+    price: 78,
+    originalPrice: 95
+  },
+  {
+    id: "bis-4",
+    name: "Protector Solar Corporal SPF 50+ en Spray Resistente al Agua",
+    brand: "Isdin",
+    image: "https://images.unsplash.com/photo-1556228994-7be8d82c30a9?w=400&h=400&fit=crop",
+    price: 155
+  },
+  {
+    id: "bis-5",
+    name: "Mascarilla Facial Hidratante Overnight con Ácido Hialurónico",
+    brand: "Neutrogena",
+    image: "https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=400&h=400&fit=crop",
+    price: 65,
+    originalPrice: 80
+  },
+  {
+    id: "bis-6",
+    name: "Aceite Limpiador Desmaquillante Facial Suave Bifásico",
     brand: "La Roche-Posay",
     image: "https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=400&h=400&fit=crop",
-    price: 220
+    price: 135
   },
   {
-    id: "bs-3",
-    name: "Protector Solar Facial SPF 50+ Resistente al Agua con Antioxidantes",
-    brand: "Eucerin",
-    image: "https://images.unsplash.com/photo-1526947425960-945c6e72858f?w=400&h=400&fit=crop",
-    price: 135,
-    originalPrice: 165
-  },
-  {
-    id: "bs-4",
-    name: "Tónico Facial Purificante con Extracto de Té Verde y Hamamelis Natural",
-    brand: "Bioderma",
-    image: "https://images.unsplash.com/photo-1512303452766-a48f2bc60dcd?w=400&h=400&fit=crop",
-    price: 85
-  },
-  {
-    id: "bs-5",
-    name: "Contorno de Ojos Anti-ojeras con Cafeína y Péptidos Reafirmantes Intensivo",
+    id: "bis-7",
+    name: "Base de Maquillaje Líquida Cobertura Media a Buildable SPF 15",
     brand: "Vichy",
-    image: "https://images.unsplash.com/photo-1612817288484-6f916006741a?w=400&h=400&fit=crop",
-    price: 180,
+    image: "https://images.unsplash.com/photo-1631214524020-7e18db9a8f92?w=400&h=400&fit=crop",
+    price: 185,
     originalPrice: 220
   },
   {
-    id: "bs-6",
-    name: "Gel Limpiador Facial Suave para Todo Tipo de Piel con Ceramidas",
-    brand: "CeraVe",
-    image: "https://images.unsplash.com/photo-1556229010-6c3f2c9ca5f8?w=400&h=400&fit=crop",
-    price: 65
-  },
-  {
-    id: "bs-7",
-    name: "Mascarilla Facial Detox con Arcilla Verde y Carbón Activado Purificante",
-    brand: "Neutrogena",
-    image: "https://images.unsplash.com/photo-1567721913486-6585f069b332?w=400&h=400&fit=crop",
-    price: 55,
-    originalPrice: 70
-  },
-  {
-    id: "bs-8",
-    name: "Aceite Facial Regenerador con Rosa Mosqueta y Vitamina C Iluminador",
-    brand: "The Ordinary",
-    image: "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?w=400&h=400&fit=crop",
-    price: 145
+    id: "bis-8",
+    name: "Champú Tratante Anticaída Fortificante con Cafeína",
+    brand: "Eucerin",
+    image: "https://images.unsplash.com/photo-1535585209827-a15fcdbc4c2d?w=400&h=400&fit=crop",
+    price: 98
   }
 ];
 
-export const BestSellersCarousel = () => {
+export const BackInStockCarousel = () => {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
   const [isTablet, setIsTablet] = useState(false);
@@ -155,7 +155,7 @@ export const BestSellersCarousel = () => {
     <section className="py-6 md:py-8 bg-background">
       <div className="max-w-7xl mx-auto px-4 md:px-6">
         <h2 className="md:text-4xl lg:text-5xl font-display font-semibold text-foreground text-center mb-8 md:mb-12 text-3xl">
-          Mas Vendidos
+          De Vuelta en Stock
         </h2>
 
         <div className={cn("relative", isMobile || isTablet ? "px-0" : "px-14")}>
@@ -180,7 +180,7 @@ export const BestSellersCarousel = () => {
 
           <div className="overflow-hidden" ref={emblaRef}>
             <div className="flex">
-              {bestSellerProducts.map(product => (
+              {backInStockProducts.map(product => (
                 <div
                   key={product.id}
                   className={cn(
@@ -263,7 +263,7 @@ export const BestSellersCarousel = () => {
 
         <div className="flex justify-center mt-8">
           <Button
-            onClick={() => navigate('/tienda?status=best-seller')}
+            onClick={() => navigate('/tienda?status=back-in-stock')}
             className="px-8 lg:px-16 rounded-full bg-foreground text-background hover:bg-foreground/90"
           >
             Ver más

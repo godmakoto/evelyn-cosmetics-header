@@ -1,23 +1,39 @@
 import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
-const brands = ["EUCERIN", "ISDIN", "LA ROCHE-POSAY", "NEUTROGENA", "NIVEA", "L'ORÉAL", "GARNIER", "BIODERMA", "CERAVE", "VICHY", "BYPHASSE", "REVOX"];
+// Brand names as they appear in products (for filtering)
+const actualBrands = [
+  "Eucerin",
+  "Isdin",
+  "La Roche-Posay",
+  "Neutrogena",
+  "Nivea",
+  "Bioderma",
+  "CeraVe",
+  "Vichy",
+  "Avène",
+  "SkinCeuticals",
+  "The Ordinary"
+];
+
 export const BrandsCarousel = () => {
+  const navigate = useNavigate();
   const trackRef = useRef<HTMLDivElement>(null);
   const [isPaused, setIsPaused] = useState(false);
   const [position, setPosition] = useState(0);
   const [initialOffset, setInitialOffset] = useState(0);
   const animationRef = useRef<number>();
   const resumeTimeoutRef = useRef<NodeJS.Timeout>();
-  
+
   // Touch/drag state
   const isDragging = useRef(false);
   const startX = useRef(0);
   const startPosition = useRef(0);
 
   // Duplicate brands 4 times for infinite scroll
-  const duplicatedBrands = [...brands, ...brands, ...brands, ...brands];
+  const duplicatedBrands = [...actualBrands, ...actualBrands, ...actualBrands, ...actualBrands];
 
   // Calculate initial offset to start in the middle (hide the seam)
   useEffect(() => {
@@ -207,7 +223,14 @@ export const BrandsCarousel = () => {
           <div ref={trackRef} className="flex items-center" style={{
           transform: `translateX(${position}px)`
         }}>
-            {duplicatedBrands.map((brand, index) => <div key={`${brand}-${index}`} className={cn("flex-shrink-0 cursor-pointer", "px-[25px] md:px-[30px] lg:px-[45px]")}>
+            {duplicatedBrands.map((brand, index) => <div
+                key={`${brand}-${index}`}
+                className={cn("flex-shrink-0 cursor-pointer", "px-[25px] md:px-[30px] lg:px-[45px]")}
+                onClick={() => {
+                  navigate('/tienda', { state: { brandFilter: brand } });
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+              >
                 <span className={cn("block font-sans font-medium text-[#666] uppercase whitespace-nowrap", "text-sm md:text-base lg:text-xl", "tracking-[1.5px] md:tracking-[2px] lg:tracking-[3px]", "transition-all duration-300 ease-out", "hover:text-[#2a2a2a] hover:-translate-y-0.5", "relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-px", "after:bg-[#2a2a2a] after:scale-x-0 after:origin-right after:transition-transform after:duration-300", "hover:after:scale-x-100 hover:after:origin-left")}>
                   {brand}
                 </span>
