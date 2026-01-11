@@ -124,38 +124,41 @@ const ShopFilters = ({
           )}
         </div>
 
-        {/* Precio Máximo */}
-        <div className="mb-2 md:mb-3">
-          <label className="block text-sm md:text-xs text-[#666] mb-1.5 md:mb-1">Precio Máximo</label>
-          <input
-            type="number"
-            value={maxPrice}
-            onChange={(e) => setMaxPrice(e.target.value)}
-            placeholder="Ej: 200"
-            className="w-full h-10 md:h-10 px-3 md:px-3 rounded-xl border border-[#eaeaea] bg-white text-[#222] text-base md:text-sm
-              focus:outline-none focus:border-[#222] transition-colors"
-          />
+        {/* Primera fila: Precio Máximo + Marca */}
+        <div className="grid grid-cols-2 gap-3 mb-2 md:mb-3 md:grid-cols-1">
+          {/* Precio Máximo */}
+          <div>
+            <label className="block text-sm md:text-xs text-[#666] mb-1.5 md:mb-1">Precio Máximo</label>
+            <input
+              type="number"
+              value={maxPrice}
+              onChange={(e) => setMaxPrice(e.target.value)}
+              placeholder="Ej: 200"
+              className="w-full h-10 md:h-10 px-3 md:px-3 rounded-xl border border-[#eaeaea] bg-white text-[#222] text-base md:text-sm
+                focus:outline-none focus:border-[#222] transition-colors"
+            />
+          </div>
+
+          {/* Marca */}
+          <div>
+            <label className="block text-sm md:text-xs text-[#666] mb-1.5 md:mb-1">Marca</label>
+            <Select value={selectedBrand || "all"} onValueChange={(value) => handleBrandChange(value === "all" ? null : value)}>
+              <SelectTrigger className="w-full h-10 md:h-10 rounded-xl border-[#eaeaea] text-base md:text-sm">
+                <SelectValue placeholder="Todas" />
+              </SelectTrigger>
+              <SelectContent side="bottom" align="start" avoidCollisions={false} className="rounded-xl">
+                <SelectItem value="all" className="text-base md:text-sm">Todas</SelectItem>
+                {brands.map((brand) => (
+                  <SelectItem key={brand} value={brand} className="text-base md:text-sm">
+                    {brand}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
         </div>
 
-        {/* Marca */}
-        <div className="mb-2 md:mb-3">
-          <label className="block text-sm md:text-xs text-[#666] mb-1.5 md:mb-1">Marca</label>
-          <Select value={selectedBrand || "all"} onValueChange={(value) => handleBrandChange(value === "all" ? null : value)}>
-            <SelectTrigger className="w-full h-10 md:h-10 rounded-xl border-[#eaeaea] text-base md:text-sm">
-              <SelectValue placeholder="Todas" />
-            </SelectTrigger>
-            <SelectContent side="bottom" align="start" avoidCollisions={false} className="rounded-xl">
-              <SelectItem value="all" className="text-base md:text-sm">Todas</SelectItem>
-              {brands.map((brand) => (
-                <SelectItem key={brand} value={brand} className="text-base md:text-sm">
-                  {brand}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-
-        {/* Categoría */}
+        {/* Segunda fila: Categoría */}
         <div className="mb-3 md:mb-3">
           <label className="block text-sm md:text-xs text-[#666] mb-1.5 md:mb-1">Categoría</label>
           <Select value={selectedCategory || "all"} onValueChange={(value) => handleCategoryChange(value === "all" ? null : value)}>
