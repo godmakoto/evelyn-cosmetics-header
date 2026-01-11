@@ -129,14 +129,19 @@ const ShopFilters = ({
           {/* Precio Máximo */}
           <div>
             <label className="block text-sm md:text-xs text-[#666] mb-1.5 md:mb-1">Precio Máximo</label>
-            <input
-              type="number"
-              value={maxPrice}
-              onChange={(e) => setMaxPrice(e.target.value)}
-              placeholder="Ej: 200"
-              className="w-full h-10 md:h-10 px-3 md:px-3 rounded-xl border border-[#eaeaea] bg-white text-[#222] text-base md:text-sm
-                focus:outline-none focus:border-[#222] transition-colors"
-            />
+          <input
+            type="number"
+            value={maxPrice}
+            onChange={(e) => setMaxPrice(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                (e.target as HTMLInputElement).blur();
+              }
+            }}
+            placeholder="Ej: 200"
+            className="w-full h-10 md:h-10 px-3 md:px-3 rounded-xl border border-[#eaeaea] bg-white text-[#222] text-base md:text-sm
+              focus:outline-none focus:border-[#222] transition-colors"
+          />
           </div>
 
           {/* Marca */}
