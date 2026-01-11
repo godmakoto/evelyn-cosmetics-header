@@ -140,7 +140,7 @@ const ShopFilters = ({
             }}
             placeholder="Ej: 200"
             className="w-full h-10 md:h-10 px-3 md:px-3 rounded-xl border border-[#eaeaea] bg-white text-[#222] text-base md:text-sm
-              focus:outline-none focus:border-[#222] transition-colors"
+              focus:outline-none transition-colors"
           />
           </div>
 
