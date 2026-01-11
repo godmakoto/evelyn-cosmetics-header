@@ -186,7 +186,7 @@
 
   .search-input:focus {
     outline: none;
-    border-color: hsl(0 0% 40%);
+    border-color: hsl(0 0% 85%);
   }
 
   .search-button {
