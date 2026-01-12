@@ -71,6 +71,7 @@ export type Database = {
       products: {
         Row: {
           brand: string | null
+          categories: Json | null
           category: string | null
           created_at: string
           description: string | null
@@ -94,6 +95,7 @@ export type Database = {
           regular_price: number
           status: string[] | null
           stock_quantity: number | null
+          subcategories: Json | null
           subcategory: string | null
           title: string
           total_images: number | null
@@ -102,6 +104,7 @@ export type Database = {
         }
         Insert: {
           brand?: string | null
+          categories?: Json | null
           category?: string | null
           created_at?: string
           description?: string | null
@@ -125,6 +128,7 @@ export type Database = {
           regular_price: number
           status?: string[] | null
           stock_quantity?: number | null
+          subcategories?: Json | null
           subcategory?: string | null
           title: string
           total_images?: number | null
@@ -133,6 +137,7 @@ export type Database = {
         }
         Update: {
           brand?: string | null
+          categories?: Json | null
           category?: string | null
           created_at?: string
           description?: string | null
@@ -156,6 +161,7 @@ export type Database = {
           regular_price?: number
           status?: string[] | null
           stock_quantity?: number | null
+          subcategories?: Json | null
           subcategory?: string | null
           title?: string
           total_images?: number | null

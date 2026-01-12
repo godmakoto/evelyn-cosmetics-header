@@ -17,6 +17,7 @@ import { cn } from "@/lib/utils";
 import { useProduct, Product } from "@/hooks/useProduct";
 import { useProducts } from "@/hooks/useProducts";
 import { DEFAULT_PRODUCT_IMAGE } from "@/lib/constants";
+import { getFirstCategory, getAllCategories, hasCategory } from "@/utils/productHelpers";
 
 // Helper function to convert Supabase Product to ProductDetail format
 const convertToProductDetail = (product: Product) => {
@@ -36,7 +37,7 @@ const convertToProductDetail = (product: Product) => {
     brand: product.brand || "Sin marca",
     price: product.offer_price || product.regular_price,
     originalPrice: product.offer_price ? product.regular_price : undefined,
-    category: product.category || "Sin categoría",
+    category: getFirstCategory(product) || "Sin categoría",
     description: product.description || product.long_description || "",
     images: images.length > 0 ? images : [DEFAULT_PRODUCT_IMAGE],
     fullDescription: product.long_description || product.description || "",
@@ -67,14 +68,18 @@ const ProductPage = () => {
   // Convert to ProductDetail format
   const product = productData ? convertToProductDetail(productData) : null;
 
-  // Get related products by category
-  const relatedProducts = allProducts
+  // Get related products by category (buscar en todos los arrays de categorías)
+  const relatedProducts = allProducts && productData
     ? allProducts
-        .filter(p => 
-          p.category === productData?.category && 
-          p.id !== productData?.id &&
-          !p.is_hidden
-        )
+        .filter(p => {
+          if (p.id === productData.id || p.is_hidden) return false;
+
+          // Obtener todas las categorías del producto actual
+          const currentCategories = getAllCategories(productData);
+
+          // Verificar si el producto relacionado comparte alguna categoría
+          return currentCategories.some(cat => hasCategory(p, cat));
+        })
         .slice(0, 6)
         .map(convertToProductDetail)
     : [];
