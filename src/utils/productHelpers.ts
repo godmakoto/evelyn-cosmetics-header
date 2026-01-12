@@ -26,69 +26,49 @@ export function jsonbToStringArray(jsonb: any): string[] {
  * Obtiene la primera categoría de un producto
  * Útil para componentes que solo necesitan mostrar una categoría
  */
-export function getFirstCategory(product: { categories?: any; category?: string | null }): string | null {
-  // Priorizar categories (array)
+export function getFirstCategory(product: { categories?: any }): string | null {
   if (product.categories) {
     const categories = jsonbToStringArray(product.categories);
     return categories[0] || null;
   }
-
-  // Fallback a category singular
-  return product.category || null;
+  return null;
 }
 
 /**
  * Obtiene todas las categorías de un producto
  */
-export function getAllCategories(product: { categories?: any; category?: string | null }): string[] {
-  // Priorizar categories (array)
+export function getAllCategories(product: { categories?: any }): string[] {
   if (product.categories) {
     return jsonbToStringArray(product.categories);
   }
-
-  // Fallback a category singular
-  if (product.category) {
-    return [product.category];
-  }
-
   return [];
 }
 
 /**
  * Obtiene la primera subcategoría de un producto
  */
-export function getFirstSubcategory(product: { subcategories?: any; subcategory?: string | null }): string | null {
-  // Priorizar subcategories (array)
+export function getFirstSubcategory(product: { subcategories?: any }): string | null {
   if (product.subcategories) {
     const subcategories = jsonbToStringArray(product.subcategories);
     return subcategories[0] || null;
   }
-
-  // Fallback a subcategory singular
-  return product.subcategory || null;
+  return null;
 }
 
 /**
  * Obtiene todas las subcategorías de un producto
  */
-export function getAllSubcategories(product: { subcategories?: any; subcategory?: string | null }): string[] {
-  // Priorizar subcategories (array)
+export function getAllSubcategories(product: { subcategories?: any }): string[] {
   if (product.subcategories) {
     return jsonbToStringArray(product.subcategories);
   }
-
-  // Fallback a subcategory singular
-  if (product.subcategory) {
-    return [product.subcategory];
-  }
-
   return [];
 }
 
 /**
  * Verifica si un producto tiene una categoría específica
  */
-export function hasCategory(product: { categories?: any; category?: string | null }, categoryName: string): boolean {
+export function hasCategory(product: { categories?: any }, categoryName: string): boolean {
   const categories = getAllCategories(product);
   return categories.some((cat) => cat.toLowerCase() === categoryName.toLowerCase());
 }
@@ -96,7 +76,7 @@ export function hasCategory(product: { categories?: any; category?: string | nul
 /**
  * Verifica si un producto tiene una subcategoría específica
  */
-export function hasSubcategory(product: { subcategories?: any; subcategory?: string | null }, subcategoryName: string): boolean {
+export function hasSubcategory(product: { subcategories?: any }, subcategoryName: string): boolean {
   const subcategories = getAllSubcategories(product);
   return subcategories.some((sub) => sub.toLowerCase() === subcategoryName.toLowerCase());
 }
