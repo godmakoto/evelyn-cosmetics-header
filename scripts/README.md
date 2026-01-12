@@ -4,41 +4,68 @@
 
 ### Situación Actual
 
-Tu tabla de Supabase tiene estas columnas:
+**El problema:** En la página de producto, la descripción corta (arriba del botón "Agregar") y la descripción larga (en el acordeón) muestran el mismo texto.
+
+**Causa:** Tu tabla de Supabase puede no tener todas las columnas necesarias o la columna `description` está vacía.
+
+### Columnas Necesarias
+
+La tabla `products` necesita estas columnas:
 - `description` - Descripción corta (para mostrar arriba del botón "Agregar")
 - `long_description` - Descripción larga (para mostrar en el acordeón)
 - `usage_instructions` - Modo de uso
 - `ingredients` - Ingredientes
 
-**El problema:** La columna `description` está vacía (NULL), por lo que el código usa como fallback la `long_description`, haciendo que ambas secciones muestren el mismo texto.
+### Solución en 2 Pasos
 
-### Solución
-
-Llenar la columna `description` con versiones cortas de la descripción larga.
+1. **Primero:** Verificar y agregar columnas faltantes
+2. **Segundo:** Llenar la columna `description` con versiones cortas
 
 ---
 
-## Opción 1: Ejecutar Script SQL en Supabase (RECOMENDADO)
+## PASO 1: Verificar y Agregar Columnas Faltantes
 
-Esta es la forma más rápida y confiable.
+### 1.1. Verificar qué columnas existen
 
-### Pasos:
+En Supabase SQL Editor, ejecuta:
+
+```sql
+-- Ver en el archivo: check-columns.sql
+```
+
+Este script te mostrará todas las columnas actuales de la tabla `products`.
+
+### 1.2. Agregar columnas faltantes
+
+Si faltan las columnas `description`, `usage_instructions` o `ingredients`, ejecuta:
+
+```sql
+-- Ver en el archivo: add-missing-columns.sql
+```
+
+Este script:
+- ✅ Verifica si cada columna existe antes de agregarla
+- ✅ Es seguro ejecutarlo múltiples veces
+- ✅ Te muestra qué columnas se agregaron
+
+---
+
+## PASO 2: Llenar Descripción Corta
+
+### Opción A: Ejecutar Script SQL en Supabase (RECOMENDADO)
 
 1. Ve a tu proyecto en Supabase Dashboard
 2. Navega a **SQL Editor** en el menú lateral
 3. Haz clic en **New Query**
-4. Copia todo el contenido del archivo `fill-short-descriptions.sql`
-5. Pégalo en el editor
-6. Haz clic en **Run** o presiona `Ctrl+Enter`
+4. Copia el contenido del archivo `fill-short-descriptions.sql`
+5. Pégalo y haz clic en **Run**
 
 El script:
 - ✅ Solo actualiza productos que NO tienen `description` (donde es NULL)
 - ✅ Toma la primera línea o primeros 200 caracteres de `long_description`
 - ✅ Es seguro ejecutarlo múltiples veces (solo actualiza NULLs)
 
----
-
-## Opción 2: Ejecutar Script TypeScript Localmente
+### Opción B: Ejecutar Script TypeScript Localmente
 
 Si prefieres ejecutarlo desde tu proyecto local:
 
@@ -110,18 +137,23 @@ Para agregar este campo en el panel de administración:
 
 ---
 
-## Columnas en Supabase
+## Resumen de Scripts
 
-Tu tabla `products` ya tiene todas las columnas necesarias:
+| Archivo | Propósito | Cuándo Usar |
+|---------|-----------|-------------|
+| `check-columns.sql` | Verificar columnas existentes | Ejecutar primero para diagnosticar |
+| `add-missing-columns.sql` | Agregar columnas faltantes | Si faltan columnas después de verificar |
+| `fill-short-descriptions.sql` | Llenar descripción corta | Después de tener todas las columnas |
+| `fill-short-descriptions.ts` | Alternativa TypeScript | Si prefieres ejecutar localmente |
 
-| Columna | Tipo | Propósito | Estado |
-|---------|------|-----------|--------|
-| `description` | text | Descripción corta | ✅ Existe (llenar con script) |
-| `long_description` | text | Descripción larga | ✅ Existe y tiene datos |
-| `usage_instructions` | text | Modo de uso | ✅ Existe y tiene datos |
-| `ingredients` | text | Ingredientes | ✅ Existe y tiene datos |
+## Columnas Necesarias en Supabase
 
-**No necesitas crear ninguna columna nueva.**
+| Columna | Tipo | Propósito | Requerida |
+|---------|------|-----------|-----------|
+| `description` | text | Descripción corta | ✅ Sí |
+| `long_description` | text | Descripción larga | ✅ Sí |
+| `usage_instructions` | text | Modo de uso | ✅ Sí |
+| `ingredients` | text | Ingredientes | ✅ Sí |
 
 ---
 
