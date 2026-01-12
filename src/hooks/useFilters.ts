@@ -1,69 +1,97 @@
-import { useMemo } from "react";
-import { useProducts } from "./useProducts";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 
 /**
- * Hook to get unique brands from Supabase products
- * Filters out null/empty brands and sorts alphabetically
+ * Hook para obtener todas las marcas desde la tabla brands de Supabase
+ * Retorna las marcas ordenadas alfabéticamente
  */
 export const useBrands = () => {
-  const { data: products, isLoading } = useProducts();
+  const { data: brands = [], isLoading } = useQuery({
+    queryKey: ["brands"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("brands")
+        .select("name")
+        .order("name", { ascending: true });
 
-  const brands = useMemo(() => {
-    if (!products) return [];
-
-    const uniqueBrands = [...new Set(
-      products
-        .map(p => p.brand)
-        .filter(brand => brand && brand.trim() !== '')
-    )];
-
-    return uniqueBrands.sort((a, b) => a!.localeCompare(b!));
-  }, [products]);
+      if (error) throw error;
+      return data.map((brand) => brand.name);
+    },
+  });
 
   return { brands, isLoading };
 };
 
 /**
- * Hook to get unique categories from Supabase products
- * Filters out null/empty categories and sorts alphabetically
+ * Hook para obtener todas las categorías con sus subcategorías desde Supabase
+ * Retorna un array de objetos { name, subcategories }
  */
 export const useCategories = () => {
-  const { data: products, isLoading } = useProducts();
+  const { data: categories = [], isLoading } = useQuery({
+    queryKey: ["categories-with-subcategories"],
+    queryFn: async () => {
+      // Obtener todas las categorías
+      const { data: categoriesData, error: categoriesError } = await supabase
+        .from("categories")
+        .select("id, name")
+        .order("name", { ascending: true });
 
-  const categories = useMemo(() => {
-    if (!products) return [];
+      if (categoriesError) throw categoriesError;
 
-    const uniqueCategories = [...new Set(
-      products
-        .map(p => p.category)
-        .filter(category => category && category.trim() !== '')
-    )];
+      // Obtener todas las subcategorías
+      const { data: subcategoriesData, error: subcategoriesError } = await supabase
+        .from("subcategories")
+        .select("name, category_id")
+        .order("name", { ascending: true });
 
-    return uniqueCategories.sort((a, b) => a!.localeCompare(b!));
-  }, [products]);
+      if (subcategoriesError) throw subcategoriesError;
+
+      // Mapear categorías con sus subcategorías
+      return categoriesData.map((category) => ({
+        name: category.name,
+        subcategories: subcategoriesData
+          .filter((sub) => sub.category_id === category.id)
+          .map((sub) => sub.name),
+      }));
+    },
+  });
 
   return { categories, isLoading };
 };
 
 /**
- * Hook to get unique subcategories for a specific category
- * @param categoryName - The category to get subcategories for
+ * Hook para obtener las subcategorías de una categoría específica
+ * @param categoryName - Nombre de la categoría
  */
 export const useSubcategories = (categoryName: string | null) => {
-  const { data: products, isLoading } = useProducts();
+  const { data: subcategories = [], isLoading } = useQuery({
+    queryKey: ["subcategories", categoryName],
+    queryFn: async () => {
+      if (!categoryName) return [];
 
-  const subcategories = useMemo(() => {
-    if (!products || !categoryName) return [];
+      // Primero obtener el ID de la categoría
+      const { data: categoryData, error: categoryError } = await supabase
+        .from("categories")
+        .select("id")
+        .eq("name", categoryName)
+        .single();
 
-    const uniqueSubcategories = [...new Set(
-      products
-        .filter(p => p.category === categoryName)
-        .map(p => p.subcategory)
-        .filter(sub => sub && sub.trim() !== '')
-    )];
+      if (categoryError) throw categoryError;
+      if (!categoryData) return [];
 
-    return uniqueSubcategories.sort((a, b) => a!.localeCompare(b!));
-  }, [products, categoryName]);
+      // Obtener las subcategorías de esa categoría
+      const { data: subcategoriesData, error: subcategoriesError } = await supabase
+        .from("subcategories")
+        .select("name")
+        .eq("category_id", categoryData.id)
+        .order("name", { ascending: true });
+
+      if (subcategoriesError) throw subcategoriesError;
+
+      return subcategoriesData.map((sub) => sub.name);
+    },
+    enabled: !!categoryName,
+  });
 
   return { subcategories, isLoading };
 };

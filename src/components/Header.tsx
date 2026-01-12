@@ -5,23 +5,13 @@ import { cn } from "@/lib/utils";
 import { useCart } from "@/contexts/CartContext";
 import CartDrawer from "./CartDrawer";
 import MobileMenu from "./MobileMenu";
-import { categories } from "@/data/categories";
-
-const brands = [
-  "Avène",
-  "Bioderma",
-  "CeraVe",
-  "Eucerin",
-  "Isdin",
-  "La Roche-Posay",
-  "Neutrogena",
-  "Nivea",
-  "SkinCeuticals",
-  "The Ordinary",
-  "Vichy"
-];
+import { useBrands, useCategories } from "@/hooks/useFilters";
 
 const Header = () => {
+  // Obtener datos desde Supabase
+  const { brands } = useBrands();
+  const { categories } = useCategories();
+
   const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [isBrandsOpen, setIsBrandsOpen] = useState(false);
