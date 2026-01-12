@@ -5,7 +5,7 @@ https://github.com/godmakoto/evelyn-cosmetics-header/compare/main...claude/fix-p
 
 ## 📝 PR Title
 ```
-Fix product description display - Add short descriptions support
+Fix product descriptions and UI improvements
 ```
 
 ## 📄 PR Description
@@ -15,6 +15,8 @@ Fix product description display - Add short descriptions support
 - Fixed product cards showing full long description instead of short description in shop page
 - Added database scripts to create missing columns (description, usage_instructions, ingredients)
 - Added automation script to generate short descriptions from long descriptions
+- Fixed thumbnail overlay showing "+0" when no additional images exist
+- Increased product title line limit from 3 to 5 lines on desktop
 - Installed necessary dependencies (tsx, dotenv) for running maintenance scripts
 
 ## Changes
@@ -25,9 +27,17 @@ Fix product description display - Add short descriptions support
 - **fill-short-descriptions.sql**: Auto-generates short descriptions (max 200 chars) from long descriptions
 
 ### Code Fixes
-- **ProductGrid.tsx**: Fixed `convertToShopProduct` to prioritize `description` over `long_description`
-  - Before: `description: product.long_description || product.description`
-  - After: `description: product.description || product.long_description`
+1. **ProductGrid.tsx**: Fixed `convertToShopProduct` to prioritize `description` over `long_description`
+   - Before: `description: product.long_description || product.description`
+   - After: `description: product.description || product.long_description`
+
+2. **ProductPage.tsx**: Fixed thumbnail overlay showing "+0" unnecessarily
+   - Added condition: `remainingImages > 0` before showing overlay
+   - Now only displays "+X" when there are actually more images to show
+
+3. **ProductCard.tsx**: Increased product title line limit on desktop
+   - Before: `lg:line-clamp-3` (3 lines on desktop)
+   - After: `line-clamp-5` (5 lines on all devices)
 
 ### Documentation
 - **INSTRUCCIONES.md**: Quick start guide in Spanish with step-by-step instructions
@@ -58,10 +68,13 @@ Product cards in the shop/tienda page were showing the full long description ins
 - [ ] Navigate to `/tienda` (shop page)
 - [ ] Verify product cards show short descriptions (2-3 lines max)
 - [ ] Check that descriptions are truncated with `line-clamp-2`
+- [ ] Verify product titles display up to 5 lines on desktop
 - [ ] Click on any product to view individual product page
 - [ ] Verify short description appears above "Agregar" button
 - [ ] Verify long description appears in "Descripción del Producto" accordion
 - [ ] Verify "Modo de Uso" and "Ingredientes" sections display correctly
+- [ ] Check thumbnail gallery: verify no "+0" appears on products with ≤6 images
+- [ ] Verify "+X" overlay only shows when there are 7+ images
 
 ### Script Execution (Optional)
 - [ ] Run `npm run fill-descriptions` locally (requires network access)
@@ -72,6 +85,8 @@ Product cards in the shop/tienda page were showing the full long description ins
 - ✅ Proper separation between short and long descriptions
 - ✅ Database structure now supports all product detail fields
 - ✅ Maintainable scripts for future database updates
+- ✅ Better UX with fixed thumbnail overlay (no more "+0")
+- ✅ Improved title display for products with longer names (5 lines)
 
 ## Screenshots Required
 - Before: Product cards with long descriptions
@@ -94,8 +109,21 @@ Product cards in the shop/tienda page were showing the full long description ins
    - Changed convertToShopProduct to prioritize short description
    - Fixed product description display in shop/tienda page
 
+4. **Add Pull Request information and instructions**
+   - Created PR_INFO.md with complete PR details
+   - Included test plan and impact summary
+
+5. **Fix thumbnail overlay showing +0 when no additional images exist**
+   - Added condition to only show overlay when remainingImages > 0
+   - Improves UX by removing confusing "+0" display
+
+6. **Increase product title line limit to 5 lines on desktop**
+   - Changed from 3 lines to 5 lines on desktop
+   - Provides better readability for longer product names
+
 ## 🎯 Files Changed
 
+- `PR_INFO.md` - Pull request information and instructions (NEW)
 - `package.json` - Added fill-descriptions script
 - `package-lock.json` - Added tsx and dotenv dependencies
 - `scripts/INSTRUCCIONES.md` - Quick start guide (NEW)
@@ -104,7 +132,9 @@ Product cards in the shop/tienda page were showing the full long description ins
 - `scripts/check-columns.sql` - Column verification script (NEW)
 - `scripts/fill-short-descriptions.sql` - Description population script (NEW)
 - `scripts/fill-short-descriptions.ts` - TypeScript alternative (NEW)
+- `src/components/shop/ProductCard.tsx` - Increased title line limit
 - `src/components/shop/ProductGrid.tsx` - Fixed description priority
+- `src/pages/ProductPage.tsx` - Fixed thumbnail overlay logic
 
 ## 🚀 How to Create the PR
 
