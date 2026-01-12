@@ -14,7 +14,36 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { cn } from "@/lib/utils";
-import { getProductById, getRelatedProducts } from "@/data/productDetails";
+import { useProduct, Product } from "@/hooks/useProduct";
+import { useProducts } from "@/hooks/useProducts";
+import { DEFAULT_PRODUCT_IMAGE } from "@/lib/constants";
+
+// Helper function to convert Supabase Product to ProductDetail format
+const convertToProductDetail = (product: Product) => {
+  const images = [
+    product.image_1,
+    product.image_2,
+    product.image_3,
+    product.image_4,
+    product.image_5,
+    product.image_6,
+    product.image_7,
+  ].filter(Boolean) as string[];
+
+  return {
+    id: product.id,
+    name: product.title,
+    brand: product.brand || "Sin marca",
+    price: product.offer_price || product.regular_price,
+    originalPrice: product.offer_price ? product.regular_price : undefined,
+    category: product.category || "Sin categoría",
+    description: product.description || product.long_description || "",
+    images: images.length > 0 ? images : [DEFAULT_PRODUCT_IMAGE],
+    fullDescription: product.long_description || product.description || "",
+    howToUse: product.usage_instructions || "Consulte las instrucciones del producto.",
+    ingredients: product.ingredients || "Consulte el empaque del producto.",
+  };
+};
 
 const ProductPage = () => {
   const { id } = useParams();
@@ -31,25 +60,38 @@ const ProductPage = () => {
   const startX = useRef(0);
   const dragDistance = useRef(0);
 
-  // Obtener el producto por ID
-  const product = getProductById(id || "1");
+  // Fetch product from Supabase
+  const { data: productData, isLoading: isLoadingProduct } = useProduct(id);
+  const { data: allProducts } = useProducts();
 
-  // Si el producto no existe, redirigir a la página principal
+  // Convert to ProductDetail format
+  const product = productData ? convertToProductDetail(productData) : null;
+
+  // Get related products by category
+  const relatedProducts = allProducts
+    ? allProducts
+        .filter(p => 
+          p.category === productData?.category && 
+          p.id !== productData?.id &&
+          !p.is_hidden
+        )
+        .slice(0, 6)
+        .map(convertToProductDetail)
+    : [];
+
+  // Si el producto no existe y ya terminó de cargar, redirigir
   useEffect(() => {
-    if (!product) {
+    if (!isLoadingProduct && !product) {
       navigate("/");
     }
-  }, [product, navigate]);
+  }, [product, navigate, isLoadingProduct]);
 
-  // Si el producto no existe, no renderizar nada (se redirigirá)
-  if (!product) {
+  // Si está cargando o el producto no existe, mostrar loading o null
+  if (isLoadingProduct || !product) {
     return null;
   }
 
   const isInCart = items.some(item => item.id === product.id);
-
-  // Obtener productos relacionados por categoría
-  const relatedProducts = getRelatedProducts(product.category, product.id, 6);
 
   // Reset selected image and scroll to top when product changes
   useEffect(() => {

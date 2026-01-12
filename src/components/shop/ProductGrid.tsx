@@ -1,10 +1,33 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { X } from "lucide-react";
-import { shopProducts, ShopProduct } from "@/data/shopProducts";
+import { ShopProduct } from "@/data/shopProducts";
+import { useProducts, Product } from "@/hooks/useProducts";
+import { DEFAULT_PRODUCT_IMAGE } from "@/lib/constants";
 import ShopFilters from "./ShopFilters";
 import ProductCard from "./ProductCard";
 import ProductSkeleton from "./ProductSkeleton";
+
+// Helper function to convert Supabase Product to ShopProduct
+const convertToShopProduct = (product: Product): ShopProduct => {
+  return {
+    id: product.id,
+    name: product.title,
+    brand: product.brand || "Sin marca",
+    category: product.category || "Sin categoría",
+    subcategory: product.subcategory || "General",
+    price: product.offer_price || product.regular_price,
+    originalPrice: product.offer_price ? product.regular_price : undefined,
+    description: product.long_description || product.description || "",
+    image: product.image_1 || DEFAULT_PRODUCT_IMAGE,
+    discount: product.offer_price 
+      ? Math.round(((product.regular_price - product.offer_price) / product.regular_price) * 100)
+      : undefined,
+    isBestSeller: product.is_best_seller || false,
+    isFeatured: product.is_featured || false,
+    isBackInStock: product.is_back_in_stock || false,
+  };
+};
 
 interface ProductGridProps {
   initialBrandFilter?: string | null;
@@ -25,9 +48,9 @@ const ProductGrid = ({
 }: ProductGridProps) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [isLoading, setIsLoading] = useState(true);
+  const { data: productsData, isLoading: isLoadingProducts } = useProducts();
   const [isFiltering, setIsFiltering] = useState(false);
-  const [filteredProducts, setFilteredProducts] = useState<ShopProduct[]>(shopProducts);
+  const [filteredProducts, setFilteredProducts] = useState<ShopProduct[]>([]);
   const [filters, setFilters] = useState({
     maxPrice: null as number | null,
     brand: initialBrandFilter,
@@ -39,6 +62,14 @@ const ProductGrid = ({
 
   // Usar location.state directamente como fuente de verdad para búsqueda
   const activeSearchQuery = location.state?.searchQuery || null;
+
+  // Convert Supabase products to ShopProduct format
+  const shopProducts = useMemo(() => {
+    if (!productsData) return [];
+    return productsData
+      .filter(product => !product.is_hidden)
+      .map(convertToShopProduct);
+  }, [productsData]);
 
   // Ref para acceder a filters actuales sin causar re-creación del callback
   const filtersRef = useRef(filters);
@@ -85,17 +116,10 @@ const ProductGrid = ({
   }, [filters.brand, filters.category, filters.subcategory, filters.maxPrice, filters.status, isFirstRender]);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, []);
-
-  useEffect(() => {
-    console.log('Filter effect triggered', { filters, isFirstRender, isLoading, activeSearchQuery });
+    console.log('Filter effect triggered', { filters, isFirstRender, isLoadingProducts, activeSearchQuery });
 
     // Mostrar loading state cuando cambian los filtros (excepto en first render)
-    if (!isFirstRender && !isLoading) {
+    if (!isFirstRender && !isLoadingProducts) {
       setIsFiltering(true);
     }
 
@@ -143,7 +167,7 @@ const ProductGrid = ({
     }, 150); // Pequeño delay para suavizar la transición
 
     return () => clearTimeout(filterTimeout);
-  }, [filters, activeSearchQuery, isFirstRender, isLoading]);
+  }, [filters, activeSearchQuery, isFirstRender, isLoadingProducts, shopProducts]);
 
   const handleFiltersChange = useCallback((newFilters: typeof filters) => {
     const currentFilters = filtersRef.current;
@@ -258,7 +282,7 @@ const ProductGrid = ({
           {/* Productos */}
           <div className="flex-1">
             <div className="grid grid-cols-1 gap-0 lg:gap-4">
-              {(isLoading || isFiltering)
+              {(isLoadingProducts || isFiltering)
                 ? Array.from({ length: 6 }).map((_, index) => (
                     <div key={index} className="border-b border-b-[#eee] last:border-b-0 lg:border-b-0">
                       <div className="py-4 lg:py-0">
@@ -275,7 +299,7 @@ const ProductGrid = ({
                   ))}
             </div>
 
-            {!isLoading && !isFiltering && filteredProducts.length === 0 && (
+            {!isLoadingProducts && !isFiltering && filteredProducts.length === 0 && (
               <div className="text-center py-16">
                 <p className="text-[#666] text-lg mb-2">
                   {filters.subcategory
