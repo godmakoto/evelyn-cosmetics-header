@@ -18,9 +18,9 @@ const convertToShopProduct = (product: Product): ShopProduct => {
     subcategory: product.subcategory || "General",
     price: product.offer_price || product.regular_price,
     originalPrice: product.offer_price ? product.regular_price : undefined,
-    description: product.long_description || product.description || "",
+    description: product.description || product.long_description || "",
     image: product.image_1 || DEFAULT_PRODUCT_IMAGE,
-    discount: product.offer_price 
+    discount: product.offer_price
       ? Math.round(((product.regular_price - product.offer_price) / product.regular_price) * 100)
       : undefined,
     isBestSeller: product.is_best_seller || false,
