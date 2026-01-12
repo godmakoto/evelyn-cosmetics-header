@@ -310,7 +310,7 @@ const ProductPage = () => {
                         alt={`${product.name} ${index + 1}`}
                         className="w-full h-full object-cover"
                       />
-                      {isLastVisible && (
+                      {isLastVisible && remainingImages > 0 && (
                         <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
                           <span className="text-white text-3xl font-bold">+ {remainingImages}</span>
                         </div>
