@@ -9,7 +9,7 @@ export const useProduct = (id: string | undefined) => {
     queryKey: ["product", id],
     queryFn: async () => {
       if (!id) {
-        throw new Error("Product ID is required");
+        return null;
       }
 
       const { data, error } = await supabase

@@ -16,6 +16,7 @@ import {
 import { cn } from "@/lib/utils";
 import { useProduct, Product } from "@/hooks/useProduct";
 import { useProducts } from "@/hooks/useProducts";
+import { DEFAULT_PRODUCT_IMAGE } from "@/lib/constants";
 
 // Helper function to convert Supabase Product to ProductDetail format
 const convertToProductDetail = (product: Product) => {
@@ -37,7 +38,7 @@ const convertToProductDetail = (product: Product) => {
     originalPrice: product.offer_price ? product.regular_price : undefined,
     category: product.category || "Sin categoría",
     description: product.description || product.long_description || "",
-    images: images.length > 0 ? images : ["https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=600&h=600&fit=crop"],
+    images: images.length > 0 ? images : [DEFAULT_PRODUCT_IMAGE],
     fullDescription: product.long_description || product.description || "",
     howToUse: product.usage_instructions || "Consulte las instrucciones del producto.",
     ingredients: product.ingredients || "Consulte el empaque del producto.",
@@ -71,7 +72,7 @@ const ProductPage = () => {
     ? allProducts
         .filter(p => 
           p.category === productData?.category && 
-          p.id !== id &&
+          p.id !== productData?.id &&
           !p.is_hidden
         )
         .slice(0, 6)

@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { X } from "lucide-react";
 import { ShopProduct } from "@/data/shopProducts";
 import { useProducts, Product } from "@/hooks/useProducts";
+import { DEFAULT_PRODUCT_IMAGE } from "@/lib/constants";
 import ShopFilters from "./ShopFilters";
 import ProductCard from "./ProductCard";
 import ProductSkeleton from "./ProductSkeleton";
@@ -18,7 +19,7 @@ const convertToShopProduct = (product: Product): ShopProduct => {
     price: product.offer_price || product.regular_price,
     originalPrice: product.offer_price ? product.regular_price : undefined,
     description: product.long_description || product.description || "",
-    image: product.image_1 || "",
+    image: product.image_1 || DEFAULT_PRODUCT_IMAGE,
     discount: product.offer_price 
       ? Math.round(((product.regular_price - product.offer_price) / product.regular_price) * 100)
       : undefined,
