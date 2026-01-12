@@ -79,19 +79,42 @@ const ProductPage = () => {
         .map(convertToProductDetail)
     : [];
 
+  // Image gallery carousel for mobile - MUST be called before any conditional returns
+  const [imageEmblaRef, imageEmblaApi] = useEmblaCarousel({
+    loop: false,
+    align: "start",
+    slidesToScroll: 1,
+    containScroll: "trimSnaps"
+  });
+
+  // Related products carousel setup - MUST be called before any conditional returns
+  const [emblaRef, emblaApi] = useEmblaCarousel({
+    loop: true,
+    align: "start",
+    slidesToScroll: 1,
+    containScroll: false
+  });
+
+  const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
+  const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
+  const scrollTo = useCallback((index: number) => emblaApi?.scrollTo(index), [emblaApi]);
+
+  const onImageSelect = useCallback(() => {
+    if (!imageEmblaApi) return;
+    setSelectedImage(imageEmblaApi.selectedScrollSnap());
+  }, [imageEmblaApi]);
+
+  const onSelect = useCallback(() => {
+    if (!emblaApi) return;
+    setSelectedCarouselIndex(emblaApi.selectedScrollSnap());
+  }, [emblaApi]);
+
   // Si el producto no existe y ya terminó de cargar, redirigir
   useEffect(() => {
     if (!isLoadingProduct && !product) {
       navigate("/");
     }
   }, [product, navigate, isLoadingProduct]);
-
-  // Si está cargando o el producto no existe, mostrar loading o null
-  if (isLoadingProduct || !product) {
-    return null;
-  }
-
-  const isInCart = items.some(item => item.id === product.id);
 
   // Reset selected image and scroll to top when product changes
   useEffect(() => {
@@ -110,19 +133,7 @@ const ProductPage = () => {
     return () => window.removeEventListener("resize", checkTablet);
   }, []);
 
-  // Image gallery carousel for mobile
-  const [imageEmblaRef, imageEmblaApi] = useEmblaCarousel({
-    loop: false,
-    align: "start",
-    slidesToScroll: 1,
-    containScroll: "trimSnaps"
-  });
-
-  const onImageSelect = useCallback(() => {
-    if (!imageEmblaApi) return;
-    setSelectedImage(imageEmblaApi.selectedScrollSnap());
-  }, [imageEmblaApi]);
-
+  // Image carousel effect
   useEffect(() => {
     if (!imageEmblaApi) return;
     imageEmblaApi.on("select", onImageSelect);
@@ -132,23 +143,7 @@ const ProductPage = () => {
     };
   }, [imageEmblaApi, onImageSelect]);
 
-  // Related products carousel setup
-  const [emblaRef, emblaApi] = useEmblaCarousel({
-    loop: true,
-    align: "start",
-    slidesToScroll: 1,
-    containScroll: false
-  });
-
-  const scrollPrev = () => emblaApi?.scrollPrev();
-  const scrollNext = () => emblaApi?.scrollNext();
-  const scrollTo = useCallback((index: number) => emblaApi?.scrollTo(index), [emblaApi]);
-
-  const onSelect = useCallback(() => {
-    if (!emblaApi) return;
-    setSelectedCarouselIndex(emblaApi.selectedScrollSnap());
-  }, [emblaApi]);
-
+  // Related products carousel effect
   useEffect(() => {
     if (!emblaApi) return;
     setScrollSnaps(emblaApi.scrollSnapList());
@@ -158,6 +153,13 @@ const ProductPage = () => {
       emblaApi.off("select", onSelect);
     };
   }, [emblaApi, onSelect]);
+
+  // Si está cargando o el producto no existe, mostrar loading o null
+  if (isLoadingProduct || !product) {
+    return null;
+  }
+
+  const isInCart = items.some(item => item.id === product.id);
 
   const handleAddToCart = () => {
     if (isInCart) {
