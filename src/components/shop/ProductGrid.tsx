@@ -8,6 +8,8 @@ import ShopFilters from "./ShopFilters";
 import ProductCard from "./ProductCard";
 import ProductSkeleton from "./ProductSkeleton";
 
+const PRODUCTS_PER_PAGE = 20;
+
 // Helper function to convert Supabase Product to ShopProduct
 const convertToShopProduct = (product: Product): ShopProduct => {
   return {
@@ -51,6 +53,9 @@ const ProductGrid = ({
   const { data: productsData, isLoading: isLoadingProducts } = useProducts();
   const [isFiltering, setIsFiltering] = useState(false);
   const [filteredProducts, setFilteredProducts] = useState<ShopProduct[]>([]);
+  const [displayedCount, setDisplayedCount] = useState(PRODUCTS_PER_PAGE);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const loadMoreRef = useRef<HTMLDivElement>(null);
   const [filters, setFilters] = useState({
     maxPrice: null as number | null,
     brand: initialBrandFilter,
@@ -101,6 +106,11 @@ const ProductGrid = ({
       });
     }
   }, [resetFiltersTimestamp]);
+
+  // Reset displayed count when filters or search changes
+  useEffect(() => {
+    setDisplayedCount(PRODUCTS_PER_PAGE);
+  }, [filters, activeSearchQuery]);
 
   // Scroll to top when filters change (but not on first render)
   useEffect(() => {
@@ -168,6 +178,42 @@ const ProductGrid = ({
 
     return () => clearTimeout(filterTimeout);
   }, [filters, activeSearchQuery, isFirstRender, isLoadingProducts, shopProducts]);
+
+  // Infinite scroll: Load more products when user scrolls to bottom
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const firstEntry = entries[0];
+        if (firstEntry.isIntersecting && !isLoadingProducts && !isFiltering && !isLoadingMore) {
+          // Check if there are more products to load
+          if (displayedCount < filteredProducts.length) {
+            setIsLoadingMore(true);
+            // Simulate loading delay for smooth UX
+            setTimeout(() => {
+              setDisplayedCount(prev => Math.min(prev + PRODUCTS_PER_PAGE, filteredProducts.length));
+              setIsLoadingMore(false);
+            }, 300);
+          }
+        }
+      },
+      {
+        root: null,
+        rootMargin: '200px', // Start loading 200px before reaching the bottom
+        threshold: 0.1,
+      }
+    );
+
+    const currentRef = loadMoreRef.current;
+    if (currentRef) {
+      observer.observe(currentRef);
+    }
+
+    return () => {
+      if (currentRef) {
+        observer.unobserve(currentRef);
+      }
+    };
+  }, [displayedCount, filteredProducts.length, isLoadingProducts, isFiltering, isLoadingMore]);
 
   const handleFiltersChange = useCallback((newFilters: typeof filters) => {
     const currentFilters = filtersRef.current;
@@ -290,7 +336,7 @@ const ProductGrid = ({
                       </div>
                     </div>
                   ))
-                : filteredProducts.map((product) => (
+                : filteredProducts.slice(0, displayedCount).map((product) => (
                     <div key={product.id} className="border-b border-b-[#eee] last:border-b-0 lg:border-b-0">
                       <div className="py-4 lg:py-0">
                         <ProductCard product={product} />
@@ -298,6 +344,30 @@ const ProductGrid = ({
                     </div>
                   ))}
             </div>
+
+            {/* Products count indicator */}
+            {!isLoadingProducts && !isFiltering && filteredProducts.length > 0 && (
+              <div className="text-center py-6 text-sm text-[#666]">
+                Mostrando {Math.min(displayedCount, filteredProducts.length)} de {filteredProducts.length} productos
+              </div>
+            )}
+
+            {/* Load more trigger element */}
+            {!isLoadingProducts && !isFiltering && displayedCount < filteredProducts.length && (
+              <div ref={loadMoreRef} className="py-8">
+                {isLoadingMore && (
+                  <div className="grid grid-cols-1 gap-0 lg:gap-4">
+                    {Array.from({ length: 3 }).map((_, index) => (
+                      <div key={index} className="border-b border-b-[#eee] last:border-b-0 lg:border-b-0">
+                        <div className="py-4 lg:py-0">
+                          <ProductSkeleton />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
 
             {!isLoadingProducts && !isFiltering && filteredProducts.length === 0 && (
               <div className="text-center py-16">
