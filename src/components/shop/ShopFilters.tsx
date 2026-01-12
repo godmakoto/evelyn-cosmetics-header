@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
-import { brands } from "@/data/shopProducts";
-import { categories, getSubcategories } from "@/data/categories";
+import { useBrands, useCategories, useSubcategories } from "@/hooks/useFilters";
 import { ChevronDown } from "lucide-react";
 import {
   Select,
@@ -38,7 +37,11 @@ const ShopFilters = ({
   const [selectedCategory, setSelectedCategory] = useState<string | null>(initialCategoryFilter);
   const [selectedSubcategory, setSelectedSubcategory] = useState<string | null>(initialSubcategoryFilter);
   const [selectedStatus, setSelectedStatus] = useState<string | null>(initialStatusFilter);
-  const [subcategories, setSubcategories] = useState<string[]>([]);
+
+  // Get dynamic data from Supabase
+  const { brands } = useBrands();
+  const { categories } = useCategories();
+  const { subcategories } = useSubcategories(selectedCategory);
 
   // Update filters when initial filter props change
   useEffect(() => {
@@ -59,14 +62,12 @@ const ShopFilters = ({
     }
   }, [resetFiltersTimestamp]);
 
+  // Reset subcategory when category changes and no subcategories exist
   useEffect(() => {
-    if (selectedCategory) {
-      setSubcategories(getSubcategories(selectedCategory));
-    } else {
-      setSubcategories([]);
+    if (!selectedCategory || subcategories.length === 0) {
       setSelectedSubcategory(null);
     }
-  }, [selectedCategory]);
+  }, [selectedCategory, subcategories]);
 
   useEffect(() => {
     onFiltersChange({

@@ -32,10 +32,46 @@ export type Database = {
         }
         Relationships: []
       }
+      brands: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+        }
+        Relationships: []
+      }
+      categories: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+        }
+        Relationships: []
+      }
       products: {
         Row: {
           brand: string | null
-          category: string | null
+          categories: Json | null
           created_at: string
           description: string | null
           id: string
@@ -58,7 +94,7 @@ export type Database = {
           regular_price: number
           status: string[] | null
           stock_quantity: number | null
-          subcategory: string | null
+          subcategories: Json | null
           title: string
           total_images: number | null
           updated_at: string
@@ -66,7 +102,7 @@ export type Database = {
         }
         Insert: {
           brand?: string | null
-          category?: string | null
+          categories?: Json | null
           created_at?: string
           description?: string | null
           id?: string
@@ -89,7 +125,7 @@ export type Database = {
           regular_price: number
           status?: string[] | null
           stock_quantity?: number | null
-          subcategory?: string | null
+          subcategories?: Json | null
           title: string
           total_images?: number | null
           updated_at?: string
@@ -97,7 +133,7 @@ export type Database = {
         }
         Update: {
           brand?: string | null
-          category?: string | null
+          categories?: Json | null
           created_at?: string
           description?: string | null
           id?: string
@@ -120,13 +156,42 @@ export type Database = {
           regular_price?: number
           status?: string[] | null
           stock_quantity?: number | null
-          subcategory?: string | null
+          subcategories?: Json | null
           title?: string
           total_images?: number | null
           updated_at?: string
           usage_instructions?: string | null
         }
         Relationships: []
+      }
+      subcategories: {
+        Row: {
+          category_id: string
+          created_at: string
+          id: string
+          name: string
+        }
+        Insert: {
+          category_id: string
+          created_at?: string
+          id?: string
+          name: string
+        }
+        Update: {
+          category_id?: string
+          created_at?: string
+          id?: string
+          name?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "subcategories_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          }
+        ]
       }
     }
     Views: {

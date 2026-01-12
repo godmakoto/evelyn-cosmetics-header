@@ -4,6 +4,7 @@ import { X } from "lucide-react";
 import { ShopProduct } from "@/data/shopProducts";
 import { useProducts, Product } from "@/hooks/useProducts";
 import { DEFAULT_PRODUCT_IMAGE } from "@/lib/constants";
+import { getFirstCategory, getFirstSubcategory, getAllCategories, getAllSubcategories, hasCategory, hasSubcategory } from "@/utils/productHelpers";
 import ShopFilters from "./ShopFilters";
 import ProductCard from "./ProductCard";
 import ProductSkeleton from "./ProductSkeleton";
@@ -16,8 +17,8 @@ const convertToShopProduct = (product: Product): ShopProduct => {
     id: product.id,
     name: product.title,
     brand: product.brand || "Sin marca",
-    category: product.category || "Sin categoría",
-    subcategory: product.subcategory || "General",
+    category: getFirstCategory(product) || "Sin categoría",
+    subcategory: getFirstSubcategory(product) || "General",
     price: product.offer_price || product.regular_price,
     originalPrice: product.offer_price ? product.regular_price : undefined,
     description: product.description || product.long_description || "",
@@ -68,13 +69,16 @@ const ProductGrid = ({
   // Usar location.state directamente como fuente de verdad para búsqueda
   const activeSearchQuery = location.state?.searchQuery || null;
 
+  // Mantener productos originales de Supabase para filtrar por arrays
+  const visibleProducts = useMemo(() => {
+    if (!productsData) return [];
+    return productsData.filter(product => !product.is_hidden);
+  }, [productsData]);
+
   // Convert Supabase products to ShopProduct format
   const shopProducts = useMemo(() => {
-    if (!productsData) return [];
-    return productsData
-      .filter(product => !product.is_hidden)
-      .map(convertToShopProduct);
-  }, [productsData]);
+    return visibleProducts.map(convertToShopProduct);
+  }, [visibleProducts]);
 
   // Ref para acceder a filters actuales sin causar re-creación del callback
   const filtersRef = useRef(filters);
@@ -134,41 +138,50 @@ const ProductGrid = ({
     }
 
     const filterTimeout = setTimeout(() => {
-      let result = [...shopProducts];
+      // Filtrar sobre productos originales de Supabase para búsquedas en arrays
+      let resultProducts = [...visibleProducts];
 
-      // Search query filter - usar activeSearchQuery en lugar de searchQuery
+      // Search query filter - buscar en todos los arrays
       if (activeSearchQuery) {
         const query = activeSearchQuery.toLowerCase();
-        result = result.filter((p) => {
+        resultProducts = resultProducts.filter((p) => {
+          const categories = getAllCategories(p);
+          const subcategories = getAllSubcategories(p);
+
           return (
-            p.name.toLowerCase().includes(query) ||
-            p.brand.toLowerCase().includes(query) ||
-            p.category.toLowerCase().includes(query) ||
-            p.subcategory.toLowerCase().includes(query)
+            p.title.toLowerCase().includes(query) ||
+            (p.brand && p.brand.toLowerCase().includes(query)) ||
+            categories.some(cat => cat.toLowerCase().includes(query)) ||
+            subcategories.some(sub => sub.toLowerCase().includes(query))
           );
         });
       }
 
       if (filters.maxPrice) {
-        result = result.filter((p) => p.price <= filters.maxPrice!);
+        resultProducts = resultProducts.filter((p) => (p.offer_price || p.regular_price) <= filters.maxPrice!);
       }
       if (filters.brand) {
-        result = result.filter((p) => p.brand === filters.brand);
+        resultProducts = resultProducts.filter((p) => p.brand === filters.brand);
       }
       if (filters.category) {
-        result = result.filter((p) => p.category === filters.category);
+        // Buscar en todos los arrays de categorías
+        resultProducts = resultProducts.filter((p) => hasCategory(p, filters.category!));
       }
       if (filters.subcategory) {
-        result = result.filter((p) => p.subcategory === filters.subcategory);
+        // Buscar en todos los arrays de subcategorías
+        resultProducts = resultProducts.filter((p) => hasSubcategory(p, filters.subcategory!));
       }
       if (filters.status) {
-        result = result.filter((p) => {
-          if (filters.status === 'best-seller') return p.isBestSeller;
-          if (filters.status === 'featured') return p.isFeatured;
-          if (filters.status === 'back-in-stock') return p.isBackInStock;
+        resultProducts = resultProducts.filter((p) => {
+          if (filters.status === 'best-seller') return p.is_best_seller;
+          if (filters.status === 'featured') return p.is_featured;
+          if (filters.status === 'back-in-stock') return p.is_back_in_stock;
           return true;
         });
       }
+
+      // Convertir productos filtrados a ShopProduct
+      const result = resultProducts.map(convertToShopProduct);
 
       console.log('Filtered products:', { count: result.length, filters });
       setFilteredProducts(result);
@@ -177,7 +190,7 @@ const ProductGrid = ({
     }, 150); // Pequeño delay para suavizar la transición
 
     return () => clearTimeout(filterTimeout);
-  }, [filters, activeSearchQuery, isFirstRender, isLoadingProducts, shopProducts]);
+  }, [filters, activeSearchQuery, isFirstRender, isLoadingProducts, visibleProducts]);
 
   // Infinite scroll: Load more products when user scrolls to bottom
   useEffect(() => {

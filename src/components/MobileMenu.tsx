@@ -8,21 +8,7 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
-import { categories } from "@/data/categories";
-
-const brands = [
-  "Avène",
-  "Bioderma",
-  "CeraVe",
-  "Eucerin",
-  "Isdin",
-  "La Roche-Posay",
-  "Neutrogena",
-  "Nivea",
-  "SkinCeuticals",
-  "The Ordinary",
-  "Vichy"
-];
+import { useBrands, useCategories } from "@/hooks/useFilters";
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -30,6 +16,10 @@ interface MobileMenuProps {
 }
 
 const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
+  // Obtener datos desde Supabase
+  const { brands } = useBrands();
+  const { categories } = useCategories();
+
   const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
   const [isBrandsOpen, setIsBrandsOpen] = useState(false);
   const [expandedSubcategory, setExpandedSubcategory] = useState<string | null>(null);
