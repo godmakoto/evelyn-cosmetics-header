@@ -29,8 +29,8 @@ const Checkout = () => {
     }
     message += `Total: ${finalTotal.toFixed(1)} Bs`;
 
-    // WhatsApp number - replace with actual number
-    const phoneNumber = "59178901234"; // Replace with actual WhatsApp business number
+    // Número de WhatsApp de Evelyn Cosmetics
+    const phoneNumber = "59165038009";
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
 
     window.open(whatsappUrl, '_blank');
