@@ -1,176 +1,110 @@
-# Pull Request: Sincronizar cliente con admin panel
+# PR: Implementar sistema de pedidos con Supabase y formato secuencial
 
-## 🎯 Título del PR
-```
-Sincronizar cliente con admin panel: infinite scroll, filtros dinámicos y arrays JSONB
-```
+## 📋 Resumen de Cambios
 
-## 📝 Descripción del PR
+Esta PR implementa un sistema completo de sincronización de pedidos con Supabase, permitiendo que los pedidos realizados desde el checkout web se guarden automáticamente en la base de datos y aparezcan en el panel de administración.
 
-Copia y pega esto en la descripción del PR:
+## ✨ Características Implementadas
 
----
+### 1. **Sistema de Pedidos en Supabase**
+- ✅ Guardado automático de pedidos al hacer clic en WhatsApp
+- ✅ Sin formularios de contacto (cliente: "Cliente Web", teléfono: "N/A")
+- ✅ Números de orden secuenciales: `ORD-1000`, `ORD-1001`, `ORD-1002`, etc.
+- ✅ Sincronización inmediata con panel de administración
 
-## 🎯 Objetivos
+### 2. **Separación de Descuentos**
+- ✅ `discount`: Descuentos manuales adicionales (actualmente 0)
+- ✅ `product_discounts`: Descuentos automáticos de productos en oferta
+- ✅ Visualización correcta en el admin panel
 
-Este PR sincroniza completamente el proyecto cliente con el panel de administración, implementando mejoras de rendimiento y conectando todos los filtros y navegación a Supabase.
+### 3. **Políticas RLS para Usuarios Anónimos**
+- ✅ Permitir INSERT a usuarios anónimos (clientes web)
+- ✅ Permitir SELECT a todos
+- ✅ Permitir UPDATE solo a usuarios autenticados (admins)
 
-## 📋 Cambios Principales
+### 4. **Formato de Order Number**
+- ❌ **ANTES**: `ORD-20260113-012251521` (timestamp)
+- ✅ **DESPUÉS**: `ORD-1000` (secuencial)
+- ✅ Consulta automática del último número usado
+- ✅ Incremento automático
+- ✅ Fallback a timestamp en caso de error
 
-### 1. ✨ Infinite Scroll con Paginación (20 productos por página)
+## 🔧 Archivos Modificados
 
-**Problema anterior:** La tienda cargaba todos los 470 productos al mismo tiempo, causando tiempos de carga lentos (~2-3s).
+### Frontend
+- `src/pages/Checkout.tsx` - Integración con Supabase, guardado automático
+- `src/hooks/useCreateOrder.ts` - Hook para crear pedidos con número secuencial
+- `src/contexts/CartContext.tsx` - Función `clearCart()` para limpiar carrito
+- `src/integrations/supabase/types.ts` - Tipos actualizados con `product_discounts`
 
-**Solución implementada:**
-- Sistema de infinite scroll que carga 20 productos inicialmente
-- Auto-carga progresiva usando Intersection Observer con 200px de margen
-- Skeleton loaders para mejorar UX durante la carga
-- Contador de productos visible (mostrando X de Y productos)
-- Reset automático de paginación cuando cambian los filtros
+### Scripts SQL
+- `scripts/create-orders-table-simple.sql` - Crear tabla orders (versión simplificada)
+- `scripts/fix-orders-rls-policies.sql` - Políticas RLS para usuarios anónimos
+- `scripts/add-product-discounts-column.sql` - Agregar columna product_discounts
 
-**Resultados:**
-- ✅ 95% reducción en productos renderizados inicialmente (470 → 20)
-- ✅ 75% más rápido el tiempo de carga inicial (~0.5s vs ~2-3s)
-- ✅ Mejor experiencia de usuario con carga progresiva
-- ✅ Menor consumo de memoria en el navegador
+## 📊 Flujo del Usuario
 
-**Archivos modificados:**
-- `src/components/shop/ProductGrid.tsx`
+1. Cliente agrega productos al carrito
+2. Va a checkout y acepta términos y condiciones
+3. Hace clic en "Finalizar por WhatsApp"
+4. **Sistema guarda pedido en Supabase automáticamente**
+5. Se genera número de orden secuencial (ORD-1000, ORD-1001, etc.)
+6. Se abre WhatsApp con mensaje que incluye número de orden
+7. Carrito se limpia automáticamente
+8. **Pedido aparece instantáneamente en panel de administración**
 
----
+## 🎯 Estructura del Pedido
 
-### 2. 🔄 Filtros y Navegación Dinámicos desde Supabase
+\`\`\`typescript
+{
+  order_number: "ORD-1000",
+  customer_name: "Cliente Web",
+  customer_phone: "N/A",
+  items: [...], // Productos con cantidades, precios e imágenes
+  subtotal: 540.0,
+  discount: 0, // Descuentos manuales
+  product_discounts: 15.0, // Descuentos automáticos
+  total: 525.0,
+  status_id: "uuid", // Estado "Pendiente"
+  created_at: "timestamp",
+  updated_at: "timestamp"
+}
+\`\`\`
 
-**Problema anterior:** Marcas, categorías y subcategorías estaban hardcodeadas en archivos estáticos.
+## ✅ Scripts SQL a Ejecutar (si aplica)
 
-**Solución implementada:**
-- Nuevo archivo `src/hooks/useFilters.ts` con hooks dinámicos:
-  - `useBrands()`: Obtiene marcas desde tabla `brands` de Supabase
-  - `useCategories()`: Obtiene categorías con subcategorías desde tablas `categories` y `subcategories`
-  - `useSubcategories(categoryName)`: Obtiene subcategorías filtradas por categoría
+Si la columna \`product_discounts\` no existe en la tabla \`orders\`:
+\`\`\`bash
+scripts/add-product-discounts-column.sql
+\`\`\`
 
-**Beneficios:**
-- ✅ Single source of truth: Supabase
-- ✅ Sin necesidad de actualizar código cuando cambien marcas/categorías
-- ✅ Sincronización automática entre admin panel y cliente
-- ✅ Ordenamiento alfabético automático
+Si las políticas RLS bloquean pedidos de usuarios anónimos:
+\`\`\`bash
+scripts/fix-orders-rls-policies.sql
+\`\`\`
 
-**Archivos modificados:**
-- `src/hooks/useFilters.ts` (creado)
-- `src/components/Header.tsx`
-- `src/components/MobileMenu.tsx`
-- `src/components/shop/ShopFilters.tsx`
+## 🧪 Testing
 
----
+- [x] Pedidos se guardan correctamente en Supabase
+- [x] Números de orden son secuenciales
+- [x] Descuentos se separan correctamente (manual vs automático)
+- [x] Pedidos aparecen en panel de administración
+- [x] Carrito se limpia después de crear pedido
+- [x] WhatsApp se abre con mensaje correcto
+- [x] Mensaje incluye número de orden
 
-### 3. 📦 Migración a Arrays JSONB (categories y subcategories)
+## 📝 Commits Incluidos
 
-**Problema anterior:** El cliente usaba `category` y `subcategory` (strings singulares), pero el admin panel guarda `categories` y `subcategories` (arrays JSONB). Esto causaba desincronización.
+1. Actualizar número de WhatsApp en checkout a 59165038009
+2. Implementar sincronización de pedidos con Supabase
+3. Simplificar checkout: eliminar formulario de contacto
+4. Agregar script SQL simplificado para tabla orders
+5. Implementar guardado automático de pedidos en Supabase
+6. Corregir error al crear pedidos sin autenticación
+7. Separar descuentos manuales y automáticos
+8. Cambiar formato de order_number a secuencial
 
-**Solución implementada:**
+## 🔗 Relacionado
 
-#### Scripts SQL creados:
-- `scripts/migrate-to-arrays.sql`: Script de migración (solo si se tienen columnas singulares)
-- `scripts/verify-columns.sql`: Verifica qué columnas existen
-- `scripts/test-categories.sql`: Prueba y verifica datos de categorías
-- `scripts/MIGRACION_ARRAYS.md`: Documentación completa en español
-
-#### Código actualizado:
-- **`src/utils/productHelpers.ts`** (nuevo archivo con helpers):
-  - `jsonbToStringArray()`: Convierte JSONB a array de strings
-  - `getFirstCategory()` / `getFirstSubcategory()`: Obtiene primer elemento
-  - `getAllCategories()` / `getAllSubcategories()`: Obtiene todos los elementos
-  - `hasCategory()` / `hasSubcategory()`: Verifica si producto tiene categoría/subcategoría
-
-- **`src/integrations/supabase/types.ts`**:
-  - Actualizado para usar `categories: Json` y `subcategories: Json`
-  - Eliminadas referencias a columnas singulares que no existen
-
-- **Componentes actualizados**:
-  - `src/components/shop/ProductGrid.tsx`: Busca en todos los arrays al filtrar
-  - `src/pages/ProductPage.tsx`: Productos relacionados buscan en todos los arrays
-
-**Beneficios:**
-- ✅ 100% sincronizado con admin panel
-- ✅ Soporte para productos con múltiples categorías
-- ✅ Filtros buscan en TODOS los arrays, no solo el primero
-- ✅ Productos relacionados encuentran más coincidencias
-- ✅ Búsqueda de texto busca en todas las categorías/subcategorías
-
-**Archivos modificados:**
-- `src/integrations/supabase/types.ts`
-- `src/utils/productHelpers.ts` (nuevo)
-- `src/components/shop/ProductGrid.tsx`
-- `src/pages/ProductPage.tsx`
-- `scripts/` (varios archivos SQL y documentación)
-
----
-
-## 🧪 Pruebas Realizadas
-
-### Infinite Scroll
-- ✅ Carga inicial de 20 productos
-- ✅ Auto-carga al hacer scroll
-- ✅ Reset correcto al cambiar filtros
-- ✅ Skeleton loaders funcionando
-- ✅ Contador de productos preciso
-
-### Filtros Dinámicos
-- ✅ Marcas se cargan desde tabla `brands`
-- ✅ Categorías se cargan desde tabla `categories`
-- ✅ Subcategorías se cargan según categoría seleccionada
-- ✅ Ordenamiento alfabético correcto
-- ✅ Header y menú móvil actualizados
-
-### Arrays JSONB
-- ✅ Productos con múltiples categorías se filtran correctamente
-- ✅ Búsqueda encuentra productos en todas las categorías
-- ✅ Productos relacionados funcionan con arrays
-- ✅ Sin errores de columnas faltantes
-
----
-
-## 📊 Impacto en Rendimiento
-
-| Métrica | Antes | Después | Mejora |
-|---------|-------|---------|--------|
-| Productos iniciales | 470 | 20 | -95% |
-| Tiempo de carga | ~2-3s | ~0.5s | -75% |
-| Filtros | Hardcodeados | Dinámicos | ✅ |
-| Sincronización | Manual | Automática | ✅ |
-
----
-
-## 🚀 Instrucciones de Despliegue
-
-1. **No se requiere migración SQL** - La base de datos ya tiene `categories` y `subcategories` como arrays JSONB
-2. Merge del PR a main
-3. Deploy a producción
-4. Verificar que:
-   - Productos se cargan progresivamente
-   - Filtros muestran datos de Supabase
-   - Categorías se muestran correctamente en header y menú
-
----
-
-## 📝 Notas Adicionales
-
-- Se mantuvieron todos los fixes anteriores (descripciones, thumbnails, títulos)
-- El código ahora funciona 100% con arrays JSONB sin retrocompatibilidad innecesaria
-- Los scripts SQL están documentados en español para facilitar mantenimiento
-- Todos los cambios son backward-compatible con la estructura actual de Supabase
-
----
-
-## ✅ Checklist
-
-- [x] Infinite scroll implementado y probado
-- [x] Filtros dinámicos desde Supabase funcionando
-- [x] Migración a arrays JSONB completada
-- [x] Tipos de TypeScript actualizados
-- [x] Componentes actualizados para usar arrays
-- [x] Documentación creada
-- [x] Scripts SQL creados y documentados
-- [x] Pruebas realizadas
-- [x] Sin errores en consola
-- [x] Rendimiento mejorado significativamente
+- Panel de administración actualizado para soportar el nuevo formato
+- Sincronización bidireccional entre tienda y admin panel
