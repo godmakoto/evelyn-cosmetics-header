@@ -50,19 +50,41 @@ export const usePendingStatusId = () => {
 };
 
 /**
- * Hook para generar número de orden único
+ * Función para generar número de orden secuencial
+ * Formato: ORD-1000, ORD-1001, ORD-1002, etc.
  */
-const generateOrderNumber = (): string => {
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = String(now.getMonth() + 1).padStart(2, '0');
-  const day = String(now.getDate()).padStart(2, '0');
-  const hours = String(now.getHours()).padStart(2, '0');
-  const minutes = String(now.getMinutes()).padStart(2, '0');
-  const seconds = String(now.getSeconds()).padStart(2, '0');
-  const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+const generateOrderNumber = async (): Promise<string> => {
+  try {
+    // Obtener todos los pedidos existentes ordenados por fecha
+    const { data: existingOrders } = await supabase
+      .from('orders')
+      .select('order_number')
+      .order('created_at', { ascending: false });
 
-  return `ORD-${year}${month}${day}-${hours}${minutes}${seconds}${random}`;
+    // Encontrar el número más alto y sumarle 1
+    let nextOrderNumber = 1000;
+
+    if (existingOrders && existingOrders.length > 0) {
+      const orderNumbers = existingOrders
+        .map(o => {
+          const match = o.order_number.match(/ORD-(\d+)/);
+          return match ? parseInt(match[1]) : 0;
+        })
+        .filter(n => n > 0);
+
+      if (orderNumbers.length > 0) {
+        nextOrderNumber = Math.max(...orderNumbers) + 1;
+      }
+    }
+
+    return `ORD-${nextOrderNumber}`;
+  } catch (error) {
+    console.error("Error generating order number:", error);
+    // En caso de error, usar timestamp como fallback
+    const now = new Date();
+    const timestamp = now.getTime();
+    return `ORD-${timestamp}`;
+  }
 };
 
 /**
@@ -87,8 +109,8 @@ export const useCreateOrder = () => {
         console.log("No se encontró estado 'Pendiente', continuando sin status_id");
       }
 
-      // Generar número de orden único
-      const orderNumber = generateOrderNumber();
+      // Generar número de orden único secuencial
+      const orderNumber = await generateOrderNumber();
 
       // Convertir items del carrito a formato de orden
       const orderItems: OrderItem[] = orderData.items.map((item) => ({
