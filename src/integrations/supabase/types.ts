@@ -14,13 +14,126 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      admin_users: {
+        Row: {
+          created_at: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      products: {
+        Row: {
+          brand: string | null
+          category: string | null
+          created_at: string
+          description: string | null
+          id: string
+          image_1: string | null
+          image_2: string | null
+          image_3: string | null
+          image_4: string | null
+          image_5: string | null
+          image_6: string | null
+          image_7: string | null
+          ingredients: string | null
+          is_back_in_stock: boolean | null
+          is_best_seller: boolean | null
+          is_featured: boolean | null
+          is_hidden: boolean | null
+          is_on_sale: boolean | null
+          long_description: string | null
+          offer_price: number | null
+          product_id: string
+          regular_price: number
+          status: string[] | null
+          stock_quantity: number | null
+          subcategory: string | null
+          title: string
+          total_images: number | null
+          updated_at: string
+          usage_instructions: string | null
+        }
+        Insert: {
+          brand?: string | null
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_1?: string | null
+          image_2?: string | null
+          image_3?: string | null
+          image_4?: string | null
+          image_5?: string | null
+          image_6?: string | null
+          image_7?: string | null
+          ingredients?: string | null
+          is_back_in_stock?: boolean | null
+          is_best_seller?: boolean | null
+          is_featured?: boolean | null
+          is_hidden?: boolean | null
+          is_on_sale?: boolean | null
+          long_description?: string | null
+          offer_price?: number | null
+          product_id: string
+          regular_price: number
+          status?: string[] | null
+          stock_quantity?: number | null
+          subcategory?: string | null
+          title: string
+          total_images?: number | null
+          updated_at?: string
+          usage_instructions?: string | null
+        }
+        Update: {
+          brand?: string | null
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_1?: string | null
+          image_2?: string | null
+          image_3?: string | null
+          image_4?: string | null
+          image_5?: string | null
+          image_6?: string | null
+          image_7?: string | null
+          ingredients?: string | null
+          is_back_in_stock?: boolean | null
+          is_best_seller?: boolean | null
+          is_featured?: boolean | null
+          is_hidden?: boolean | null
+          is_on_sale?: boolean | null
+          long_description?: string | null
+          offer_price?: number | null
+          product_id?: string
+          regular_price?: number
+          status?: string[] | null
+          stock_quantity?: number | null
+          subcategory?: string | null
+          title?: string
+          total_images?: number | null
+          updated_at?: string
+          usage_instructions?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      is_admin: { Args: never; Returns: boolean }
     }
     Enums: {
       [_ in never]: never
