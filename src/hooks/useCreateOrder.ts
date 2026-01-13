@@ -9,7 +9,8 @@ interface CreateOrderData {
   customerAddress?: string;
   items: CartItem[];
   subtotal: number;
-  discount: number;
+  discount: number; // Descuentos manuales adicionales
+  product_discounts: number; // Descuentos automáticos de productos
   total: number;
   notes?: string;
   paymentMethod?: string;
@@ -108,7 +109,8 @@ export const useCreateOrder = () => {
         customer_address: orderData.customerAddress || null,
         items: orderItems,
         subtotal: orderData.subtotal,
-        discount: orderData.discount,
+        discount: orderData.discount, // Descuentos manuales adicionales
+        product_discounts: orderData.product_discounts, // Descuentos automáticos de productos
         total: orderData.total,
         status_id: pendingStatusId,
         notes: orderData.notes || null,

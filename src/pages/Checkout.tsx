@@ -28,7 +28,8 @@ const Checkout = () => {
         customerPhone: "N/A",
         items,
         subtotal,
-        discount: totalDiscount,
+        discount: 0, // Sin descuentos manuales adicionales
+        product_discounts: totalDiscount, // Descuentos automáticos de productos
         total: finalTotal,
       };
 

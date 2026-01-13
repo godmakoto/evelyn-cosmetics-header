@@ -97,6 +97,7 @@ export type Database = {
           customer_name: string
           customer_phone: string
           discount: number | null
+          product_discounts: number | null
           id: string
           items: Json
           notes: string | null
@@ -114,6 +115,7 @@ export type Database = {
           customer_name: string
           customer_phone: string
           discount?: number | null
+          product_discounts?: number | null
           id?: string
           items: Json
           notes?: string | null
@@ -131,6 +133,7 @@ export type Database = {
           customer_name?: string
           customer_phone?: string
           discount?: number | null
+          product_discounts?: number | null
           id?: string
           items?: Json
           notes?: string | null
