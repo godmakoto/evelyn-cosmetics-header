@@ -4,114 +4,36 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { useCart } from "@/contexts/CartContext";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { ChevronLeft, Minus, Plus, X, Loader2 } from "lucide-react";
+import { ChevronLeft, Minus, Plus, X } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useCreateOrder } from "@/hooks/useCreateOrder";
-import { toast } from "sonner";
 
 const Checkout = () => {
   const navigate = useNavigate();
-  const { items, addItem, removeItem, updateQuantity, subtotal, totalDiscount, finalTotal, clearCart } = useCart();
+  const { items, addItem, removeItem, updateQuantity, subtotal, totalDiscount, finalTotal } = useCart();
   const [acceptedTerms, setAcceptedTerms] = useState(false);
 
-  // Estado del formulario de información del cliente
-  const [customerName, setCustomerName] = useState("");
-  const [customerPhone, setCustomerPhone] = useState("");
-  const [customerEmail, setCustomerEmail] = useState("");
-  const [customerAddress, setCustomerAddress] = useState("");
-  const [notes, setNotes] = useState("");
-
-  // Hook para crear pedido
-  const { mutate: createOrder, isPending: isCreatingOrder } = useCreateOrder();
-
   const handleWhatsAppCheckout = () => {
-    // Validar que se haya completado la información requerida
-    if (!customerName.trim()) {
-      toast.error("Por favor ingresa tu nombre");
-      return;
+    // Build order message for WhatsApp
+    let message = "¡Hola! Me gustaría realizar el siguiente pedido:\n\n";
+
+    items.forEach((item, index) => {
+      message += `${index + 1}. ${item.name}\n`;
+      message += `   Cantidad: ${item.quantity}\n`;
+      message += `   Precio: ${item.discountedPrice || item.originalPrice} Bs c/u\n`;
+      message += `   Subtotal: ${((item.discountedPrice || item.originalPrice) * item.quantity).toFixed(1)} Bs\n\n`;
+    });
+
+    message += `Subtotal: ${subtotal.toFixed(1)} Bs\n`;
+    if (totalDiscount > 0) {
+      message += `Descuento: -${totalDiscount.toFixed(1)} Bs\n`;
     }
+    message += `Total: ${finalTotal.toFixed(1)} Bs`;
 
-    if (!customerPhone.trim()) {
-      toast.error("Por favor ingresa tu número de teléfono");
-      return;
-    }
+    // Número de WhatsApp de Evelyn Cosmetics
+    const phoneNumber = "59165038009";
+    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
 
-    // Validar formato de teléfono (básico)
-    if (customerPhone.length < 8) {
-      toast.error("Por favor ingresa un número de teléfono válido");
-      return;
-    }
-
-    // Guardar pedido en Supabase primero
-    createOrder(
-      {
-        customerName: customerName.trim(),
-        customerPhone: customerPhone.trim(),
-        customerEmail: customerEmail.trim() || undefined,
-        customerAddress: customerAddress.trim() || undefined,
-        items,
-        subtotal,
-        discount: totalDiscount,
-        total: finalTotal,
-        notes: notes.trim() || undefined,
-        paymentMethod: "WhatsApp",
-      },
-      {
-        onSuccess: (order) => {
-          // Pedido guardado exitosamente, ahora abrir WhatsApp
-          toast.success("Pedido registrado correctamente");
-
-          // Build order message for WhatsApp
-          let message = `¡Hola! Me gustaría realizar el siguiente pedido:\n\n`;
-          message += `📋 *Pedido:* ${order.order_number}\n`;
-          message += `👤 *Nombre:* ${customerName}\n`;
-          message += `📱 *Teléfono:* ${customerPhone}\n`;
-          if (customerEmail) {
-            message += `📧 *Email:* ${customerEmail}\n`;
-          }
-          if (customerAddress) {
-            message += `📍 *Dirección:* ${customerAddress}\n`;
-          }
-          message += `\n*Productos:*\n`;
-
-          items.forEach((item, index) => {
-            message += `${index + 1}. ${item.name}\n`;
-            message += `   Cantidad: ${item.quantity}\n`;
-            message += `   Precio: ${item.discountedPrice || item.originalPrice} Bs c/u\n`;
-            message += `   Subtotal: ${((item.discountedPrice || item.originalPrice) * item.quantity).toFixed(1)} Bs\n\n`;
-          });
-
-          message += `Subtotal: ${subtotal.toFixed(1)} Bs\n`;
-          if (totalDiscount > 0) {
-            message += `Descuento: -${totalDiscount.toFixed(1)} Bs\n`;
-          }
-          message += `*Total: ${finalTotal.toFixed(1)} Bs*`;
-
-          if (notes) {
-            message += `\n\n📝 *Notas:* ${notes}`;
-          }
-
-          // Número de WhatsApp de Evelyn Cosmetics
-          const phoneNumber = "59165038009";
-          const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
-
-          // Abrir WhatsApp
-          window.open(whatsappUrl, '_blank');
-
-          // Limpiar carrito después de enviar
-          setTimeout(() => {
-            clearCart();
-            navigate('/tienda');
-          }, 1000);
-        },
-        onError: (error) => {
-          console.error("Error creating order:", error);
-          toast.error("Error al registrar el pedido. Por favor intenta de nuevo.");
-        },
-      }
-    );
+    window.open(whatsappUrl, '_blank');
   };
 
   if (items.length === 0) {
@@ -310,83 +232,6 @@ const Checkout = () => {
               </div>
             </div>
 
-            {/* Customer Information Form */}
-            <div className="mb-6 space-y-4 p-4 bg-[#f9f9f9] rounded-lg border border-[#eee]">
-              <h3 className="text-base font-semibold text-[#222]">Información de Contacto</h3>
-
-              <div>
-                <label htmlFor="customerName" className="block text-sm text-[#666] mb-1.5">
-                  Nombre completo <span className="text-[#e02b2b]">*</span>
-                </label>
-                <Input
-                  id="customerName"
-                  type="text"
-                  placeholder="Ej: Juan Pérez"
-                  value={customerName}
-                  onChange={(e) => setCustomerName(e.target.value)}
-                  className="h-10 rounded-lg border-[#ddd] focus:border-[#222] focus:ring-[#222]"
-                  required
-                />
-              </div>
-
-              <div>
-                <label htmlFor="customerPhone" className="block text-sm text-[#666] mb-1.5">
-                  Teléfono / WhatsApp <span className="text-[#e02b2b]">*</span>
-                </label>
-                <Input
-                  id="customerPhone"
-                  type="tel"
-                  placeholder="Ej: 76543210"
-                  value={customerPhone}
-                  onChange={(e) => setCustomerPhone(e.target.value)}
-                  className="h-10 rounded-lg border-[#ddd] focus:border-[#222] focus:ring-[#222]"
-                  required
-                />
-              </div>
-
-              <div>
-                <label htmlFor="customerEmail" className="block text-sm text-[#666] mb-1.5">
-                  Email (opcional)
-                </label>
-                <Input
-                  id="customerEmail"
-                  type="email"
-                  placeholder="Ej: correo@ejemplo.com"
-                  value={customerEmail}
-                  onChange={(e) => setCustomerEmail(e.target.value)}
-                  className="h-10 rounded-lg border-[#ddd] focus:border-[#222] focus:ring-[#222]"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="customerAddress" className="block text-sm text-[#666] mb-1.5">
-                  Dirección de entrega (opcional)
-                </label>
-                <Textarea
-                  id="customerAddress"
-                  placeholder="Ej: Av. Principal #123, Zona Centro"
-                  value={customerAddress}
-                  onChange={(e) => setCustomerAddress(e.target.value)}
-                  className="min-h-[60px] rounded-lg border-[#ddd] focus:border-[#222] focus:ring-[#222] resize-none"
-                  rows={2}
-                />
-              </div>
-
-              <div>
-                <label htmlFor="notes" className="block text-sm text-[#666] mb-1.5">
-                  Notas adicionales (opcional)
-                </label>
-                <Textarea
-                  id="notes"
-                  placeholder="Ej: Entrega en horario de tarde"
-                  value={notes}
-                  onChange={(e) => setNotes(e.target.value)}
-                  className="min-h-[60px] rounded-lg border-[#ddd] focus:border-[#222] focus:ring-[#222] resize-none"
-                  rows={2}
-                />
-              </div>
-            </div>
-
             {/* Terms and Conditions Checkbox */}
             <div className="mb-4">
               <label className="flex items-start gap-3 cursor-pointer group">
@@ -412,31 +257,22 @@ const Checkout = () => {
             {/* WhatsApp Button */}
             <Button
               onClick={handleWhatsAppCheckout}
-              disabled={!acceptedTerms || !customerName.trim() || !customerPhone.trim() || isCreatingOrder}
+              disabled={!acceptedTerms}
               className={cn(
                 "w-full rounded-full py-6 text-base font-semibold transition-all",
-                acceptedTerms && customerName.trim() && customerPhone.trim() && !isCreatingOrder
+                acceptedTerms
                   ? "bg-[#25D366] hover:bg-[#20BD5A] text-white cursor-pointer"
                   : "bg-[#ddd] text-[#999] cursor-not-allowed"
               )}
             >
-              {isCreatingOrder ? (
-                <>
-                  <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                  Procesando...
-                </>
-              ) : (
-                <>
-                  <svg
-                    viewBox="0 0 24 24"
-                    className="w-5 h-5 mr-2 fill-current"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
-                  </svg>
-                  Finalizar por WhatsApp
-                </>
-              )}
+              <svg
+                viewBox="0 0 24 24"
+                className="w-5 h-5 mr-2 fill-current"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+              </svg>
+              Finalizar por WhatsApp
             </Button>
 
             {/* Continue Shopping */}
