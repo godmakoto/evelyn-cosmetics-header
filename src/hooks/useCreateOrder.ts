@@ -68,10 +68,24 @@ const generateOrderNumber = (): string => {
  * Hook para crear un pedido en Supabase
  */
 export const useCreateOrder = () => {
-  const { data: pendingStatusId } = usePendingStatusId();
-
   return useMutation({
     mutationFn: async (orderData: CreateOrderData) => {
+      // Primero, intentar obtener el ID del estado "Pendiente"
+      let pendingStatusId = null;
+      try {
+        const { data: statusData } = await supabase
+          .from("order_statuses")
+          .select("id")
+          .eq("name", "Pendiente")
+          .single();
+
+        if (statusData) {
+          pendingStatusId = statusData.id;
+        }
+      } catch (error) {
+        console.log("No se encontró estado 'Pendiente', continuando sin status_id");
+      }
+
       // Generar número de orden único
       const orderNumber = generateOrderNumber();
 
