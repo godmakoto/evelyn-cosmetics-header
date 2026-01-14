@@ -113,37 +113,41 @@ const ProductCard = ({
           {isInCart ? "Ver carrito" : "Agregar"}
         </Button>
 
-        {/* Desktop content - espaciado uniforme entre filas */}
-        <div className="hidden lg:flex flex-col h-full gap-2">
-          <h3 className="text-[#222] font-semibold text-lg leading-[1.3] line-clamp-5">
-            {longName}
-          </h3>
+        {/* Desktop content - espaciado uniforme y precio alineado al fondo */}
+        <div className="hidden lg:flex flex-col h-full justify-between">
+          {/* Contenido superior con espaciado uniforme */}
+          <div className="flex flex-col gap-3">
+            <h3 className="text-[#222] font-semibold text-lg leading-[1.3] line-clamp-5">
+              {longName}
+            </h3>
 
-          <p className="text-[#888] text-xs capitalize tracking-wide font-medium">{product.brand}</p>
+            <p className="text-[#888] text-xs capitalize tracking-wide font-medium">{product.brand}</p>
 
-          <div className="flex flex-wrap gap-1.5">
-            {product.category && (
-              <span className="bg-[#f5f5f5] text-[#555] text-[10px] font-medium px-2.5 py-1 rounded-full">
-                {product.category}
-              </span>
-            )}
-            {product.subcategory && (
-              <span className="bg-[#f0f7ff] text-[#4a90d9] text-[10px] font-medium px-2.5 py-1 rounded-full">
-                {product.subcategory}
-              </span>
-            )}
-            {product.isBestSeller && (
-              <span className="bg-[#fff8e6] text-[#b8860b] text-[10px] font-medium px-2.5 py-1 rounded-full">
-                Más Vendido
-              </span>
-            )}
-            {product.isBackInStock && (
-              <span className="bg-[#e8f5e9] text-[#2e7d32] text-[10px] font-medium px-2.5 py-1 rounded-full">
-                De Vuelta
-              </span>
-            )}
+            <div className="flex flex-wrap gap-1.5">
+              {product.category && (
+                <span className="bg-[#f5f5f5] text-[#555] text-[10px] font-medium px-2.5 py-1 rounded-full">
+                  {product.category}
+                </span>
+              )}
+              {product.subcategory && (
+                <span className="bg-[#f0f7ff] text-[#4a90d9] text-[10px] font-medium px-2.5 py-1 rounded-full">
+                  {product.subcategory}
+                </span>
+              )}
+              {product.isBestSeller && (
+                <span className="bg-[#fff8e6] text-[#b8860b] text-[10px] font-medium px-2.5 py-1 rounded-full">
+                  Más Vendido
+                </span>
+              )}
+              {product.isBackInStock && (
+                <span className="bg-[#e8f5e9] text-[#2e7d32] text-[10px] font-medium px-2.5 py-1 rounded-full">
+                  De Vuelta
+                </span>
+              )}
+            </div>
           </div>
 
+          {/* Precio + botón al fondo */}
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2 flex-shrink-0">
               <span className="text-[#e02b2b] font-bold text-2xl">
