@@ -78,16 +78,50 @@ const ProductCard = ({
       </div>
 
       <div className="w-[44%] sm:w-[55%] lg:flex-1 py-3 pr-3 sm:py-4 sm:pr-4 lg:py-6 lg:pr-6 lg:pl-0 flex flex-col justify-between h-full lg:h-[320px]">
-        <div className="flex-1 flex flex-col min-h-0 overflow-hidden lg:justify-start lg:gap-2">
-          <h3 className="text-[#222] font-medium lg:font-semibold text-[13px] sm:text-[15px] lg:text-lg leading-[1.3] line-clamp-5 mb-1 lg:mb-0">
-            <span className="lg:hidden">{product.name}</span>
-            <span className="hidden lg:inline">{longName}</span>
+        {/* Mobile/Tablet content */}
+        <div className="flex-1 flex flex-col min-h-0 overflow-hidden lg:hidden">
+          <h3 className="text-[#222] font-medium text-[13px] sm:text-[15px] leading-[1.3] line-clamp-5 mb-1">
+            {product.name}
           </h3>
 
-          <p className="text-[#888] text-[10px] sm:text-[11px] lg:text-xs capitalize mb-1 lg:mb-0 lg:tracking-wide lg:font-medium">{product.brand}</p>
+          <p className="text-[#888] text-[10px] sm:text-[11px] capitalize mb-1">{product.brand}</p>
 
-          {/* Desktop: pastillas de categorías en vez de descripción */}
-          <div className="hidden lg:flex flex-wrap gap-1.5">
+          <div className="flex items-center gap-1.5 mb-1.5 sm:mb-2">
+            <span className="text-[#e02b2b] font-bold text-[15px] sm:text-[17px]">
+              {product.price.toFixed(1)} Bs
+            </span>
+            {product.originalPrice && <span className="text-[#999] text-[12px] sm:text-[13px] line-through">
+                {product.originalPrice.toFixed(1)} Bs
+              </span>}
+          </div>
+
+          <p className="hidden sm:block text-[#666] text-[12px] leading-relaxed line-clamp-2 mb-2">
+            {product.description}
+          </p>
+        </div>
+
+        {/* Mobile/Tablet: botón */}
+        <Button
+          variant={isInCart ? "outline" : "default"}
+          className="w-full rounded-full gap-2 text-[13px] sm:text-[14px] mt-auto py-2.5 h-auto flex-shrink-0 lg:hidden"
+          onClick={(e) => {
+            e.stopPropagation();
+            handleAddToCart();
+          }}
+        >
+          <ShoppingBag className="w-[14px] h-[14px] sm:w-[15px] sm:h-[15px]" />
+          {isInCart ? "Ver carrito" : "Agregar"}
+        </Button>
+
+        {/* Desktop content - todo con espaciado uniforme */}
+        <div className="hidden lg:flex flex-col h-full">
+          <h3 className="text-[#222] font-semibold text-lg leading-[1.3] line-clamp-5 mb-2">
+            {longName}
+          </h3>
+
+          <p className="text-[#888] text-xs capitalize tracking-wide font-medium mb-2">{product.brand}</p>
+
+          <div className="flex flex-wrap gap-1.5 mb-2">
             {product.category && (
               <span className="bg-[#f5f5f5] text-[#555] text-[10px] font-medium px-2.5 py-1 rounded-full">
                 {product.category}
@@ -110,55 +144,30 @@ const ProductCard = ({
             )}
           </div>
 
-          {/* Mobile/Tablet: precio arriba del botón */}
-          <div className="flex items-center gap-1.5 mb-1.5 sm:mb-2 lg:hidden">
-            <span className="text-[#e02b2b] font-bold text-[15px] sm:text-[17px]">
-              {product.price.toFixed(1)} Bs
-            </span>
-            {product.originalPrice && <span className="text-[#999] text-[12px] sm:text-[13px] line-through">
-                {product.originalPrice.toFixed(1)} Bs
-              </span>}
+          {/* Spacer para empujar precio+botón al fondo */}
+          <div className="flex-1" />
+
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 flex-shrink-0">
+              <span className="text-[#e02b2b] font-bold text-2xl">
+                {product.price.toFixed(1)} Bs
+              </span>
+              {product.originalPrice && <span className="text-[#999] text-base line-through">
+                  {product.originalPrice.toFixed(1)} Bs
+                </span>}
+            </div>
+            <Button
+              variant={isInCart ? "outline" : "default"}
+              className="flex-1 rounded-full gap-2 text-base py-3.5 h-auto font-medium"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleAddToCart();
+              }}
+            >
+              <ShoppingBag className="w-4 h-4" />
+              {isInCart ? "Ver carrito" : "Agregar"}
+            </Button>
           </div>
-
-          <p className="hidden sm:block lg:hidden text-[#666] text-[12px] leading-relaxed line-clamp-2 mb-2">
-            {product.description}
-          </p>
-        </div>
-
-        {/* Mobile/Tablet: botón solo */}
-        <Button
-          variant={isInCart ? "outline" : "default"}
-          className="w-full rounded-full gap-2 text-[13px] sm:text-[14px] mt-auto py-2.5 h-auto flex-shrink-0 lg:hidden"
-          onClick={(e) => {
-            e.stopPropagation();
-            handleAddToCart();
-          }}
-        >
-          <ShoppingBag className="w-[14px] h-[14px] sm:w-[15px] sm:h-[15px]" />
-          {isInCart ? "Ver carrito" : "Agregar"}
-        </Button>
-
-        {/* PC: precio y botón en la misma fila */}
-        <div className="hidden lg:flex items-center gap-4 mt-auto">
-          <div className="flex items-center gap-2 flex-shrink-0">
-            <span className="text-[#e02b2b] font-bold text-2xl">
-              {product.price.toFixed(1)} Bs
-            </span>
-            {product.originalPrice && <span className="text-[#999] text-base line-through">
-                {product.originalPrice.toFixed(1)} Bs
-              </span>}
-          </div>
-          <Button
-            variant={isInCart ? "outline" : "default"}
-            className="flex-1 rounded-full gap-2 text-base py-3.5 h-auto font-medium"
-            onClick={(e) => {
-              e.stopPropagation();
-              handleAddToCart();
-            }}
-          >
-            <ShoppingBag className="w-4 h-4" />
-            {isInCart ? "Ver carrito" : "Agregar"}
-          </Button>
         </div>
       </div>
     </div>;
