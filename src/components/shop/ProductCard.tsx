@@ -86,9 +86,29 @@ const ProductCard = ({
 
           <p className="text-[#888] text-[10px] sm:text-[11px] lg:text-xs capitalize mb-1 lg:mb-2 lg:tracking-wide lg:font-medium">{product.brand}</p>
 
-          <p className="hidden lg:block text-[#666] text-xs leading-relaxed line-clamp-2 mb-3">
-            {product.description}
-          </p>
+          {/* Desktop: pastillas de categorías en vez de descripción */}
+          <div className="hidden lg:flex flex-wrap gap-1.5 mb-3">
+            {product.category && (
+              <span className="bg-[#f5f5f5] text-[#555] text-[10px] font-medium px-2.5 py-1 rounded-full">
+                {product.category}
+              </span>
+            )}
+            {product.subcategory && (
+              <span className="bg-[#f0f7ff] text-[#4a90d9] text-[10px] font-medium px-2.5 py-1 rounded-full">
+                {product.subcategory}
+              </span>
+            )}
+            {product.isBestSeller && (
+              <span className="bg-[#fff8e6] text-[#b8860b] text-[10px] font-medium px-2.5 py-1 rounded-full">
+                Más Vendido
+              </span>
+            )}
+            {product.isBackInStock && (
+              <span className="bg-[#e8f5e9] text-[#2e7d32] text-[10px] font-medium px-2.5 py-1 rounded-full">
+                De Vuelta
+              </span>
+            )}
+          </div>
 
           {/* Mobile/Tablet: precio arriba del botón */}
           <div className="flex items-center gap-1.5 mb-1.5 sm:mb-2 lg:hidden">
