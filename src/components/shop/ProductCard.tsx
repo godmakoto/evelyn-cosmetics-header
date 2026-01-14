@@ -6,21 +6,6 @@ import { useNavigate } from "react-router-dom";
 interface ProductCardProps {
   product: ShopProduct;
 }
-
-// Genera un nombre largo genérico para demostración en desktop
-const generateLongName = (originalName: string): string => {
-  const suffixes = [
-    "con Ácido Hialurónico y Vitamina C para una Piel Radiante",
-    "Fórmula Avanzada con Extractos Naturales y Péptidos Bioactivos",
-    "Tratamiento Intensivo con Retinol y Niacinamida de Alta Potencia",
-    "Edición Especial con Ceramidas y Extracto de Rosa Mosqueta",
-    "con Colágeno Marino y Ácido Ferúlico para Rejuvenecimiento",
-    "Fórmula Profesional con Bakuchiol y Vitamina E Antioxidante",
-  ];
-  const randomSuffix = suffixes[Math.floor(Math.random() * suffixes.length)];
-  return `${originalName} ${randomSuffix}`;
-};
-
 const ProductCard = ({
   product
 }: ProductCardProps) => {
@@ -31,22 +16,6 @@ const ProductCard = ({
     setIsCartOpen
   } = useCart();
   const isInCart = items.some(item => item.id === product.id);
-  
-  // Genera el nombre largo una sola vez por producto usando el id como seed
-  const longName = (() => {
-    const suffixes = [
-      "con Ácido Hialurónico y Vitamina C para una Piel Radiante",
-      "Fórmula Avanzada con Extractos Naturales y Péptidos Bioactivos",
-      "Tratamiento Intensivo con Retinol y Niacinamida de Alta Potencia",
-      "Edición Especial con Ceramidas y Extracto de Rosa Mosqueta",
-      "con Colágeno Marino y Ácido Ferúlico para Rejuvenecimiento",
-      "Fórmula Profesional con Bakuchiol y Vitamina E Antioxidante",
-    ];
-    // Usar el id del producto para seleccionar un sufijo consistente
-    const index = product.id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) % suffixes.length;
-    return `${product.name} ${suffixes[index]}`;
-  })();
-  
   const handleAddToCart = () => {
     if (isInCart) {
       setIsCartOpen(true);
@@ -78,15 +47,19 @@ const ProductCard = ({
       </div>
 
       <div className="w-[44%] sm:w-[55%] lg:flex-1 py-3 pr-3 sm:py-4 sm:pr-4 lg:py-6 lg:pr-6 lg:pl-0 flex flex-col justify-between h-full lg:h-[320px]">
-        {/* Mobile/Tablet content */}
-        <div className="flex-1 flex flex-col min-h-0 overflow-hidden lg:hidden">
-          <h3 className="text-[#222] font-medium text-[13px] sm:text-[15px] leading-[1.3] line-clamp-5 mb-1">
+        <div className="flex-1 flex flex-col min-h-0 overflow-hidden">
+          <h3 className="text-[#222] font-medium lg:font-semibold text-[13px] sm:text-[15px] lg:text-lg leading-[1.3] line-clamp-5 lg:line-clamp-3 mb-1 lg:mb-2">
             {product.name}
           </h3>
 
-          <p className="text-[#888] text-[10px] sm:text-[11px] capitalize mb-1">{product.brand}</p>
+          <p className="text-[#888] text-[10px] sm:text-[11px] lg:text-xs capitalize mb-1 lg:mb-2 lg:tracking-wide lg:font-medium">{product.brand}</p>
 
-          <div className="flex items-center gap-1.5 mb-1.5 sm:mb-2">
+          <p className="hidden lg:block text-[#666] text-xs leading-relaxed line-clamp-2 mb-3">
+            {product.description}
+          </p>
+
+          {/* Mobile/Tablet: precio arriba del botón */}
+          <div className="flex items-center gap-1.5 mb-1.5 sm:mb-2 lg:hidden">
             <span className="text-[#e02b2b] font-bold text-[15px] sm:text-[17px]">
               {product.price.toFixed(1)} Bs
             </span>
@@ -95,12 +68,12 @@ const ProductCard = ({
               </span>}
           </div>
 
-          <p className="hidden sm:block text-[#666] text-[12px] leading-relaxed line-clamp-2 mb-2">
+          <p className="hidden sm:block lg:hidden text-[#666] text-[12px] leading-relaxed line-clamp-2 mb-2">
             {product.description}
           </p>
         </div>
 
-        {/* Mobile/Tablet: botón */}
+        {/* Mobile/Tablet: botón solo */}
         <Button
           variant={isInCart ? "outline" : "default"}
           className="w-full rounded-full gap-2 text-[13px] sm:text-[14px] mt-auto py-2.5 h-auto flex-shrink-0 lg:hidden"
@@ -113,60 +86,27 @@ const ProductCard = ({
           {isInCart ? "Ver carrito" : "Agregar"}
         </Button>
 
-        {/* Desktop: separación igual entre TODAS las filas */}
-        <div className="hidden lg:flex flex-col h-full justify-between">
-          <h3 className="text-[#222] font-semibold text-lg leading-[1.3] line-clamp-5">
-            {longName}
-          </h3>
-
-          <p className="text-[#888] text-xs capitalize tracking-wide font-medium">{product.brand}</p>
-
-          <div className="flex flex-wrap gap-1.5">
-            {product.category && (
-              <span className="bg-[#f5f5f5] text-[#555] text-[10px] font-medium px-2.5 py-1 rounded-full">
-                {product.category}
-              </span>
-            )}
-            {product.subcategory && (
-              <span className="bg-[#f0f7ff] text-[#4a90d9] text-[10px] font-medium px-2.5 py-1 rounded-full">
-                {product.subcategory}
-              </span>
-            )}
-            {product.isBestSeller && (
-              <span className="bg-[#fff8e6] text-[#b8860b] text-[10px] font-medium px-2.5 py-1 rounded-full">
-                Más Vendido
-              </span>
-            )}
-            {product.isBackInStock && (
-              <span className="bg-[#e8f5e9] text-[#2e7d32] text-[10px] font-medium px-2.5 py-1 rounded-full">
-                De Vuelta
-              </span>
-            )}
+        {/* PC: precio y botón en la misma fila */}
+        <div className="hidden lg:flex items-center gap-4 mt-auto">
+          <div className="flex items-center gap-2 w-1/2 flex-shrink-0">
+            <span className="text-[#e02b2b] font-bold text-2xl">
+              {product.price.toFixed(1)} Bs
+            </span>
+            {product.originalPrice && <span className="text-[#999] text-base line-through">
+                {product.originalPrice.toFixed(1)} Bs
+              </span>}
           </div>
-
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2 flex-shrink-0">
-              <span className="text-[#e02b2b] font-bold text-2xl">
-                {product.price.toFixed(1)} Bs
-              </span>
-              {product.originalPrice && (
-                <span className="text-[#999] text-base line-through">
-                  {product.originalPrice.toFixed(1)} Bs
-                </span>
-              )}
-            </div>
-            <Button
-              variant={isInCart ? "outline" : "default"}
-              className="flex-1 rounded-full gap-2 text-base py-3.5 h-auto font-medium"
-              onClick={(e) => {
-                e.stopPropagation();
-                handleAddToCart();
-              }}
-            >
-              <ShoppingBag className="w-4 h-4" />
-              {isInCart ? "Ver carrito" : "Agregar"}
-            </Button>
-          </div>
+          <Button
+            variant={isInCart ? "outline" : "default"}
+            className="w-1/2 rounded-full gap-2 text-base py-3.5 h-auto font-medium"
+            onClick={(e) => {
+              e.stopPropagation();
+              handleAddToCart();
+            }}
+          >
+            <ShoppingBag className="w-4 h-4" />
+            {isInCart ? "Ver carrito" : "Agregar"}
+          </Button>
         </div>
       </div>
     </div>;
