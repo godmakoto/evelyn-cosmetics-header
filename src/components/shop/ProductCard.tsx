@@ -113,15 +113,15 @@ const ProductCard = ({
           {isInCart ? "Ver carrito" : "Agregar"}
         </Button>
 
-        {/* Desktop content - todo con espaciado uniforme */}
-        <div className="hidden lg:flex flex-col h-full">
-          <h3 className="text-[#222] font-semibold text-lg leading-[1.3] line-clamp-5 mb-2">
+        {/* Desktop content - espaciado uniforme entre filas */}
+        <div className="hidden lg:flex flex-col h-full gap-2">
+          <h3 className="text-[#222] font-semibold text-lg leading-[1.3] line-clamp-5">
             {longName}
           </h3>
 
-          <p className="text-[#888] text-xs capitalize tracking-wide font-medium mb-2">{product.brand}</p>
+          <p className="text-[#888] text-xs capitalize tracking-wide font-medium">{product.brand}</p>
 
-          <div className="flex flex-wrap gap-1.5 mb-2">
+          <div className="flex flex-wrap gap-1.5">
             {product.category && (
               <span className="bg-[#f5f5f5] text-[#555] text-[10px] font-medium px-2.5 py-1 rounded-full">
                 {product.category}
@@ -144,17 +144,16 @@ const ProductCard = ({
             )}
           </div>
 
-          {/* Spacer para empujar precio+botón al fondo */}
-          <div className="flex-1" />
-
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2 flex-shrink-0">
               <span className="text-[#e02b2b] font-bold text-2xl">
                 {product.price.toFixed(1)} Bs
               </span>
-              {product.originalPrice && <span className="text-[#999] text-base line-through">
+              {product.originalPrice && (
+                <span className="text-[#999] text-base line-through">
                   {product.originalPrice.toFixed(1)} Bs
-                </span>}
+                </span>
+              )}
             </div>
             <Button
               variant={isInCart ? "outline" : "default"}
