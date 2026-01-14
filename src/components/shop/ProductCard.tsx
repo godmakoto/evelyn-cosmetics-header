@@ -78,16 +78,16 @@ const ProductCard = ({
       </div>
 
       <div className="w-[44%] sm:w-[55%] lg:flex-1 py-3 pr-3 sm:py-4 sm:pr-4 lg:py-6 lg:pr-6 lg:pl-0 flex flex-col justify-between h-full lg:h-[320px]">
-        <div className="flex-1 flex flex-col min-h-0 overflow-hidden">
-          <h3 className="text-[#222] font-medium lg:font-semibold text-[13px] sm:text-[15px] lg:text-lg leading-[1.3] line-clamp-5 mb-1 lg:mb-2">
+        <div className="flex-1 flex flex-col min-h-0 overflow-hidden lg:justify-start lg:gap-2">
+          <h3 className="text-[#222] font-medium lg:font-semibold text-[13px] sm:text-[15px] lg:text-lg leading-[1.3] line-clamp-5 mb-1 lg:mb-0">
             <span className="lg:hidden">{product.name}</span>
             <span className="hidden lg:inline">{longName}</span>
           </h3>
 
-          <p className="text-[#888] text-[10px] sm:text-[11px] lg:text-xs capitalize mb-1 lg:mb-2 lg:tracking-wide lg:font-medium">{product.brand}</p>
+          <p className="text-[#888] text-[10px] sm:text-[11px] lg:text-xs capitalize mb-1 lg:mb-0 lg:tracking-wide lg:font-medium">{product.brand}</p>
 
           {/* Desktop: pastillas de categorías en vez de descripción */}
-          <div className="hidden lg:flex flex-wrap gap-1.5 mb-3">
+          <div className="hidden lg:flex flex-wrap gap-1.5">
             {product.category && (
               <span className="bg-[#f5f5f5] text-[#555] text-[10px] font-medium px-2.5 py-1 rounded-full">
                 {product.category}
@@ -108,6 +108,16 @@ const ProductCard = ({
                 De Vuelta
               </span>
             )}
+          </div>
+
+          {/* Desktop: precio inline con el contenido */}
+          <div className="hidden lg:flex items-center gap-2">
+            <span className="text-[#e02b2b] font-bold text-2xl">
+              {product.price.toFixed(1)} Bs
+            </span>
+            {product.originalPrice && <span className="text-[#999] text-base line-through">
+                {product.originalPrice.toFixed(1)} Bs
+              </span>}
           </div>
 
           {/* Mobile/Tablet: precio arriba del botón */}
@@ -138,28 +148,18 @@ const ProductCard = ({
           {isInCart ? "Ver carrito" : "Agregar"}
         </Button>
 
-        {/* PC: precio y botón en la misma fila */}
-        <div className="hidden lg:flex items-center gap-4 mt-auto">
-          <div className="flex items-center gap-2 w-1/2 flex-shrink-0">
-            <span className="text-[#e02b2b] font-bold text-2xl">
-              {product.price.toFixed(1)} Bs
-            </span>
-            {product.originalPrice && <span className="text-[#999] text-base line-through">
-                {product.originalPrice.toFixed(1)} Bs
-              </span>}
-          </div>
-          <Button
-            variant={isInCart ? "outline" : "default"}
-            className="w-1/2 rounded-full gap-2 text-base py-3.5 h-auto font-medium"
-            onClick={(e) => {
-              e.stopPropagation();
-              handleAddToCart();
-            }}
-          >
-            <ShoppingBag className="w-4 h-4" />
-            {isInCart ? "Ver carrito" : "Agregar"}
-          </Button>
-        </div>
+        {/* PC: botón al fondo */}
+        <Button
+          variant={isInCart ? "outline" : "default"}
+          className="hidden lg:flex w-full rounded-full gap-2 text-base py-3.5 h-auto font-medium mt-auto"
+          onClick={(e) => {
+            e.stopPropagation();
+            handleAddToCart();
+          }}
+        >
+          <ShoppingBag className="w-4 h-4" />
+          {isInCart ? "Ver carrito" : "Agregar"}
+        </Button>
       </div>
     </div>;
 };
