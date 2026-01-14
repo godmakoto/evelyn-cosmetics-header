@@ -110,16 +110,6 @@ const ProductCard = ({
             )}
           </div>
 
-          {/* Desktop: precio inline con el contenido */}
-          <div className="hidden lg:flex items-center gap-2">
-            <span className="text-[#e02b2b] font-bold text-2xl">
-              {product.price.toFixed(1)} Bs
-            </span>
-            {product.originalPrice && <span className="text-[#999] text-base line-through">
-                {product.originalPrice.toFixed(1)} Bs
-              </span>}
-          </div>
-
           {/* Mobile/Tablet: precio arriba del botón */}
           <div className="flex items-center gap-1.5 mb-1.5 sm:mb-2 lg:hidden">
             <span className="text-[#e02b2b] font-bold text-[15px] sm:text-[17px]">
@@ -148,18 +138,28 @@ const ProductCard = ({
           {isInCart ? "Ver carrito" : "Agregar"}
         </Button>
 
-        {/* PC: botón al fondo */}
-        <Button
-          variant={isInCart ? "outline" : "default"}
-          className="hidden lg:flex w-full rounded-full gap-2 text-base py-3.5 h-auto font-medium mt-auto"
-          onClick={(e) => {
-            e.stopPropagation();
-            handleAddToCart();
-          }}
-        >
-          <ShoppingBag className="w-4 h-4" />
-          {isInCart ? "Ver carrito" : "Agregar"}
-        </Button>
+        {/* PC: precio y botón en la misma fila */}
+        <div className="hidden lg:flex items-center gap-4 mt-auto">
+          <div className="flex items-center gap-2 flex-shrink-0">
+            <span className="text-[#e02b2b] font-bold text-2xl">
+              {product.price.toFixed(1)} Bs
+            </span>
+            {product.originalPrice && <span className="text-[#999] text-base line-through">
+                {product.originalPrice.toFixed(1)} Bs
+              </span>}
+          </div>
+          <Button
+            variant={isInCart ? "outline" : "default"}
+            className="flex-1 rounded-full gap-2 text-base py-3.5 h-auto font-medium"
+            onClick={(e) => {
+              e.stopPropagation();
+              handleAddToCart();
+            }}
+          >
+            <ShoppingBag className="w-4 h-4" />
+            {isInCart ? "Ver carrito" : "Agregar"}
+          </Button>
+        </div>
       </div>
     </div>;
 };
