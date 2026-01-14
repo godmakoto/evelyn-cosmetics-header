@@ -6,6 +6,21 @@ import { useNavigate } from "react-router-dom";
 interface ProductCardProps {
   product: ShopProduct;
 }
+
+// Genera un nombre largo genérico para demostración en desktop
+const generateLongName = (originalName: string): string => {
+  const suffixes = [
+    "con Ácido Hialurónico y Vitamina C para una Piel Radiante",
+    "Fórmula Avanzada con Extractos Naturales y Péptidos Bioactivos",
+    "Tratamiento Intensivo con Retinol y Niacinamida de Alta Potencia",
+    "Edición Especial con Ceramidas y Extracto de Rosa Mosqueta",
+    "con Colágeno Marino y Ácido Ferúlico para Rejuvenecimiento",
+    "Fórmula Profesional con Bakuchiol y Vitamina E Antioxidante",
+  ];
+  const randomSuffix = suffixes[Math.floor(Math.random() * suffixes.length)];
+  return `${originalName} ${randomSuffix}`;
+};
+
 const ProductCard = ({
   product
 }: ProductCardProps) => {
@@ -16,6 +31,22 @@ const ProductCard = ({
     setIsCartOpen
   } = useCart();
   const isInCart = items.some(item => item.id === product.id);
+  
+  // Genera el nombre largo una sola vez por producto usando el id como seed
+  const longName = (() => {
+    const suffixes = [
+      "con Ácido Hialurónico y Vitamina C para una Piel Radiante",
+      "Fórmula Avanzada con Extractos Naturales y Péptidos Bioactivos",
+      "Tratamiento Intensivo con Retinol y Niacinamida de Alta Potencia",
+      "Edición Especial con Ceramidas y Extracto de Rosa Mosqueta",
+      "con Colágeno Marino y Ácido Ferúlico para Rejuvenecimiento",
+      "Fórmula Profesional con Bakuchiol y Vitamina E Antioxidante",
+    ];
+    // Usar el id del producto para seleccionar un sufijo consistente
+    const index = product.id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) % suffixes.length;
+    return `${product.name} ${suffixes[index]}`;
+  })();
+  
   const handleAddToCart = () => {
     if (isInCart) {
       setIsCartOpen(true);
@@ -49,7 +80,8 @@ const ProductCard = ({
       <div className="w-[44%] sm:w-[55%] lg:flex-1 py-3 pr-3 sm:py-4 sm:pr-4 lg:py-6 lg:pr-6 lg:pl-0 flex flex-col justify-between h-full lg:h-[320px]">
         <div className="flex-1 flex flex-col min-h-0 overflow-hidden">
           <h3 className="text-[#222] font-medium lg:font-semibold text-[13px] sm:text-[15px] lg:text-lg leading-[1.3] line-clamp-5 mb-1 lg:mb-2">
-            {product.name}
+            <span className="lg:hidden">{product.name}</span>
+            <span className="hidden lg:inline">{longName}</span>
           </h3>
 
           <p className="text-[#888] text-[10px] sm:text-[11px] lg:text-xs capitalize mb-1 lg:mb-2 lg:tracking-wide lg:font-medium">{product.brand}</p>
