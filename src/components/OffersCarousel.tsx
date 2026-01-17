@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
 import { useProducts } from "@/hooks/useProducts";
 
-export const BestSellersCarousel = () => {
+export const OffersCarousel = () => {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
   const [isTablet, setIsTablet] = useState(false);
@@ -23,10 +23,10 @@ export const BestSellersCarousel = () => {
   // Get products from Supabase
   const { data: allProducts, isLoading } = useProducts();
 
-  // Filter products with carousel_state = 'Más vendidos'
+  // Filter products with carousel_state = 'Ofertas'
   const products = useMemo(() => {
     if (!allProducts) return [];
-    return allProducts.filter(p => p.carousel_state === 'Más vendidos');
+    return allProducts.filter(p => p.carousel_state === 'Ofertas');
   }, [allProducts]);
 
   // Detect tablet (768px - 1024px)
@@ -89,7 +89,7 @@ export const BestSellersCarousel = () => {
       <section className="py-6 md:py-8 bg-background">
         <div className="max-w-7xl mx-auto px-4 md:px-6">
           <h2 className="md:text-4xl lg:text-5xl font-display font-semibold text-foreground text-center mb-8 md:mb-12 text-3xl">
-            Más Vendidos
+            Ofertas
           </h2>
           <div className="text-center text-muted-foreground">Cargando productos...</div>
         </div>
@@ -105,7 +105,7 @@ export const BestSellersCarousel = () => {
       <div className="max-w-7xl mx-auto px-4 md:px-6">
         {/* Section Title */}
         <h2 className="md:text-4xl lg:text-5xl font-display font-semibold text-foreground text-center mb-8 md:mb-12 text-3xl">
-          Más Vendidos
+          Ofertas
         </h2>
 
         {/* Carousel Container */}
@@ -182,7 +182,7 @@ export const BestSellersCarousel = () => {
         {/* Ver más Button */}
         <div className="flex justify-center mt-8">
           <Button
-            onClick={() => navigate('/tienda?carousel_state=Más vendidos')}
+            onClick={() => navigate('/tienda?carousel_state=Ofertas')}
             className="px-8 lg:px-16 rounded-full bg-foreground text-background hover:bg-foreground/90"
           >
             Ver más

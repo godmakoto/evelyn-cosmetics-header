@@ -4,6 +4,7 @@ import { CategoriesCarousel } from "@/components/CategoriesCarousel";
 import { ProductCarousel } from "@/components/ProductCarousel";
 import { BestSellersCarousel } from "@/components/BestSellersCarousel";
 import { BackInStockCarousel } from "@/components/BackInStockCarousel";
+import { OffersCarousel } from "@/components/OffersCarousel";
 import { BrandsCarousel } from "@/components/BrandsCarousel";
 import { SaleBanner } from "@/components/SaleBanner";
 import Footer from "@/components/Footer";
@@ -27,6 +28,9 @@ const Index = () => {
 
       {/* Sale Banner */}
       <SaleBanner />
+
+      {/* Offers Carousel */}
+      <OffersCarousel />
 
       {/* Back In Stock Carousel */}
       <BackInStockCarousel />
