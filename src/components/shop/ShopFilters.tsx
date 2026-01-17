@@ -88,6 +88,8 @@ const ShopFilters = ({
 
   const handleBrandChange = (brand: string | null) => {
     setSelectedBrand(brand);
+    // Clear carousel state when user manually filters
+    setSelectedCarouselState(null);
     // Reset category when brand is selected (exclusion logic)
     if (brand) {
       setSelectedCategory(null);
@@ -98,9 +100,31 @@ const ShopFilters = ({
   const handleCategoryChange = (category: string | null) => {
     setSelectedCategory(category);
     setSelectedSubcategory(null);
+    // Clear carousel state when user manually filters
+    setSelectedCarouselState(null);
     // Reset brand when category is selected (exclusion logic)
     if (category) {
       setSelectedBrand(null);
+    }
+  };
+
+  const handleSubcategoryChange = (subcategory: string | null) => {
+    setSelectedSubcategory(subcategory);
+    // Clear carousel state when user manually filters
+    setSelectedCarouselState(null);
+  };
+
+  const handleStatusChange = (status: string | null) => {
+    setSelectedStatus(status);
+    // Clear carousel state when user manually filters
+    setSelectedCarouselState(null);
+  };
+
+  const handleMaxPriceChange = (value: string) => {
+    setMaxPrice(value);
+    // Clear carousel state when user manually filters
+    if (value) {
+      setSelectedCarouselState(null);
     }
   };
 
@@ -141,7 +165,7 @@ const ShopFilters = ({
           <input
             type="number"
             value={maxPrice}
-            onChange={(e) => setMaxPrice(e.target.value)}
+            onChange={(e) => handleMaxPriceChange(e.target.value)}
             onKeyDown={(e) => {
               if (e.key === 'Enter') {
                 (e.target as HTMLInputElement).blur();
@@ -194,7 +218,7 @@ const ShopFilters = ({
         {selectedCategory && subcategories.length > 0 && (
           <div className="animate-in fade-in slide-in-from-top-2 duration-200">
             <label className="block text-sm md:text-xs text-[#666] mb-1.5 md:mb-1">Tipo de Producto</label>
-            <Select value={selectedSubcategory || "all"} onValueChange={(value) => setSelectedSubcategory(value === "all" ? null : value)}>
+            <Select value={selectedSubcategory || "all"} onValueChange={(value) => handleSubcategoryChange(value === "all" ? null : value)}>
               <SelectTrigger className="w-full h-10 md:h-10 rounded-xl border-[#eaeaea] text-base md:text-sm">
                 <SelectValue placeholder="Todos" />
               </SelectTrigger>
