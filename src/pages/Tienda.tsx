@@ -13,6 +13,7 @@ const Tienda = () => {
   const resetFiltersTimestamp = location.state?.resetFiltersTimestamp || null;
   const searchQuery = location.state?.searchQuery || null;
   const statusFilter = searchParams.get('status') || null;
+  const carouselStateFilter = searchParams.get('carousel_state') || null;
 
   return (
     <div className="min-h-screen flex flex-col bg-[#f9f9f9]">
@@ -25,6 +26,7 @@ const Tienda = () => {
           resetFiltersTimestamp={resetFiltersTimestamp}
           searchQuery={searchQuery}
           statusFilter={statusFilter}
+          carouselStateFilter={carouselStateFilter}
         />
       </main>
       <Footer />

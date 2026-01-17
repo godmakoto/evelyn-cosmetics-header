@@ -7,8 +7,8 @@ export const SaleBanner = () => {
   return (
     <section className="py-4 md:py-6">
       <div className="max-w-7xl mx-auto px-4 md:px-6">
-        <div 
-          onClick={() => navigate('/tienda?status=sale')}
+        <div
+          onClick={() => navigate('/tienda?carousel_state=Ofertas')}
           className="relative overflow-hidden rounded-2xl bg-foreground text-primary-foreground cursor-pointer transition-all duration-300 hover:scale-[1.01] hover:shadow-xl"
         >
           {/* Background Pattern */}

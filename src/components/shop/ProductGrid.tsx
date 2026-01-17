@@ -39,6 +39,7 @@ interface ProductGridProps {
   resetFiltersTimestamp?: number | null;
   searchQuery?: string | null;
   statusFilter?: string | null;
+  carouselStateFilter?: string | null;
 }
 
 const ProductGrid = ({
@@ -47,7 +48,8 @@ const ProductGrid = ({
   initialSubcategoryFilter = null,
   resetFiltersTimestamp = null,
   searchQuery = null,
-  statusFilter = null
+  statusFilter = null,
+  carouselStateFilter = null
 }: ProductGridProps) => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -63,6 +65,7 @@ const ProductGrid = ({
     category: initialCategoryFilter,
     subcategory: initialSubcategoryFilter,
     status: statusFilter,
+    carouselState: carouselStateFilter,
   });
   const [isFirstRender, setIsFirstRender] = useState(true);
 
@@ -107,6 +110,7 @@ const ProductGrid = ({
         category: null,
         subcategory: null,
         status: null,
+        carouselState: null,
       });
     }
   }, [resetFiltersTimestamp]);
@@ -127,7 +131,7 @@ const ProductGrid = ({
       }, 200);
       return () => clearTimeout(scrollTimeout);
     }
-  }, [filters.brand, filters.category, filters.subcategory, filters.maxPrice, filters.status, isFirstRender]);
+  }, [filters.brand, filters.category, filters.subcategory, filters.maxPrice, filters.status, filters.carouselState, isFirstRender]);
 
   useEffect(() => {
     console.log('Filter effect triggered', { filters, isFirstRender, isLoadingProducts, activeSearchQuery });
@@ -178,6 +182,9 @@ const ProductGrid = ({
           if (filters.status === 'back-in-stock') return p.is_back_in_stock;
           return true;
         });
+      }
+      if (filters.carouselState) {
+        resultProducts = resultProducts.filter((p) => p.carousel_state === filters.carouselState);
       }
 
       // Convertir productos filtrados a ShopProduct
@@ -238,7 +245,8 @@ const ProductGrid = ({
       newFilters.category !== currentFilters.category ||
       newFilters.subcategory !== currentFilters.subcategory ||
       newFilters.maxPrice !== currentFilters.maxPrice ||
-      newFilters.status !== currentFilters.status;
+      newFilters.status !== currentFilters.status ||
+      newFilters.carouselState !== currentFilters.carouselState;
 
     if (!filtersChanged) {
       console.log('Filters did not change, skipping');
