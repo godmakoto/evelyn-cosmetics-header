@@ -16,11 +16,13 @@ interface ShopFiltersProps {
     category: string | null;
     subcategory: string | null;
     status: string | null;
+    carouselState: string | null;
   }) => void;
   initialBrandFilter?: string | null;
   initialCategoryFilter?: string | null;
   initialSubcategoryFilter?: string | null;
   initialStatusFilter?: string | null;
+  initialCarouselStateFilter?: string | null;
   resetFiltersTimestamp?: number | null;
 }
 
@@ -30,6 +32,7 @@ const ShopFilters = ({
   initialCategoryFilter = null,
   initialSubcategoryFilter = null,
   initialStatusFilter = null,
+  initialCarouselStateFilter = null,
   resetFiltersTimestamp = null
 }: ShopFiltersProps) => {
   const [maxPrice, setMaxPrice] = useState<string>("");
@@ -37,6 +40,7 @@ const ShopFilters = ({
   const [selectedCategory, setSelectedCategory] = useState<string | null>(initialCategoryFilter);
   const [selectedSubcategory, setSelectedSubcategory] = useState<string | null>(initialSubcategoryFilter);
   const [selectedStatus, setSelectedStatus] = useState<string | null>(initialStatusFilter);
+  const [selectedCarouselState, setSelectedCarouselState] = useState<string | null>(initialCarouselStateFilter);
 
   // Get dynamic data from Supabase
   const { brands } = useBrands();
@@ -49,7 +53,8 @@ const ShopFilters = ({
     setSelectedCategory(initialCategoryFilter);
     setSelectedSubcategory(initialSubcategoryFilter);
     setSelectedStatus(initialStatusFilter);
-  }, [initialBrandFilter, initialCategoryFilter, initialSubcategoryFilter, initialStatusFilter]);
+    setSelectedCarouselState(initialCarouselStateFilter);
+  }, [initialBrandFilter, initialCategoryFilter, initialSubcategoryFilter, initialStatusFilter, initialCarouselStateFilter]);
 
   // Reset all filter states when resetFiltersTimestamp changes
   useEffect(() => {
@@ -59,6 +64,7 @@ const ShopFilters = ({
       setSelectedCategory(null);
       setSelectedSubcategory(null);
       setSelectedStatus(null);
+      setSelectedCarouselState(null);
     }
   }, [resetFiltersTimestamp]);
 
@@ -76,8 +82,9 @@ const ShopFilters = ({
       category: selectedCategory,
       subcategory: selectedSubcategory,
       status: selectedStatus,
+      carouselState: selectedCarouselState,
     });
-  }, [maxPrice, selectedBrand, selectedCategory, selectedSubcategory, selectedStatus, onFiltersChange]);
+  }, [maxPrice, selectedBrand, selectedCategory, selectedSubcategory, selectedStatus, selectedCarouselState, onFiltersChange]);
 
   const handleBrandChange = (brand: string | null) => {
     setSelectedBrand(brand);
@@ -103,9 +110,10 @@ const ShopFilters = ({
     setSelectedCategory(null);
     setSelectedSubcategory(null);
     setSelectedStatus(null);
+    setSelectedCarouselState(null);
   };
 
-  const hasActiveFilters = maxPrice || selectedBrand || selectedCategory || selectedSubcategory || selectedStatus;
+  const hasActiveFilters = maxPrice || selectedBrand || selectedCategory || selectedSubcategory || selectedStatus || selectedCarouselState;
 
   return (
     <div

@@ -309,6 +309,7 @@ const ProductGrid = ({
           initialCategoryFilter={initialCategoryFilter}
           initialSubcategoryFilter={initialSubcategoryFilter}
           initialStatusFilter={statusFilter}
+          initialCarouselStateFilter={carouselStateFilter}
           resetFiltersTimestamp={resetFiltersTimestamp}
         />
       </div>
@@ -341,6 +342,7 @@ const ProductGrid = ({
                 initialCategoryFilter={initialCategoryFilter}
                 initialSubcategoryFilter={initialSubcategoryFilter}
                 initialStatusFilter={statusFilter}
+                initialCarouselStateFilter={carouselStateFilter}
                 resetFiltersTimestamp={resetFiltersTimestamp}
               />
             </div>
