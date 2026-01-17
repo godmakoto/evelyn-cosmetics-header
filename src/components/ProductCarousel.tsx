@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import { ChevronLeft, ChevronRight, ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -6,67 +6,8 @@ import { useCart } from "@/contexts/CartContext";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
-interface Product {
-  id: string;
-  name: string;
-  brand?: string;
-  image: string;
-  price: number;
-  originalPrice?: number;
-}
-const products: Product[] = [{
-  id: "1",
-  name: "Bond Intense Repair Óleo bifasico - Nutre y realza la vitalidad del cabello, Controla el frizz, Protección térmica, Blindaje Anti-humedad - 110ml",
-  brand: "Nivea",
-  image: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=400&h=400&fit=crop",
-  price: 85,
-  originalPrice: 100
-}, {
-  id: "2",
-  name: "Sebium Gel Moussant Actif - Gel limpiador facial - Con Ácido salicílico, Ácido glicólico y Gluconato de Zinc - Limpia, purifica y reduce el tamaño de los poros - 532g",
-  brand: "La Roche-Posay",
-  image: "https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?w=400&h=400&fit=crop",
-  price: 180
-}, {
-  id: "3",
-  name: "Photoderm Cover Touch FPS50+ Protector solar facial Anti-brillo y toque seco - Piel mixta y grasa - TONO DORADO - Cobertura alta - 40ml",
-  brand: "Eucerin",
-  image: "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=400&h=400&fit=crop",
-  price: 120,
-  originalPrice: 150
-}, {
-  id: "4",
-  name: "Pigmentbio Foaming cream Facial y corporal - Limpiador despigmentante crema-espuma - Limpia y exfolia suavemente, reduce manchas oscuras - 200ml",
-  brand: "Bioderma",
-  image: "https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=400&h=400&fit=crop",
-  price: 95
-}, {
-  id: "5",
-  name: "Crema Contorno de Ojos Anti-edad Intensiva - Con Retinol y Péptidos - Reduce ojeras, bolsas y líneas de expresión - Hidratación 24h - 15ml",
-  brand: "Vichy",
-  image: "https://images.unsplash.com/photo-1570194065650-d99fb4b38b15?w=400&h=400&fit=crop",
-  price: 200,
-  originalPrice: 250
-}, {
-  id: "6",
-  name: "Hydrating Cleanser Limpiador Facial Espuma - Con Ceramidas y Ácido Hialurónico - Limpia sin resecar, restaura la barrera cutánea - 473ml",
-  brand: "CeraVe",
-  image: "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=400&h=400&fit=crop",
-  price: 75
-}, {
-  id: "7",
-  name: "Hydro Boost Mascarilla Hidratante Nocturna - Con Ácido Hialurónico - Hidratación intensa durante la noche, despierta con piel suave - 50ml",
-  brand: "Neutrogena",
-  image: "https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=400&h=400&fit=crop",
-  price: 45,
-  originalPrice: 55
-}, {
-  id: "8",
-  name: "100% Organic Cold-Pressed Rose Hip Seed Oil - Aceite facial nutritivo y regenerador - Reduce cicatrices, manchas y líneas finas - 30ml",
-  brand: "The Ordinary",
-  image: "https://images.unsplash.com/photo-1617897903246-719242758050?w=400&h=400&fit=crop",
-  price: 160
-}];
+import { useProducts } from "@/hooks/useProducts";
+
 export const ProductCarousel = () => {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
@@ -78,6 +19,15 @@ export const ProductCarousel = () => {
   } = useCart();
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
+
+  // Get products from Supabase
+  const { data: allProducts, isLoading } = useProducts();
+
+  // Filter products with carousel_state = 'Destacados'
+  const products = useMemo(() => {
+    if (!allProducts) return [];
+    return allProducts.filter(p => p.carousel_state === 'Destacados');
+  }, [allProducts]);
 
   // Detect tablet (768px - 1024px)
   useEffect(() => {
@@ -111,16 +61,16 @@ export const ProductCarousel = () => {
       emblaApi.off("select", onSelect);
     };
   }, [emblaApi, onSelect]);
-  const handleAddToCart = (product: Product) => {
+  const handleAddToCart = (product: any) => {
     if (isInCart(product.id)) {
       setIsCartOpen(true);
     } else {
       addItem({
         id: product.id,
-        name: product.name,
-        image: product.image,
-        originalPrice: product.originalPrice || product.price,
-        discountedPrice: product.originalPrice ? product.price : undefined
+        name: product.title || '',
+        image: product.image_1 || '',
+        originalPrice: product.regular_price || 0,
+        discountedPrice: product.offer_price || undefined
       });
     }
   };
@@ -132,6 +82,25 @@ export const ProductCarousel = () => {
   const handleCardClick = (productId: string) => {
     navigate(`/producto/${productId}`);
   };
+
+  // Show loading state or empty state
+  if (isLoading) {
+    return (
+      <section className="py-6 md:py-8 bg-background">
+        <div className="max-w-7xl mx-auto px-4 md:px-6">
+          <h2 className="md:text-4xl lg:text-5xl font-display font-semibold text-foreground text-center mb-8 md:mb-12 text-3xl">
+            Productos Destacados
+          </h2>
+          <div className="text-center text-muted-foreground">Cargando productos...</div>
+        </div>
+      </section>
+    );
+  }
+
+  if (!products || products.length === 0) {
+    return null; // Don't show the section if there are no products
+  }
+
   return <section className="py-6 md:py-8 bg-background">
       <div className="max-w-7xl mx-auto px-4 md:px-6">
         {/* Section Title */}
@@ -161,7 +130,7 @@ export const ProductCarousel = () => {
                   >
                     {/* Product Image */}
                     <div className="overflow-hidden bg-secondary aspect-square">
-                      <img src={product.image} alt={product.name} className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
+                      <img src={product.image_1 || ''} alt={product.title || ''} className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
                     </div>
 
                     {/* Product Info */}
@@ -173,16 +142,16 @@ export const ProductCarousel = () => {
 
                       {/* Name */}
                       <h3 className="text-sm font-medium text-foreground mb-2 line-clamp-2">
-                        {product.name}
+                        {product.title}
                       </h3>
 
                       {/* Prices */}
                       <div className="flex items-center gap-2 mb-4 mt-auto">
                         <span className="text-lg font-semibold text-foreground">
-                          Bs {product.price.toFixed(1)}
+                          Bs {(product.offer_price || product.regular_price || 0).toFixed(1)}
                         </span>
-                        {product.originalPrice && product.originalPrice > product.price && <span className="text-sm text-muted-foreground line-through">
-                            Bs {product.originalPrice.toFixed(1)}
+                        {product.offer_price && product.regular_price && product.regular_price > product.offer_price && <span className="text-sm text-muted-foreground line-through">
+                            Bs {product.regular_price.toFixed(1)}
                           </span>}
                       </div>
 
@@ -213,7 +182,7 @@ export const ProductCarousel = () => {
         {/* Ver más Button */}
         <div className="flex justify-center mt-8">
           <Button
-            onClick={() => navigate('/tienda?status=featured')}
+            onClick={() => navigate('/tienda?carousel_state=Destacados')}
             className="px-8 lg:px-16 rounded-full bg-foreground text-background hover:bg-foreground/90"
           >
             Ver más
