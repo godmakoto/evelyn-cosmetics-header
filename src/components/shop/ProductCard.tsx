@@ -42,19 +42,19 @@ const ProductCard = ({
             {product.discount}% OFF
           </span>}
         <div className="w-full h-full aspect-square overflow-hidden rounded-xl bg-white flex items-center justify-center">
-          <img src={product.image} alt={product.name} className="w-full h-full object-fill" />
+          <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
         </div>
       </div>
 
       <div className="w-[44%] sm:w-[55%] lg:flex-1 py-3 pr-3 sm:py-4 sm:pr-4 lg:py-6 lg:pr-6 lg:pl-0 flex flex-col justify-between h-full lg:h-[320px]">
         <div className="flex-1 flex flex-col min-h-0 overflow-hidden">
-          <h3 className="text-[#222] font-medium lg:font-semibold text-[13px] sm:text-[15px] lg:text-lg leading-[1.3] line-clamp-5 mb-1 lg:mb-2">
+          <h3 className="text-[#222] font-medium lg:font-semibold text-[13px] sm:text-[15px] lg:text-lg leading-[1.3] line-clamp-5 lg:line-clamp-4 xl:line-clamp-5 mb-1 lg:mb-2">
             {product.name}
           </h3>
 
           <p className="text-[#888] text-[10px] sm:text-[11px] lg:text-xs capitalize mb-1 lg:mb-2 lg:tracking-wide lg:font-medium">{product.brand}</p>
 
-          <p className="hidden lg:block text-[#666] text-xs leading-relaxed line-clamp-2 mb-3">
+          <p className="hidden lg:block text-[#666] text-xs leading-normal lg:line-clamp-1 xl:line-clamp-3 mb-3">
             {product.description}
           </p>
 
@@ -68,7 +68,7 @@ const ProductCard = ({
               </span>}
           </div>
 
-          <p className="hidden sm:block lg:hidden text-[#666] text-[12px] leading-relaxed line-clamp-2 mb-2">
+          <p className="hidden sm:block lg:hidden text-[#666] text-[12px] leading-normal line-clamp-2 mb-2">
             {product.description}
           </p>
         </div>

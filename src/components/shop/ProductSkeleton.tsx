@@ -15,6 +15,8 @@ const ProductSkeleton = () => {
             <div className="h-[13px] sm:h-[15px] lg:h-[18px] bg-[#e8e8e8] rounded w-full" />
             <div className="h-[13px] sm:h-[15px] lg:h-[18px] bg-[#e8e8e8] rounded w-[90%]" />
             <div className="h-[13px] sm:h-[15px] lg:h-[18px] bg-[#e8e8e8] rounded w-[75%]" />
+            <div className="h-[13px] sm:h-[15px] lg:h-[18px] bg-[#e8e8e8] rounded w-[85%]" />
+            <div className="hidden xl:block h-[18px] bg-[#e8e8e8] rounded w-[70%]" />
           </div>
 
           {/* Brand skeleton */}
@@ -23,7 +25,8 @@ const ProductSkeleton = () => {
           {/* Description skeleton - only visible on tablet and desktop */}
           <div className="hidden lg:block space-y-1.5 mb-3">
             <div className="h-3 bg-[#e8e8e8] rounded w-full" />
-            <div className="h-3 bg-[#e8e8e8] rounded w-[85%]" />
+            <div className="hidden xl:block h-3 bg-[#e8e8e8] rounded w-[85%]" />
+            <div className="hidden xl:block h-3 bg-[#e8e8e8] rounded w-[90%]" />
           </div>
 
           {/* Mobile/Tablet: Price above button */}
