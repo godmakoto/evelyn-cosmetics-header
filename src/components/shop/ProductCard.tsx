@@ -54,7 +54,7 @@ const ProductCard = ({
 
           <p className="text-[#888] text-[10px] sm:text-[11px] lg:text-xs capitalize mb-1 lg:mb-2 lg:tracking-wide lg:font-medium">{product.brand}</p>
 
-          <p className="hidden lg:block text-[#666] text-xs leading-relaxed lg:line-clamp-1 xl:line-clamp-3 mb-3">
+          <p className="hidden lg:block text-[#666] text-xs leading-normal lg:line-clamp-1 xl:line-clamp-3 mb-3">
             {product.description}
           </p>
 
@@ -68,7 +68,7 @@ const ProductCard = ({
               </span>}
           </div>
 
-          <p className="hidden sm:block lg:hidden text-[#666] text-[12px] leading-relaxed line-clamp-2 mb-2">
+          <p className="hidden sm:block lg:hidden text-[#666] text-[12px] leading-normal line-clamp-2 mb-2">
             {product.description}
           </p>
         </div>
